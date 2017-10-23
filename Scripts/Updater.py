@@ -32,6 +32,7 @@ class Updater:
 
         self.plugs = theJSON.get("Plugins", [])
         self.version = theJSON.get("Version", "0.0.0")
+        self.checked_updates = False
 
     # Helper methods
     def grab(self, prompt):
@@ -180,7 +181,9 @@ class Updater:
 
 
     def main(self):
-        self.check_update()
+        if not self.checked_updates:
+            self.check_update()
+            self.checked_updates = True
         # Resize to fit
         self.h = 12 + len(self.plugs)
         self.w = int(self.h*2.5)
