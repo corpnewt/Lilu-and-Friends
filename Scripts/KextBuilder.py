@@ -134,12 +134,13 @@ class KextBuilder:
         if not output[2] == 0:
             self._clean_up(output)
             return output
-        os.chdir("./Build/Release")
-        info_plist = plistlib.readPlist(name + ".kext/Contents/Info.plist")
+        os.chdir(plug.get("Build Dir", "./Build/Release"))
+        info_plist = plistlib.readPlist(plug.get("Info", name + ".kext/Contents/Info.plist"))
         version = info_plist["CFBundleVersion"]
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
-        output = self._get_output([self.zip, "-r", file_name, name + ".kext"])
+        zip_dir = plug.get("Zip", name+".kext")
+        output = self._get_output([self.zip, "-r", file_name, zip_dir])
         if not output[2] == 0:
             self._clean_up(output)
             return output

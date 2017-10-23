@@ -124,7 +124,7 @@ class Updater:
         check_version = newjson_dict.get("Version", "0.0.0")
         if self.version == check_version:
             # The same - return
-            print("Already current.")
+            print("v{} is already current.".format(self.version))
             return
         # Split the version number
         try:
@@ -136,7 +136,7 @@ class Updater:
             return
 
         if not self.need_update(cv, v):
-            print("Already current.")
+            print("v{} is already current.".format(self.version))
             return
     
         # We need to update
