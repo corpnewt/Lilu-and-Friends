@@ -25,6 +25,8 @@ class Updater:
 
         self.h = 0
         self.w = 0
+        self.hpad = 13
+        self.wpad = 5
 
         self.version_url = "https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json"
 
@@ -184,10 +186,6 @@ class Updater:
         if not self.checked_updates:
             self.check_update()
             self.checked_updates = True
-        # Resize to fit
-        self.h = 12 + len(self.plugs)
-        self.w = int(self.h*2.5)
-        self.resize(self.w, self.h)
         self.head("Lilu And Friends")
         print(" ")
         # Print out options
@@ -199,9 +197,17 @@ class Updater:
             else:
                 pick = "[ ]"
             if option.get("Desc", None):
-                print("{} {}. {} - {}".format(pick, ind, option["Name"], option["Desc"]))
+                en = "{} {}. {} - {}".format(pick, ind, option["Name"], option["Desc"])
             else:
-                print("{} {}. {}".format(pick, ind, option["Name"]))
+                en = "{} {}. {}".format(pick, ind, option["Name"])
+            if len(en) + self.wpad > self.w:
+                self.w = len(en) + self.wpad
+            print(en)
+        
+        # Resize to fit
+        self.h = self.hpad + len(self.plugs)
+        self.resize(self.w, self.h)
+
         print(" ")
         print("B. Build Selected")
         print(" ")
