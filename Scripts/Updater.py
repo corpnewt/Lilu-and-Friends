@@ -4,10 +4,14 @@ import time
 import json
 import KextBuilder
 import tempfile
+import subprocess
+import shutil
 
-# Don't edit the following line - it handles self-updating:
-
-# version 0.0.1
+# Python-aware urllib stuff
+if sys.version_info >= (3, 0):
+    from urllib.request import urlopen
+else:
+    from urllib2 import urlopen
 
 class Updater:
 
@@ -22,7 +26,12 @@ class Updater:
         self.h = 0
         self.w = 0
 
-        self.plugs = json.load(open("plugins.json"))["Plugins"]
+        self.version_url = "https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json"
+
+        theJSON = json.load(open("plugins.json"))
+
+        self.plugs = theJSON.get("Plugins", [])
+        self.version = theJSON.get("Version", "0.0.0")
 
     # Helper methods
     def grab(self, prompt):
@@ -30,6 +39,38 @@ class Updater:
             return input(prompt)
         else:
             return str(raw_input(prompt))
+
+    def _get_string(self, url):
+        response = urlopen(url)
+        CHUNK = 16 * 1024
+        bytes_so_far = 0
+        total_size = int(response.headers['Content-Length'])
+        chunk_so_far = "".encode("utf-8")
+        while True:
+            chunk = response.read(CHUNK)
+            bytes_so_far += len(chunk)
+            #self._progress_hook(response, bytes_so_far, total_size)
+            if not chunk:
+                break
+            chunk_so_far += chunk
+        return chunk_so_far.decode("utf-8")
+
+    def _progress_hook(self, response, bytes_so_far, total_size):
+        percent = float(bytes_so_far) / total_size
+        percent = round(percent*100, 2)
+        sys.stdout.write("Downloaded {:,} of {:,} bytes ({:.2f}%)\r".format(bytes_so_far, total_size, percent))
+
+    def _get_output(self, comm):
+        try:
+            p = subprocess.Popen(comm, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            c = p.communicate()
+            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
+        except:
+            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
+
+    def _get_git(self):
+        # Returns the path to the git binary
+        return self._get_output(["which", "git"])[0].split("\n")[0].split("\r")[0]
 
     # Header drawing method
     def head(self, text = "Lilu And Friends", width = 50):
@@ -54,12 +95,92 @@ class Updater:
         print("Have a nice day/night!\n\n")
         exit(0)
 
+    def need_update(self, new, curr):
+        if new[0] < curr[0]:
+            return False
+        if new[0] > curr[0]:
+            return True
+        if new[1] < curr[1]:
+            return False
+        if new[1] > curr[1]:
+            return True
+        if new[2] < curr[2]:
+            return False
+        if new[2] > curr[2]:
+            return True
+
     def check_update(self):
-        # Checks against https://github.com/corpnewt/Lilu-and-Friends to see if we need to update
-        return
-        
+        # Checks against https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json to see if we need to update
+        self.head("Checking for Updates")
+        print(" ")
+        newjson = self._get_string(self.version_url)
+        try:
+            newjson_dict = json.loads(newjson)
+        except:
+            # Not valid json data
+            print("Error checking for updates (json data malformed or non-existent)")
+            return
+        check_version = newjson_dict.get("Version", "0.0.0")
+        if self.version == check_version:
+            # The same - return
+            print("Already current.")
+            return
+        # Split the version number
+        try:
+            v = self.version.split(".")
+            cv = check_version.split(".")
+        except:
+            # not formatted right - bail
+            print("Error checking for updates (version string malformed)")
+            return
+
+        if not self.need_update(cv, v):
+            print("Already current.")
+            return
+    
+        # We need to update
+        while True:
+            up = self.grab("v{} is available (v{} installed)\n\nUpdate? (y/n):  ".format(check_version, self.version))
+            if up[:1].lower() in ["y", "n"]:
+                break
+        if up[:1].lower() == "n":
+            print("Updating cancelled.")
+            return
+        # Update
+        # Create temp folder
+        t = tempfile.mkdtemp()
+        g = self._get_git()
+        # Clone into that folder
+        os.chdir(t)
+        output = self._get_output([g, "clone", "https://github.com/corpnewt/Lilu-and-Friends"])
+        if not output[2] == 0:
+            if os.path.exists(t):
+                shutil.rmtree(t)
+            print(output[1])
+            os.chdir(os.path.dirname(os.path.realpath(__file__)))
+            os.chdir("../")
+            return
+        # We've got the repo cloned
+        # Move them over
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        os.chdir("../")
+        p = subprocess.Popen("rsync -av \"" + t + "/Lilu-and-Friends/\" " + "\"" + os.getcwd() + "\"", shell=True)
+        p.wait()
+        p = subprocess.Popen("chmod +x \"" + os.getcwd() + "/Run.command\"", shell=True)
+        p.wait()
+        # Remove the old temp
+        if os.path.exists(t):
+            shutil.rmtree(t)
+        self.head("Updated!")
+        print(" ")
+        print("Lilu and Friends has been updated!  Please restart to see the changes.")
+        print(" ")
+        self.grab("Press [enter] to quit...")
+        exit(0)            
+
 
     def main(self):
+        self.check_update()
         # Resize to fit
         self.h = 12 + len(self.plugs)
         self.w = int(self.h*2.5)
