@@ -56,8 +56,7 @@
       "Folder" : "hwsensors-hwsensors3-code3", 
       "Build Dir" : "./Build/Release 10.6",
       "Desc" : "only FakeSMC"
-    },
-    { "Name" : "BCM5722D", "URL" : "clone https://github.com/adlan/BCM5722D", "Desc" : "for BCM5722 NetXtreme and NetLink family" }
+    }
   ],
   "Version" : "0.0.4"
 }
