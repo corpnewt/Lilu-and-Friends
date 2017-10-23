@@ -14,7 +14,11 @@
     { "Name" : "HibernationFixup", "URL" : "svn clone https://svn.code.sf.net/p/hibernationfixup/svn/trunk HibernationFixup", "Lilu" : true },
     { "Name" : "IntelGraphicsDVMTFixup", "URL" : "clone https://github.com/BarbaraPalvin/IntelGraphicsDVMTFixup", "Lilu" : true },
     { "Name" : "NightShiftUnlocker", "URL" : "clone https://github.com/Austere-J/NightShiftUnlocker", "Lilu" : true },
-    { "Name" : "Shiki", "URL" : "clone https://github.com/vit9696/Shiki", "Lilu" : true }
+    { "Name" : "Shiki", "URL" : "clone https://github.com/vit9696/Shiki", "Lilu" : true },
+    { "Name" : "RealtekRTL8111", "URL" : "clone https://github.com/Mieze/RTL8111_driver_for_OS_X", "Lilu" : false, "Folder": "RTL8111_driver_for_OS_X" },
+    { "Name" : "RealtekRTL8100", "URL" : "clone https://github.com/Mieze/RealtekRTL8100", "Lilu" : false },
+    { "Name" : "IntelMausiEthernet", "URL" : "clone https://github.com/Mieze/IntelMausiEthernet", "Lilu" : false },
+    { "Name" : "AtherosE2200Ethernet", "URL" : "clone https://github.com/Mieze/AtherosE2200Ethernet", "Lilu" : false }
   ],
-  "Version" : "0.0.1"
+  "Version" : "0.0.2"
 }
