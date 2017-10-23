@@ -198,7 +198,10 @@ class Updater:
                 pick = "[#]"
             else:
                 pick = "[ ]"
-            print("{} {}. {}".format(pick, ind, option["Name"]))
+            if option.get("Desc", None):
+                print("{} {}. {} - {}".format(pick, ind, option["Name"], option["Desc"]))
+            else:
+                print("{} {}. {}".format(pick, ind, option["Name"]))
         print(" ")
         print("B. Build Selected")
         print(" ")

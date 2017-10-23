@@ -80,7 +80,7 @@ class KextBuilder:
         # Gather info
         name       = plug["Name"]
         url        = plug["URL"]
-        needs_lilu = plug["Lilu"]
+        needs_lilu = plug.get("Lilu", False)
         if "Folder" in plug:
             folder = plug["Folder"]
         else:
