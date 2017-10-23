@@ -174,7 +174,7 @@ class Updater:
             shutil.rmtree(t)
         self.head("Updated!")
         print(" ")
-        print("Lilu and Friends has been updated!  Please restart to see the changes.")
+        print("Lilu and Friends has been updated!  Please restart the script to see the changes.")
         print(" ")
         self.grab("Press [enter] to quit...")
         exit(0)            
