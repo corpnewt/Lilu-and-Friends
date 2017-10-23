@@ -1,0 +1,20 @@
+{
+  "Plugins": [
+    { "Name" : "Lilu", "URL" : "clone https://github.com/vit9696/Lilu", "Lilu" : false },
+    { "Name" : "AppleALC", "URL" : "clone https://github.com/vit9696/AppleALC", "Lilu" : true },
+    { "Name" : "NvidiaGraphicsFixup", "URL" : "svn clone https://svn.code.sf.net/p/nvidiagraphicsfixup/svn/trunk NvidiaGraphicsFixup", "Lilu" : true },
+    { "Name" : "IntelGraphicsFixup", "URL" : "svn clone https://svn.code.sf.net/p/intelgraphicsfixup/svn/trunk IntelGraphicsFixup", "Lilu" : true },
+    { "Name" : "AirportBrcmFixup", "URL" : "svn clone svn://svn.code.sf.net/p/airportbrcmfixup/code/ airportbrcmfixup-code", "Folder": "airportbrcmfixup-code/trunk", "Lilu" : true },
+    { "Name" : "ATH9KFixup", "URL" : "clone https://github.com/chunnann/ATH9KFixup", "Lilu" : true },
+    { "Name" : "AzulPatcher4600", "URL" : "clone https://github.com/coderobe/AzulPatcher4600", "Lilu" : true },
+    { "Name" : "BT4LEContiunityFixup", "URL" : "svn clone svn://svn.code.sf.net/p/bt4lecontiunityfixup/code/ bt4lecontiunityfixup-code", "Folder" : "bt4lecontiunityfixup-code/trunk", "Lilu" : true },
+    { "Name" : "CoreDisplayFixup", "URL" : "clone https://github.com/PMheart/CoreDisplayFixup", "Lilu" : true },
+    { "Name" : "CPUFriend", "URL" : "clone https://github.com/PMheart/CPUFriend", "Lilu" : true },
+    { "Name" : "EnableLidWake", "URL" : "clone https://github.com/syscl/EnableLidWake", "Lilu" : true },
+    { "Name" : "HibernationFixup", "URL" : "svn clone https://svn.code.sf.net/p/hibernationfixup/svn/trunk HibernationFixup", "Lilu" : true },
+    { "Name" : "IntelGraphicsDVMTFixup", "URL" : "clone https://github.com/BarbaraPalvin/IntelGraphicsDVMTFixup", "Lilu" : true },
+    { "Name" : "NightShiftUnlocker", "URL" : "clone https://github.com/Austere-J/NightShiftUnlocker", "Lilu" : true },
+    { "Name" : "Shiki", "URL" : "clone https://github.com/vit9696/Shiki", "Lilu" : true }
+  ],
+  "Version" : "0.0.1"
+}
