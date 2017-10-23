@@ -56,7 +56,7 @@ class Updater:
 
     def check_update(self):
         # Checks against https://github.com/corpnewt/Lilu-and-Friends to see if we need to update
-
+        return
         
 
     def main(self):
