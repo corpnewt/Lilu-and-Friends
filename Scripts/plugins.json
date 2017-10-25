@@ -56,7 +56,64 @@
       "Folder" : "hwsensors-hwsensors3-code3", 
       "Build Dir" : "./Build/Release 10.6",
       "Desc" : "only FakeSMC"
+    },
+    {
+      "Name" : "USBInjectAll",
+      "URL" : "clone https://github.com/RehabMan/OS-X-USB-Inject-All",
+      "Folder" : "OS-X-USB-Inject-All",
+      "Desc" : "injects all USB ports",
+      "Build Dir" : "./build/Products/Release",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-alltargets"
+      ]
+    },
+    {
+      "Name" : "FakePCIID",
+      "URL" : "clone https://github.com/RehabMan/OS-X-Fake-PCI-ID",
+      "Folder" : "OS-X-Fake-PCI-ID",
+      "Desc" : "spoofs IOPCIDevices to allow drivers to load",
+      "Build Dir" : "./build/Release",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-alltargets"
+      ],
+      "Zip" : "../Release"
+    },
+    {
+      "Name" : "BrcmPatchRAM",
+      "URL" : "clone https://github.com/RehabMan/OS-X-BrcmPatchRAM",
+      "Folder" : "OS-X-BrcmPatchRAM",
+      "Desc" : "applies PatchRAM updates for Broadcom RAMUSB based devices",
+      "Build Dir" : "./build/Products/Release",
+      "Info" : "BrcmPatchRam2.kext/Contents/Info.plist",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-target",
+        "BrcmPatchRAM2",
+        "-target",
+        "BrcmFirmwareRepo",
+        "-target",
+        "BrcmFirmwareData",
+        "-target",
+        "BrcmNonPatchRAM2"
+      ],
+      "Zip" : "../Release"
+    },
+    {
+      "Name" : "BCM5722D",
+      "URL" : "clone https://github.com/adlan/BCM5722D",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-arch",
+        "x86_64"
+      ],
+      "Desc" : "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
     }
   ],
-  "Version" : "0.0.4"
+  "Version" : "0.0.5"
 }
