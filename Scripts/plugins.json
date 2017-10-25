@@ -70,6 +70,18 @@
       ]
     },
     {
+      "Name" : "GenericUSBXHCI",
+      "URL" : "clone https://github.com/RehabMan/OS-X-Generic-USB3",
+      "Folder" : "OS-X-Generic-USB3",
+      "Desc" : "generic, non-Intel USB3 support",
+      "Build Dir" : "./build/Universal",
+      "Build Opts" : [
+        "-sdk",
+        "macosx10.10",
+        "-alltargets"
+      ]
+    },
+    {
       "Name" : "FakePCIID",
       "URL" : "clone https://github.com/RehabMan/OS-X-Fake-PCI-ID",
       "Folder" : "OS-X-Fake-PCI-ID",
@@ -115,5 +127,5 @@
       "Desc" : "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
     }
   ],
-  "Version" : "0.0.5"
+  "Version" : "0.0.6"
 }
