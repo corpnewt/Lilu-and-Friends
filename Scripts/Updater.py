@@ -279,18 +279,22 @@ class Updater:
                 plug["Picked"] = False
             return
         
-        # Get numeric value
-        try:
-            menu = int(menu)
-        except:
-            return
-        if menu > 0 and menu <= len(self.plugs):
-            menu -=1
-            if "Picked" in self.plugs[menu]:
-                if self.plugs[menu]["Picked"]:
-                    self.plugs[menu]["Picked"] = False
-                    return
-            self.plugs[menu]["Picked"] = True
+        # First try to split
+        menu = menu.replace(" ", "")
+        menu_list = menu.split(",")
+        for m in menu_list:
+            # Get numeric value
+            try:
+                m = int(m)
+            except:
+                continue
+            if m > 0 and m <= len(self.plugs):
+                m -=1
+                if "Picked" in self.plugs[m]:
+                    if self.plugs[m]["Picked"]:
+                        self.plugs[m]["Picked"] = False
+                        continue
+                self.plugs[m]["Picked"] = True
         return
 
 # Create our main class, and loop - catching exceptions
