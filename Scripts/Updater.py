@@ -76,7 +76,7 @@ class Updater:
         return self._get_output(["which", "git"])[0].split("\n")[0].split("\r")[0]
 
     # Header drawing method
-    def head(self, text = "Lilu And Friends", width = 50):
+    def head(self, text = "Lilu And Friends", width = 55):
         os.system("clear")
         print("  {}".format("#"*width))
         mid_len = int(round(width/2-len(text)/2)-2)
@@ -243,12 +243,15 @@ class Updater:
                     out = self.kb.build(plug, ind, len(build_list))
                 except Exception as e:
                     print(e)
-                    self.kb._del_temp()
-                    out = 1
+                    out = ["", "An error occurred!", 1]
                 if out == None:
                     success.append("    " + plug["Name"])
                 else:
+                    print(out[1])
                     fail.append("    " + plug["Name"])
+            # Clean up temp
+            print("Cleaning up...")
+            self.kb._del_temp()
             self.head("{} of {} Succeeded".format(len(success), len(build_list)))
             print(" ")
             if len(success):
@@ -261,6 +264,8 @@ class Updater:
                 print("\nFailed:\n\n    None")
             print(" ")
             self.grab("Press [enter] to return to the main menu...")
+            for plug in self.plugs:
+                plug["Picked"] = False
             return
                 
         elif menu[:1].lower() == "a":
