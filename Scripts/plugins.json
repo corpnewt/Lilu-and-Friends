@@ -95,6 +95,19 @@
       "Zip" : "../Release"
     },
     {
+      "Name" : "VoodooPS2Controller",
+      "URL" : "clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller",
+      "Folder" : "OS-X-Voodoo-PS2-Controller",
+      "Desc" : "PS2 driver for desktops/laptops",
+      "Build Dir" : "./build/Products/Release",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-alltargets"
+      ],
+      "Zip" : "../Release"
+    },
+    {
       "Name" : "BrcmPatchRAM",
       "URL" : "clone https://github.com/RehabMan/OS-X-BrcmPatchRAM",
       "Folder" : "OS-X-BrcmPatchRAM",
@@ -127,5 +140,5 @@
       "Desc" : "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
     }
   ],
-  "Version" : "0.0.7"
+  "Version" : "0.0.8"
 }
