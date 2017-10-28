@@ -1,49 +1,49 @@
 {
   "Plugins": [
-    { "Name" : "Lilu", "URL" : "clone https://github.com/vit9696/Lilu", "Desc" : "for arbitrary kext, library, and program patching" },
-    { "Name" : "AppleALC", "URL" : "clone https://github.com/vit9696/AppleALC", "Lilu" : true, "Desc" : "dynamic audio patching" },
+    { "Name" : "Lilu", "URL" : "git clone https://github.com/vit9696/Lilu", "Desc" : "for arbitrary kext, library, and program patching" },
+    { "Name" : "AppleALC", "URL" : "git clone https://github.com/vit9696/AppleALC", "Lilu" : true, "Desc" : "dynamic audio patching" },
     {
       "Name" : "NvidiaGraphicsFixup",
-      "URL" : "svn clone https://svn.code.sf.net/p/nvidiagraphicsfixup/svn/trunk NvidiaGraphicsFixup",
+      "URL" : "git svn clone https://svn.code.sf.net/p/nvidiagraphicsfixup/svn/trunk NvidiaGraphicsFixup",
       "Lilu" : true,
       "Desc" : "provides patches for NVidia GPUs"
     },
     {
       "Name" : "IntelGraphicsFixup",
-      "URL" : "svn clone https://svn.code.sf.net/p/intelgraphicsfixup/svn/trunk IntelGraphicsFixup",
+      "URL" : "git svn clone https://svn.code.sf.net/p/intelgraphicsfixup/svn/trunk IntelGraphicsFixup",
       "Lilu" : true,
       "Desc" : "provides patches for Intel GPUs"
     },
     {
       "Name" : "AirportBrcmFixup",
-      "URL" : "svn clone svn://svn.code.sf.net/p/airportbrcmfixup/code/ airportbrcmfixup-code",
+      "URL" : "git svn clone svn://svn.code.sf.net/p/airportbrcmfixup/code/ airportbrcmfixup-code",
       "Folder": "airportbrcmfixup-code/trunk",
       "Lilu" : true,
       "Desc" : "for non-native Airport Broadcom Wi-Fi cards"
     },
-    { "Name" : "ATH9KFixup", "URL" : "clone https://github.com/chunnann/ATH9KFixup", "Lilu" : true, "Desc" : "for AR946X (AR9462 & AR9463) AR9485 AR9565" },
-    { "Name" : "AzulPatcher4600", "URL" : "clone https://github.com/coderobe/AzulPatcher4600", "Lilu" : true, "Desc" : "for Haswell HD4600 mobile iGPUs" },
+    { "Name" : "ATH9KFixup", "URL" : "git clone https://github.com/chunnann/ATH9KFixup", "Lilu" : true, "Desc" : "for AR946X (AR9462 & AR9463) AR9485 AR9565" },
+    { "Name" : "AzulPatcher4600", "URL" : "git clone https://github.com/coderobe/AzulPatcher4600", "Lilu" : true, "Desc" : "for Haswell HD4600 mobile iGPUs" },
     {
       "Name" : "BT4LEContiunityFixup",
-      "URL" : "svn clone svn://svn.code.sf.net/p/bt4lecontiunityfixup/code/ bt4lecontiunityfixup-code",
+      "URL" : "git svn clone svn://svn.code.sf.net/p/bt4lecontiunityfixup/code/ bt4lecontiunityfixup-code",
       "Folder" : "bt4lecontiunityfixup-code/trunk",
       "Lilu" : true,
       "Desc" : "for BT4LE-Handoff-Hotspot features"
     },
-    { "Name" : "CoreDisplayFixup", "URL" : "clone https://github.com/PMheart/CoreDisplayFixup", "Lilu" : true, "Desc" : "enable 4K or greater res on certain graphics" },
-    { "Name" : "CPUFriend", "URL" : "clone https://github.com/PMheart/CPUFriend", "Lilu" : true, "Desc" : "for dynamic power management data injection" },
-    { "Name" : "EnableLidWake", "URL" : "clone https://github.com/syscl/EnableLidWake", "Lilu" : true },
-    { "Name" : "HibernationFixup", "URL" : "svn clone https://svn.code.sf.net/p/hibernationfixup/svn/trunk HibernationFixup", "Lilu" : true, "Desc" : "saves IOHibernateRTCVariables in NVRAM" },
-    { "Name" : "IntelGraphicsDVMTFixup", "URL" : "clone https://github.com/BarbaraPalvin/IntelGraphicsDVMTFixup", "Lilu" : true, "Desc" : "alternative to the min-stolen patch" },
-    { "Name" : "NightShiftUnlocker", "URL" : "clone https://github.com/Austere-J/NightShiftUnlocker", "Lilu" : true, "Desc" : "unlocks night shift on unsupported SMBIOS" },
-    { "Name" : "Shiki", "URL" : "clone https://github.com/vit9696/Shiki", "Lilu" : true, "Desc" : "for protected video playback" },
-    { "Name" : "RealtekRTL8111", "URL" : "clone https://github.com/Mieze/RTL8111_driver_for_OS_X", "Folder": "RTL8111_driver_for_OS_X", "Desc" : "for RTL8111/8168 LAN" },
-    { "Name" : "RealtekRTL8100", "URL" : "clone https://github.com/Mieze/RealtekRTL8100", "Desc" : "for RTL810X LAN" },
-    { "Name" : "IntelMausiEthernet", "URL" : "clone https://github.com/Mieze/IntelMausiEthernet", "Desc" : "for most Intel LAN" },
-    { "Name" : "AtherosE2200Ethernet", "URL" : "clone https://github.com/Mieze/AtherosE2200Ethernet", "Desc" : "for Killer and Atheros LAN" },
+    { "Name" : "CoreDisplayFixup", "URL" : "git clone https://github.com/PMheart/CoreDisplayFixup", "Lilu" : true, "Desc" : "enable 4K or greater res on certain graphics" },
+    { "Name" : "CPUFriend", "URL" : "git clone https://github.com/PMheart/CPUFriend", "Lilu" : true, "Desc" : "for dynamic power management data injection" },
+    { "Name" : "EnableLidWake", "URL" : "git clone https://github.com/syscl/EnableLidWake", "Lilu" : true },
+    { "Name" : "HibernationFixup", "URL" : "git svn clone https://svn.code.sf.net/p/hibernationfixup/svn/trunk HibernationFixup", "Lilu" : true, "Desc" : "saves IOHibernateRTCVariables in NVRAM" },
+    { "Name" : "IntelGraphicsDVMTFixup", "URL" : "git clone https://github.com/BarbaraPalvin/IntelGraphicsDVMTFixup", "Lilu" : true, "Desc" : "alternative to the min-stolen patch" },
+    { "Name" : "NightShiftUnlocker", "URL" : "git clone https://github.com/Austere-J/NightShiftUnlocker", "Lilu" : true, "Desc" : "unlocks night shift on unsupported SMBIOS" },
+    { "Name" : "Shiki", "URL" : "git clone https://github.com/vit9696/Shiki", "Lilu" : true, "Desc" : "for protected video playback" },
+    { "Name" : "RealtekRTL8111", "URL" : "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", "Folder": "RTL8111_driver_for_OS_X", "Desc" : "for RTL8111/8168 LAN" },
+    { "Name" : "RealtekRTL8100", "URL" : "git clone https://github.com/Mieze/RealtekRTL8100", "Desc" : "for RTL810X LAN" },
+    { "Name" : "IntelMausiEthernet", "URL" : "git clone https://github.com/Mieze/IntelMausiEthernet", "Desc" : "for most Intel LAN" },
+    { "Name" : "AtherosE2200Ethernet", "URL" : "git clone https://github.com/Mieze/AtherosE2200Ethernet", "Desc" : "for Killer and Atheros LAN" },
     {
       "Name" : "HWSensors (FakeSMC + Plugins)",
-      "URL" : "svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3",
+      "URL" : "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3",
       "Folder" : "hwsensors-hwsensors3-code3",
       "Build Dir" : "./Build/Release 10.6",
       "Info" : "FakeSMC.kext/Contents/Info.plist",
@@ -52,14 +52,14 @@
     },
     {
       "Name" : "FakeSMC",
-      "URL" : "svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3",
+      "URL" : "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3",
       "Folder" : "hwsensors-hwsensors3-code3", 
       "Build Dir" : "./Build/Release 10.6",
       "Desc" : "only FakeSMC"
     },
     {
       "Name" : "USBInjectAll",
-      "URL" : "clone https://github.com/RehabMan/OS-X-USB-Inject-All",
+      "URL" : "git clone https://github.com/RehabMan/OS-X-USB-Inject-All",
       "Folder" : "OS-X-USB-Inject-All",
       "Desc" : "injects all USB ports",
       "Build Dir" : "./build/Products/Release",
@@ -71,7 +71,7 @@
     },
     {
       "Name" : "GenericUSBXHCI",
-      "URL" : "clone https://github.com/RehabMan/OS-X-Generic-USB3",
+      "URL" : "git clone https://github.com/RehabMan/OS-X-Generic-USB3",
       "Folder" : "OS-X-Generic-USB3",
       "Desc" : "generic, non-Intel USB3 support",
       "Build Dir" : "./build/Universal",
@@ -83,7 +83,7 @@
     },
     {
       "Name" : "FakePCIID",
-      "URL" : "clone https://github.com/RehabMan/OS-X-Fake-PCI-ID",
+      "URL" : "git clone https://github.com/RehabMan/OS-X-Fake-PCI-ID",
       "Folder" : "OS-X-Fake-PCI-ID",
       "Desc" : "spoofs IOPCIDevices to allow drivers to load",
       "Build Dir" : "./build/Release",
@@ -96,7 +96,7 @@
     },
     {
       "Name" : "VoodooPS2Controller",
-      "URL" : "clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller",
+      "URL" : "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller",
       "Folder" : "OS-X-Voodoo-PS2-Controller",
       "Desc" : "PS2 driver for desktops/laptops",
       "Build Dir" : "./build/Products/Release",
@@ -109,7 +109,7 @@
     },
     {
       "Name" : "BrcmPatchRAM",
-      "URL" : "clone https://github.com/RehabMan/OS-X-BrcmPatchRAM",
+      "URL" : "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM",
       "Folder" : "OS-X-BrcmPatchRAM",
       "Desc" : "applies PatchRAM updates for Broadcom RAMUSB based devices",
       "Build Dir" : "./build/Products/Release",
@@ -130,7 +130,7 @@
     },
     {
       "Name" : "BCM5722D",
-      "URL" : "clone https://github.com/adlan/BCM5722D",
+      "URL" : "git clone https://github.com/adlan/BCM5722D",
       "Build Opts" : [
         "-sdk",
         "macosx",
@@ -138,7 +138,18 @@
         "x86_64"
       ],
       "Desc" : "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
+    },
+    {
+      "Name" : "VoodooTSCSync",
+      "URL" : "svn co -r HEAD http://forge.voodooprojects.org/svn/voodootscsync",
+      "Desc" : "change IOCPUNumber to your core count - 1 in Info.plist!",
+      "Build Opts" : [
+        "-sdk",
+        "macosx",
+        "-arch",
+        "x86_64"
+      ]
     }
   ],
-  "Version" : "0.0.8"
+  "Version" : "0.0.9"
 }
