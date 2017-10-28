@@ -117,9 +117,10 @@ class KextBuilder:
         print("Building " + name + ":")
         if not os.path.exists(folder):
             print("    Downloading " + name + "...")
-            args = [self.git]
+            # args = [self.git]
             # Split the args by space and stuff
-            args.extend(url.split())
+            # args.extend(url.split())
+            args = url.split()
             output = self._get_output(args)
             if not output[2] == 0:
                 # self._clean_up(output)
