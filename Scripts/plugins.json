@@ -58,6 +58,43 @@
       "Desc" : "only FakeSMC"
     },
     {
+      "Name" : "HWSensors (Legacy)",
+      "URL" : "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Folder" : "hwsensors-code",
+      "Build Dir" : "./Binaries",
+      "Pre-Run" : [
+        "xcodebuild",
+        "-project",
+        "Versioning And Distribution.xcodeproj"
+      ],
+      "Info" : "FakeSMC.kext/Contents/Info.plist",
+      "Zip" : "../Binaries",
+      "Build Opts" : [
+        "-alltargets",
+        "-project",
+        "HWSensors.xcodeproj"
+      ],
+      "Desc" : "contains legacy FakeSMC + HWSensors plugins"
+    },
+    {
+      "Name" : "FakeSMC (Legacy)",
+      "URL" : "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Folder" : "hwsensors-code",
+      "Build Dir" : "./Binaries",
+      "Pre-Run" : [
+        "xcodebuild",
+        "-project",
+        "Versioning And Distribution.xcodeproj"
+      ],
+      "Info" : "FakeSMC.kext/Contents/Info.plist",
+      "Zip" : "../Binaries/FakeSMC.kext",
+      "Build Opts" : [
+        "-project",
+        "HWSensors.xcodeproj"
+      ],
+      "Desc" : "only FakeSMC (Legacy)"
+    },
+    {
       "Name" : "USBInjectAll",
       "URL" : "git clone https://github.com/RehabMan/OS-X-USB-Inject-All",
       "Folder" : "OS-X-USB-Inject-All",
@@ -151,5 +188,5 @@
       ]
     }
   ],
-  "Version" : "0.0.9"
+  "Version" : "0.0.10"
 }
