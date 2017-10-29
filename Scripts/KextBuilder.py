@@ -101,6 +101,7 @@ class KextBuilder:
         url        = plug["URL"]
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
+        prerun     = plug.get("Pre-Run", None)
 
         if total:
             self.head("Updating " + name + " ({} of {})".format(curr, total))
@@ -126,6 +127,12 @@ class KextBuilder:
                 # self._clean_up(output)
                 return output
         os.chdir(folder)
+        if prerun:
+            # Run this first
+            output = self._get_output(prerun)
+            if not output[2] == 0:
+                # self._clean_up(output)
+                return output
         if needs_lilu:
             # Copy in our beta kext
             output = self._get_output(["cp", "-R", l, "."])
