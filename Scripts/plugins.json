@@ -161,7 +161,9 @@
         "-target",
         "BrcmFirmwareData",
         "-target",
-        "BrcmNonPatchRAM2"
+        "BrcmNonPatchRAM2",
+        "-target",
+        "BrcmBluetoothInjector"
       ],
       "Zip" : "../Release"
     },
@@ -188,5 +190,5 @@
       ]
     }
   ],
-  "Version" : "0.0.10"
+  "Version" : "0.0.11"
 }
