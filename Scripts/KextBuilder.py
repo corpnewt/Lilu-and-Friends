@@ -94,7 +94,7 @@ class KextBuilder:
             return self.temp + "/Lilu/build/Debug/Lilu.kext"
         return None
 
-    def build(self, plug, curr = None, total = None):
+    def build(self, plug, curr = None, total = None, ops = None):
         # Builds a kext
         # Gather info
         name       = plug["Name"]
@@ -141,7 +141,11 @@ class KextBuilder:
                 return output
         print("    Building release version...")
         xcode_args = [ self.xcodebuild ]
-        xcode_args.extend(plug.get("Build Opts", []))
+        if ops:
+            print("    Using \"{}\"...".format(ops))
+            xcode_args.extend(ops.split())
+        else:
+            xcode_args.extend(plug.get("Build Opts", []))
         output = self._get_output(xcode_args)
 
         if not output[2] == 0:
@@ -165,9 +169,6 @@ class KextBuilder:
         kexts_path = os.getcwd() + "/Kexts"
         if not os.path.exists(kexts_path):
             os.mkdir(kexts_path)
-        #if not os.path.exists(kexts_path + "/" + name):
-        #    os.mkdir(kexts_path + "/" + name)
-        #shutil.copy(zip_path, kexts_path + "/" + name)
         shutil.copy(zip_path, kexts_path)
         print(" ")
         print("Done.")
