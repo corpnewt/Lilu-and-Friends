@@ -25,8 +25,10 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 13
+        self.hpad = 14
         self.wpad = 5
+
+        self.xcode_opts = None
 
         self.version_url = "https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json"
 
@@ -98,19 +100,44 @@ class Updater:
         print("Have a nice day/night!\n\n")
         exit(0)
 
+    def xcodeopts(self):
+        self.resize(self.w, self.h)
+        self.head("Xcode Options")
+        print(" ")
+        if not self.xcode_opts:
+            print("Current Options:  Default")
+        else:
+            print("Current Options:  {}".format(self.xcode_opts))
+        print(" ")
+        print("C. Clear")
+        print("M. Main Menu")
+        print("Q. Quit")
+        print(" ")
+        menu = self.grab("Please type your build opts:  ")
+
+        if not len(menu):
+            self.xcodeopts()
+            return
+        if menu.lower() == "c":
+            self.xcode_opts = None
+            self.xcodeopts()
+            return
+        elif menu.lower() == "m":
+            return
+        elif menu.lower() == "q":
+            self.custom_quit()
+        else:
+            self.xcode_opts = menu
+        self.xcodeopts()
+
+
     def need_update(self, new, curr):
-        if new[0] < curr[0]:
-            return False
-        if new[0] > curr[0]:
-            return True
-        if new[1] < curr[1]:
-            return False
-        if new[1] > curr[1]:
-            return True
-        if new[2] < curr[2]:
-            return False
-        if new[2] > curr[2]:
-            return True
+        for i in range(len(curr)):
+            if int(new[i]) < int(curr[i]):
+                return False
+            elif int(new[i]) > int(curr[i]):
+                return True
+        return False
 
     def check_update(self):
         # Checks against https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json to see if we need to update
@@ -213,6 +240,7 @@ class Updater:
         print(" ")
         print("A. Select All")
         print("N. Select None")
+        print("X. Xcodebuild Options")
         print("Q. Quit")
         print(" ")
         menu = self.grab("Please make a selection:  ")
@@ -222,6 +250,8 @@ class Updater:
         
         if menu[:1].lower() == "q":
             self.custom_quit()
+        elif menu[:1].lower() == "x":
+            self.xcodeopts()
         elif menu[:1].lower() == "b":
             # Building
             build_list = []
@@ -240,7 +270,7 @@ class Updater:
             for plug in build_list:
                 ind += 1
                 try:
-                    out = self.kb.build(plug, ind, len(build_list))
+                    out = self.kb.build(plug, ind, len(build_list), self.xcode_opts)
                 except Exception as e:
                     print(e)
                     out = ["", "An error occurred!", 1]
