@@ -186,7 +186,6 @@ class Updater:
             self.xcode_opts = self.profiles[menu-1]["Xcode"]
             self.selected_profile = self.profiles[menu-1]["Name"]
             self.profile()
-
         
     def save_profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -256,9 +255,8 @@ class Updater:
             self.xcodeopts()
             return
         if menu.lower() == "c":
-            if not self.xcode_opts == menu:
-                # Profile change!
-                self.selected_profile = None
+            # Profile change!
+            self.selected_profile = None
             self.xcode_opts = None
             self.xcodeopts()
             return
@@ -351,7 +349,6 @@ class Updater:
         self.grab("Press [enter] to quit...")
         exit(0)            
 
-
     def main(self):
         if not self.checked_updates:
             self.check_update()
@@ -440,19 +437,21 @@ class Updater:
                 print("\nFailed:\n\n    None")
             print(" ")
             self.grab("Press [enter] to return to the main menu...")
-            #for plug in self.plugs:
-            #    plug["Picked"] = False
             return
                 
         elif menu[:1].lower() == "a":
             # Select all
             for plug in self.plugs:
                 plug["Picked"] = True
+            # Profile change!
+            self.selected_profile = None
             return
         elif menu[:1].lower() == "n":
             # Select none
             for plug in self.plugs:
                 plug["Picked"] = False
+            # Profile change!
+            self.selected_profile = None
             return
         
         # First try to split
