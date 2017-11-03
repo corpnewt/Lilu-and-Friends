@@ -25,10 +25,16 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 14
+        self.hpad = 15
         self.wpad = 5
 
         self.xcode_opts = None
+
+        if os.path.exists("profiles.json"):
+            self.profiles = json.load(open("profiles.json"))
+        else:
+            self.profiles = []
+        self.selected_profile = None
 
         self.version_url = "https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json"
 
@@ -100,6 +106,137 @@ class Updater:
         print("Have a nice day/night!\n\n")
         exit(0)
 
+    def profile(self):
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        self.head("Profiles")
+        print(" ")
+        if not len(self.profiles):
+            print("No profiles")
+        else:
+            ind = 0
+            for option in self.profiles:
+                ind += 1
+                if self.selected_profile == option["Name"]:
+                    pick = "[#]"
+                else:
+                    pick = "[ ]"
+                extra = "1 kext " if len(option["Kexts"]) == 1 else "{} kexts ".format(len(option["Kexts"]))
+                extra += "- Default build options" if option["Xcode"] == None else "- \"{}\"".format(option["Xcode"])
+                en = "{} {}. {} - {}".format(pick, ind, option["Name"], extra)
+                if len(en) + self.wpad > self.w:
+                    self.w = len(en) + self.wpad
+                print(en)
+        print(" ")
+        print("S. Save Current Settings to Profile")
+        print("R. Remove Selected Profile")
+        print("N. Select None")
+        print("M. Main Menu")
+        print("Q. Quit")
+        print(" ")
+        menu = self.grab("Please make a selection:  ")
+
+        if not len(menu):
+            self.profile()
+            return
+
+        if menu[:1].lower() == "q":
+            self.custom_quit()
+        elif menu[:1].lower() == "m":
+            return
+        elif menu[:1].lower() == "n":
+            for p in self.plugs:
+                p["Picked"] = False
+            self.selected_profile = None
+            self.profile()
+            return
+        elif menu[:1].lower() == "r":
+            # Remove the offending option
+            for option in self.profiles:
+                if option["Name"] == self.selected_profile:
+                    self.profiles.remove(option)
+                    break
+            # Save to file
+            json.dump(self.profiles, open("profiles.json", "w"), indent=2)
+            self.selected_profile = None
+            self.profile()
+            return
+        elif menu[:1].lower() == "s":
+            self.save_profile()
+            self.profile()
+            return
+        # Get numeric value
+        try:
+            menu = int(menu)
+        except:
+            # Not a number
+            self.profile()
+            return
+
+        if menu > 0 and menu <= len(self.profiles):
+            # Valid profile - unpick everything
+            for p in self.plugs:
+                p["Picked"] = False
+            # Select the plugs from the profile
+            for k in self.profiles[menu-1]["Kexts"]:
+                for p in self.plugs:
+                    if p["Name"] == k:
+                        p["Picked"] = True
+                        continue
+            # Set the xcodebuild options
+            self.xcode_opts = self.profiles[menu-1]["Xcode"]
+            self.selected_profile = self.profiles[menu-1]["Name"]
+            self.profile()
+
+        
+    def save_profile(self):
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        self.head("Save to Profile")
+        print(" ")
+        kextlist = []
+        for option in self.plugs:
+            if "Picked" in option and option["Picked"] == True:
+                kextlist.append(option["Name"])
+        if len(kextlist):
+            info = "Selected Kexts ({}):\n\n{}\n\n".format(len(kextlist), ", ".join(kextlist))
+        else:
+            info = "Selected Kexts (0):\n\nNone\n\n"
+        if self.xcode_opts == None:
+            info += "Xcodebuild Options:\n\nDefault\n\n"
+        else:
+            info += "Xcodebuild Options:\n\n{}\n\n".format(self.xcode_opts)
+        info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
+        print(info)
+        menu = self.grab("Please type a name for your profile:  ")
+
+        if not len(menu):
+            self.save_profile()
+            return
+        
+        if menu.lower() == "p":
+            return
+        elif menu.lower() == "q":
+            self.custom_quit()
+        elif menu.lower() == "m":
+            self.main()
+            return
+
+        # We have a name
+        for option in self.profiles:
+            if option["Name"] == menu:
+                # Updating
+                option["Kexts"] = kextlist
+                option["Xcode"] = self.xcode_opts
+                # Save to file
+                json.dump(self.profiles, open("profiles.json", "w"), indent=2)
+                self.selected_profile = menu
+                return
+        # Didn't find it
+        new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts }
+        self.profiles.append(new_pro)
+        # Save to file
+        json.dump(self.profiles, open("profiles.json", "w"), indent=2)
+        self.selected_profile = menu
+
     def xcodeopts(self):
         self.resize(self.w, self.h)
         self.head("Xcode Options")
@@ -119,6 +256,9 @@ class Updater:
             self.xcodeopts()
             return
         if menu.lower() == "c":
+            if not self.xcode_opts == menu:
+                # Profile change!
+                self.selected_profile = None
             self.xcode_opts = None
             self.xcodeopts()
             return
@@ -127,6 +267,9 @@ class Updater:
         elif menu.lower() == "q":
             self.custom_quit()
         else:
+            if not self.xcode_opts == menu:
+                # Profile change!
+                self.selected_profile = None
             self.xcode_opts = menu
         self.xcodeopts()
 
@@ -241,6 +384,7 @@ class Updater:
         print("A. Select All")
         print("N. Select None")
         print("X. Xcodebuild Options")
+        print("P. Profiles")
         print("Q. Quit")
         print(" ")
         menu = self.grab("Please make a selection:  ")
@@ -252,6 +396,8 @@ class Updater:
             self.custom_quit()
         elif menu[:1].lower() == "x":
             self.xcodeopts()
+        elif menu[:1].lower() == "p":
+            self.profile()
         elif menu[:1].lower() == "b":
             # Building
             build_list = []
@@ -294,8 +440,8 @@ class Updater:
                 print("\nFailed:\n\n    None")
             print(" ")
             self.grab("Press [enter] to return to the main menu...")
-            for plug in self.plugs:
-                plug["Picked"] = False
+            #for plug in self.plugs:
+            #    plug["Picked"] = False
             return
                 
         elif menu[:1].lower() == "a":
@@ -319,6 +465,8 @@ class Updater:
             except:
                 continue
             if m > 0 and m <= len(self.plugs):
+                # Remove profile selection - as we've made changes
+                self.selected_profile = None
                 m -=1
                 if "Picked" in self.plugs[m]:
                     if self.plugs[m]["Picked"]:
