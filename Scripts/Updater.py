@@ -29,6 +29,7 @@ class Updater:
         self.wpad = 5
 
         self.xcode_opts = None
+        self.sdk_over = None
 
         if os.path.exists("profiles.json"):
             self.profiles = json.load(open("profiles.json"))
@@ -120,9 +121,10 @@ class Updater:
                     pick = "[#]"
                 else:
                     pick = "[ ]"
-                extra = "1 kext " if len(option["Kexts"]) == 1 else "{} kexts ".format(len(option["Kexts"]))
-                extra += "- Default build options" if option["Xcode"] == None else "- \"{}\"".format(option["Xcode"])
-                en = "{} {}. {} - {}".format(pick, ind, option["Name"], extra)
+                extra = "1 kext " if len(option.get("Kexts", [])) == 1 else "{} kexts ".format(len(option.get("Kexts", [])))
+                extra += "- Default build options " if option.get("Xcode", None) == None else "- \"{}\"".format(option.get("Xcode", None))
+                extra += "- Default sdk" if option.get("SDK", None) == None else "- \"{}\"".format(option.get("SDK", None))
+                en = "{} {}. {} - {}".format(pick, ind, option.get("Name", None), extra)
                 if len(en) + self.wpad > self.w:
                     self.w = len(en) + self.wpad
                 print(en)
@@ -183,8 +185,9 @@ class Updater:
                         p["Picked"] = True
                         continue
             # Set the xcodebuild options
-            self.xcode_opts = self.profiles[menu-1]["Xcode"]
-            self.selected_profile = self.profiles[menu-1]["Name"]
+            self.xcode_opts = self.profiles[menu-1].get("Xcode", None)
+            self.selected_profile = self.profiles[menu-1].get("Name", None)
+            self.sdk_over = self.profiles[menu-1].get("SDK", None)
             self.profile()
         
     def save_profile(self):
@@ -203,6 +206,10 @@ class Updater:
             info += "Xcodebuild Options:\n\nDefault\n\n"
         else:
             info += "Xcodebuild Options:\n\n{}\n\n".format(self.xcode_opts)
+        if self.sdk_over == None:
+            info += "SDK:\n\nDefault\n\n"
+        else:
+            info += "SDK:\n\n{}\n\n".format(self.sdk_over)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         print(info)
         menu = self.grab("Please type a name for your profile:  ")
@@ -225,12 +232,13 @@ class Updater:
                 # Updating
                 option["Kexts"] = kextlist
                 option["Xcode"] = self.xcode_opts
+                option["SDK"] = self.sdk_over
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
                 self.selected_profile = menu
                 return
         # Didn't find it
-        new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts }
+        new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts, "SDK" : self.sdk_over }
         self.profiles.append(new_pro)
         # Save to file
         json.dump(self.profiles, open("profiles.json", "w"), indent=2)
@@ -247,6 +255,7 @@ class Updater:
         print(" ")
         print("C. Clear")
         print("M. Main Menu")
+        print("S. SDK Override")
         print("Q. Quit")
         print(" ")
         menu = self.grab("Please type your build opts:  ")
@@ -260,6 +269,9 @@ class Updater:
             self.xcode_opts = None
             self.xcodeopts()
             return
+        if menu.lower() == "s":
+            self.sdk_override()
+            return
         elif menu.lower() == "m":
             return
         elif menu.lower() == "q":
@@ -271,6 +283,42 @@ class Updater:
             self.xcode_opts = menu
         self.xcodeopts()
 
+    def sdk_override(self):
+        self.resize(self.w, self.h)
+        self.head("SDK Overrides")
+        print(" ")
+        if not self.sdk_over:
+            print("Current SDK:  Default")
+        else:
+            print("Current SDK:  {}".format(self.sdk_over))
+        print(" ")
+        print("X. Xcode Options")
+        print("M. Main Menu")
+        print("Q. Quit")
+        print(" ")
+        menu = self.grab("Please type your sdk override (macosx[##.##]):  ")
+
+        if not len(menu):
+            self.sdk_override()
+            return
+        if menu.lower() == "x":
+            return
+        elif menu.lower() == "m":
+            self.main()
+            return
+        elif menu.lower() == "q":
+            self.custom_quit()
+        else:
+            # Verify
+            if not menu.lower().startswith("macosx"):
+                self.sdk_override()
+                return
+            print("Valid")
+            if not self.sdk_over == menu:
+                # Profile change!
+                self.selected_profile = None
+            self.sdk_over = menu
+        self.sdk_override()
 
     def need_update(self, new, curr):
         for i in range(len(curr)):
@@ -413,7 +461,7 @@ class Updater:
             for plug in build_list:
                 ind += 1
                 try:
-                    out = self.kb.build(plug, ind, len(build_list), self.xcode_opts)
+                    out = self.kb.build(plug, ind, len(build_list), self.xcode_opts, self.sdk_over)
                 except Exception as e:
                     print(e)
                     out = ["", "An error occurred!", 1]
