@@ -94,7 +94,7 @@ class KextBuilder:
             return self.temp + "/Lilu/build/Debug/Lilu.kext"
         return None
 
-    def build(self, plug, curr = None, total = None, ops = None):
+    def build(self, plug, curr = None, total = None, ops = None, sdk = None):
         # Builds a kext
         # Gather info
         name       = plug["Name"]
@@ -146,6 +146,18 @@ class KextBuilder:
             xcode_args.extend(ops.split())
         else:
             xcode_args.extend(plug.get("Build Opts", []))
+        if sdk:
+            ind = -1
+            for s in xcode_args:
+                if s.lower() == "-sdk":
+                    ind = xcode_args.index(s)
+                    break
+            if ind > -1:
+                # Delete the -sdk and the next object
+                del xcode_args[ind]
+                del xcode_args[ind]
+            xcode_args.extend(["-sdk", sdk])
+            print("    SDK Override \"{}\"...".format(" ".join(xcode_args[1:])))
         output = self._get_output(xcode_args)
 
         if not output[2] == 0:
