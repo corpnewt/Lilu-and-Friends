@@ -307,6 +307,17 @@
       "URL": "svn co -r HEAD http://forge.voodooprojects.org/svn/voodootscsync", 
       "Name": "VoodooTSCSync", 
       "Desc": "change IOCPUNumber to your core count - 1 in Info.plist!"
+    },
+    {
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-arch", 
+        "x86_64"
+      ], 
+      "URL": "git clone https://github.com/PMheart/LiluFriend.git", 
+      "Name": "LiluFriend", 
+      "Desc": "A helper of Lilu for those who prefer to leave everything inside /Library/Extensions and /System/Library/Extensions"
     }
   ]
 }
