@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.16", 
+  "Version": "0.0.17", 
   "Plugins": [
     {
       "Build Opts": [
@@ -315,9 +315,9 @@
         "-arch", 
         "x86_64"
       ], 
-      "URL": "git clone https://github.com/PMheart/LiluFriend.git", 
+      "URL": "git clone https://github.com/PMheart/LiluFriend", 
       "Name": "LiluFriend", 
-      "Desc": "A helper of Lilu for those who prefer to leave everything inside /Library/Extensions and /System/Library/Extensions"
+      "Desc": "Lilu helper for those who keep kexts in /L/E and /S/L/E"
     }
   ]
 }
