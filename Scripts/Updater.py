@@ -25,7 +25,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 15
+        self.hpad = 18
         self.wpad = 5
 
         self.xcode_opts = None
@@ -259,9 +259,13 @@ class Updater:
         self.head("Xcode Options")
         print(" ")
         if not self.xcode_opts:
-            print("Current Options:  Default")
+            print("Build Options: Default")
         else:
-            print("Current Options:  {}".format(self.xcode_opts))
+            print("Build Options: {}".format(self.xcode_opts))
+        if not self.sdk_over:
+            print("SDK Options:   Default")
+        else:
+            print("SDK Options:   {}".format(self.sdk_over))
         print(" ")
         print("C. Clear")
         print("M. Main Menu")
@@ -297,11 +301,16 @@ class Updater:
         self.resize(self.w, self.h)
         self.head("SDK Overrides")
         print(" ")
-        if not self.sdk_over:
-            print("Current SDK:  Default")
+        if not self.xcode_opts:
+            print("Build Options: Default")
         else:
-            print("Current SDK:  {}".format(self.sdk_over))
+            print("Build Options: {}".format(self.xcode_opts))
+        if not self.sdk_over:
+            print("SDK Options:   Default")
+        else:
+            print("SDK Options:   {}".format(self.sdk_over))
         print(" ")
+        print("C. Clear")
         print("X. Xcode Options")
         print("M. Main Menu")
         print("Q. Quit")
@@ -311,7 +320,14 @@ class Updater:
         if not len(menu):
             self.sdk_override()
             return
-        if menu.lower() == "x":
+        if menu.lower() == "c":
+            # Profile change!
+            self.selected_profile = None
+            self.sdk_over = None
+            self.sdk_override()
+            return
+        elif menu.lower() == "x":
+            self.xcodeopts()
             return
         elif menu.lower() == "m":
             self.main()
@@ -323,7 +339,6 @@ class Updater:
             if not menu.lower().startswith("macosx"):
                 self.sdk_override()
                 return
-            print("Valid")
             if not self.sdk_over == menu:
                 # Profile change!
                 self.selected_profile = None
@@ -432,6 +447,15 @@ class Updater:
         # Resize to fit
         self.h = self.hpad + len(self.plugs)
         self.resize(self.w, self.h)
+
+        if not self.xcode_opts:
+            print("Build Options: Default")
+        else:
+            print("Build Options: {}".format(self.xcode_opts))
+        if not self.sdk_over:
+            print("SDK Options:   Default")
+        else:
+            print("SDK Options:   {}".format(self.sdk_over))
 
         print(" ")
         print("B. Build Selected")
