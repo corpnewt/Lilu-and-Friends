@@ -45,6 +45,9 @@ class Updater:
         self.version = theJSON.get("Version", "0.0.0")
         self.checked_updates = False
 
+        # Select default profile
+        self._select_profile("default")
+
     # Helper methods
     def grab(self, prompt):
         if sys.version_info >= (3, 0):
@@ -175,20 +178,26 @@ class Updater:
             return
 
         if menu > 0 and menu <= len(self.profiles):
-            # Valid profile - unpick everything
-            for p in self.plugs:
-                p["Picked"] = False
-            # Select the plugs from the profile
-            for k in self.profiles[menu-1]["Kexts"]:
-                for p in self.plugs:
-                    if p["Name"] == k:
-                        p["Picked"] = True
-                        continue
-            # Set the xcodebuild options
-            self.xcode_opts = self.profiles[menu-1].get("Xcode", None)
-            self.selected_profile = self.profiles[menu-1].get("Name", None)
-            self.sdk_over = self.profiles[menu-1].get("SDK", None)
+            # Valid profile
+            self._select_profile(self.profiles[menu-1]["Name"])
             self.profile()
+
+    def _select_profile(self, profile_name):
+        # Selects a profile by the passed name
+        selected = None
+        for pro in self.profiles:
+            if pro["Name"].lower() == profile_name.lower():
+                selected = pro
+                break
+        if not selected:
+            return
+        # Pick only the ones needed
+        for p in self.plugs:
+            p["Picked"] = True if p["Name"] in selected["Kexts"] else False
+        # Set the rest of the options
+        self.xcode_opts = selected.get("Xcode", None)
+        self.selected_profile = selected.get("Name", None)
+        self.sdk_over = selected.get("SDK", None)
         
     def save_profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -210,6 +219,7 @@ class Updater:
             info += "SDK:\n\nDefault\n\n"
         else:
             info += "SDK:\n\n{}\n\n".format(self.sdk_over)
+        info += "If a profile is named \"Default\" it will be loaded automatically\n\n"
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         print(info)
         menu = self.grab("Please type a name for your profile:  ")
@@ -228,7 +238,7 @@ class Updater:
 
         # We have a name
         for option in self.profiles:
-            if option["Name"] == menu:
+            if option["Name"].lower() == menu.lower():
                 # Updating
                 option["Kexts"] = kextlist
                 option["Xcode"] = self.xcode_opts
