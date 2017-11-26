@@ -245,7 +245,7 @@ class Updater:
                 option["SDK"] = self.sdk_over
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
-                self.selected_profile = menu
+                self.selected_profile = option["Name"]
                 return
         # Didn't find it
         new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts, "SDK" : self.sdk_over }
