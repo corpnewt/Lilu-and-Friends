@@ -6,6 +6,7 @@ import KextBuilder
 import tempfile
 import subprocess
 import shutil
+import base64
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -27,6 +28,11 @@ class Updater:
         self.w = 0
         self.hpad = 18
         self.wpad = 5
+
+        self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
+        self.es = base64.b64decode("c2F1c2U=".encode("utf-8")).decode("utf-8")
+
+        print(self.es)
 
         self.xcode_opts = None
         self.sdk_over = None
@@ -422,6 +428,51 @@ class Updater:
         self.grab("Press [enter] to quit...")
         exit(0)            
 
+    def get_time(self, t):
+        # A helper function to make a readable string between two times
+        weeks   = int(t/604800)
+        days    = int((t-(weeks*604800))/86400)
+        hours   = int((t-(days*86400 + weeks*604800))/3600)
+        minutes = int((t-(hours*3600 + days*86400 + weeks*604800))/60)
+        seconds = int(t-(minutes*60 + hours*3600 + days*86400 + weeks*604800))
+        msg = ""
+        
+        if weeks > 0:
+            msg += "1 week, " if weeks == 1 else "{:,} weeks, ".format(weeks)
+        if days > 0:
+            msg += "1 day, " if days == 1 else "{:,} days, ".format(days)
+        if hours > 0:
+            msg += "1 hour, " if hours == 1 else "{:,} hours, ".format(hours)
+        if minutes > 0:
+            msg += "1 minute, " if minutes == 1 else "{:,} minutes, ".format(minutes)
+        if seconds > 0:
+            msg += "1 second, " if seconds == 1 else "{:,} seconds, ".format(seconds)
+
+        if msg == "":
+            return "0 seconds"
+        else:
+            return msg[:-2]
+
+    def animate(self):
+        self.head("Entirely Required")
+        print(" ")
+        pad = count = 0
+        padmax = 29
+        right = True
+        while count <= 100:
+            count += 1
+            if right:
+                pad += 1
+                if pad > padmax:
+                    right = False
+            else:
+                pad -= 1
+                if pad < 0:
+                    pad = 0
+                    right = True
+            sys.stdout.write(" "*pad + self.ee + "\r")
+            time.sleep(.1)
+
     def main(self):
         if not self.checked_updates:
             self.check_update()
@@ -475,6 +526,8 @@ class Updater:
             self.custom_quit()
         elif menu[:1].lower() == "x":
             self.xcodeopts()
+        elif menu.lower() == self.es:
+            self.animate()
         elif menu[:1].lower() == "p":
             self.profile()
         elif menu[:1].lower() == "b":
@@ -492,6 +545,9 @@ class Updater:
             ind = 0
             success = []
             fail    = []
+            # Take time
+            start_time = time.time()
+            self.head("Building 1 kext") if len(build_list) == 1 else self.head("Building {} kexts".format(len(build_list)))
             for plug in build_list:
                 ind += 1
                 try:
@@ -507,6 +563,8 @@ class Updater:
             # Clean up temp
             print("Cleaning up...")
             self.kb._del_temp()
+            # Take time
+            total_time = time.time() - start_time
             self.head("{} of {} Succeeded".format(len(success), len(build_list)))
             print(" ")
             if len(success):
@@ -518,6 +576,8 @@ class Updater:
             else:
                 print("\nFailed:\n\n    None")
             print(" ")
+            s = "second" if total_time == 1 else "seconds"
+            print("Build took {}.\n".format(self.get_time(total_time)))
             self.grab("Press [enter] to return to the main menu...")
             return
                 
