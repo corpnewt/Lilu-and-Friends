@@ -103,10 +103,10 @@ class KextBuilder:
         folder     = plug.get("Folder", plug["Name"])
         prerun     = plug.get("Pre-Run", None)
 
-        if total:
+        '''if total:
             self.head("Updating " + name + " ({} of {})".format(curr, total))
         else:
-            self.head("Updating " + name)
+            self.head("Updating " + name)'''
         print(" ")
         if not self._get_temp():
             print("Something went wrong!")
@@ -115,7 +115,10 @@ class KextBuilder:
         if needs_lilu:
             l = self._get_lilu()
         # From here - do all things relative
-        print("Building " + name + ":")
+        if total:
+            print("Building {} ({:,} of {:,})".format(name, curr, total))
+        else:
+            print("Building " + name + ":")
         if not os.path.exists(folder):
             print("    Downloading " + name + "...")
             # args = [self.git]
@@ -182,8 +185,6 @@ class KextBuilder:
         if not os.path.exists(kexts_path):
             os.mkdir(kexts_path)
         shutil.copy(zip_path, kexts_path)
-        print(" ")
-        print("Done.")
         # Reset shell position
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Return None on success
