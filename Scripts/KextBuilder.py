@@ -14,11 +14,14 @@ class KextBuilder:
         self.temp = None
 
     def _get_output(self, comm):
+        c = None
         try:
             p = subprocess.Popen(comm, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             c = p.communicate()
             return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
         except:
+            if c == None:
+                return ("", "Command not found", 1)
             return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
 
     def _del_temp(self):
