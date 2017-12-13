@@ -569,6 +569,13 @@ class Updater:
             print(" ")
             if len(success):
                 print("Succeeded:\n\n{}".format("\n".join(success)))
+                try:
+                    # Attempt to locate and open the kexts directory
+                    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+                    os.chdir("../Kexts")
+                    subprocess.Popen("open " + os.getcwd(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except:
+                    pass
             else:
                 print("Succeeded:\n\n    None")
             if len(fail):
