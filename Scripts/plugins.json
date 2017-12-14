@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.21", 
+  "Version": "0.0.23", 
   "Plugins": [
     {
       "Build Opts": [
@@ -143,7 +143,13 @@
       "Folder": "hwsensors-hwsensors3-code3", 
       "Build Dir": "./Build/Release 10.6", 
       "Name": "FakeSMC", 
-      "Desc": "only FakeSMC"
+      "Desc": "only FakeSMC",
+      "Build Opts": [
+        "-sdk",
+        "macosx",
+        "-target",
+        "FakeSMC"
+      ]
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -182,7 +188,43 @@
       "Zip": "../Release 10.6", 
       "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
       "Folder": "hwsensors-hwsensors3-code3", 
-      "Desc": "contains FakeSMC + HWSensors plugins"
+      "Desc": "contains FakeSMC + HWSensors plugins",
+      "Build Opts": [
+        "-sdk",
+        "macosx",
+        "-target",
+        "ACPIMonitor",
+        "-target",
+        "ADT7470",
+        "-target",
+        "AmdCPUMonitor",
+        "-target",
+        "Andigilog",
+        "-target",
+        "DIMMSensor",
+        "-target",
+        "F718x",
+        "-target",
+        "FakeSMC",
+        "-target",
+        "GeforceSensor",
+        "-target",
+        "HWInfo",
+        "-target",
+        "IntelCPUMonitor",
+        "-target",
+        "NVClockX",
+        "-target",
+        "PC8739x",
+        "-target",
+        "RadeonMonitor",
+        "-target",
+        "W836x",
+        "-target",
+        "X3100",
+        "-target",
+        "VoodooBatterySMC"
+      ]
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
