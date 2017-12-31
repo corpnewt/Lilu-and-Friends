@@ -106,6 +106,8 @@ class KextBuilder:
         folder     = plug.get("Folder", plug["Name"])
         prerun     = plug.get("Pre-Run", None)
 
+        return_val = None
+
         '''if total:
             self.head("Updating " + name + " ({} of {})".format(curr, total))
         else:
@@ -167,14 +169,21 @@ class KextBuilder:
         output = self._get_output(xcode_args)
 
         if not output[2] == 0:
-            # self._clean_up(output)
-            return output
+            if plug.get("Ignore Errors", False):
+                print("    Build had errors - attempting to continue past the following:\n\n{}".format(output[1]))
+                return_val = True
+            else:
+                # self._clean_up(output)
+                return output
+
         os.chdir(plug.get("Build Dir", "./Build/Release"))
         info_plist = plistlib.readPlist(plug.get("Info", name + ".kext/Contents/Info.plist"))
         version = info_plist["CFBundleVersion"]
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
         zip_dir = plug.get("Zip", name+".kext")
+        if not os.path.exists(zip_dir):
+            return ["", "{} missing!".format(zip_dir), 1]
         output = self._get_output([self.zip, "-r", file_name, zip_dir])
         if not output[2] == 0:
             # self._clean_up(output)
@@ -191,4 +200,4 @@ class KextBuilder:
         # Reset shell position
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Return None on success
-        return None
+        return return_val
