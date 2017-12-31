@@ -7,6 +7,7 @@ import tempfile
 import subprocess
 import shutil
 import base64
+import plistlib
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -21,8 +22,26 @@ class Updater:
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         if not os.path.exists("plugins.json"):
             self.head("Missing Files!")
-            print("Plugins.json doesn't exist!  Exiting...")
-            exit(1)
+            print(" ")
+            print("Plugins.json doesn't exist!\n\nExiting...")
+            print(" ")
+            os._exit(1)
+
+        if not os.path.exists("/Applications/Xcode.app"):
+            self.head("Xcode Missing!")
+            print(" ")
+            print("Xcode is not installed in your /Applications folder!\n\nExiting...")
+            print(" ")
+            os._exit(1)
+
+        out = self._run_command("xcodebuild -checkFirstLaunchStatus", True)
+        if not out[2] == 0:
+            self.head("Xcode First Launch")
+            print(" ")
+            self._stream_output("sudo xcodebuild -runFirstLaunch", True)
+            print(" ")
+            print("If everything ran correctly please relaunch the script.\n")
+            os._exit(1)
 
         self.h = 0
         self.w = 0
@@ -32,7 +51,43 @@ class Updater:
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
         self.es = base64.b64decode("c2F1c2U=".encode("utf-8")).decode("utf-8")
 
-        print(self.es)
+        self.sdk_path = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
+        self.sdk_version_plist = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist"
+
+        self.sdk_min_version = None
+        if os.path.exists(self.sdk_version_plist):
+            try:
+                sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+                self.sdk_min_version = sdk_plist["MinimumSDKVersion"]
+            except:
+                pass
+        if not self.sdk_min_version:
+            cur_vers = self._get_output(["sw_vers", "-productVersion"])[0]
+            self.sdk_min_version = ".".join(cur_vers.split(".")[:2])
+
+        # Try to get our available SDKs
+        self.sdk_list = []
+        if os.path.exists(self.sdk_path):
+            sdk_list = os.listdir(self.sdk_path)
+            for sdk in sdk_list:
+                # Organize them by name and version
+                if sdk.lower() == "macosx.sdk":
+                    # The default - so we're not sure what version
+                    continue
+                # Add some info
+                new_entry = { 
+                    "name"    : sdk,
+                    "default" : False,
+                    "version" : sdk.lower().replace("macosx", "").replace(".sdk", "")
+                }
+                try:
+                    # This only works on aliases - so it'll fail for anything that's
+                    # not linked to MacOSX.sdk
+                    os.readlink(os.path.join(self.sdk_path, sdk))
+                    new_entry["default"] = True
+                except:
+                    pass
+                self.sdk_list.append(new_entry)
 
         self.xcode_opts = None
         self.sdk_over = None
@@ -43,7 +98,7 @@ class Updater:
             self.profiles = []
         self.selected_profile = None
 
-        self.version_url = "https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json"
+        self.version_url = "https://raw.githubusercontent.com/corpnewt/Lilu-And-Friends/master/Scripts/plugins.json"
 
         theJSON = json.load(open("plugins.json"))
 
@@ -54,12 +109,88 @@ class Updater:
         # Select default profile
         self._select_profile("default")
 
+
     # Helper methods
     def grab(self, prompt):
         if sys.version_info >= (3, 0):
             return input(prompt)
         else:
             return str(raw_input(prompt))
+
+    def _stream_output(self, comm, shell = False):
+        output = ""
+        try:
+            if shell and type(comm) is list:
+                comm = " ".join(comm)
+            if not shell and type(comm) is str:
+                comm = comm.split()
+            p = subprocess.Popen(comm, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, universal_newlines=True)
+            
+            while True:
+                cur = p.stdout.read(1)
+                if(not cur):
+                    break
+                sys.stdout.write(cur)
+                output += cur
+                sys.stdout.flush()
+
+            return output
+        except:
+            return output
+
+    def _run_command(self, comm, shell = False):
+        c = None
+        try:
+            if shell and type(comm) is list:
+                comm = " ".join(comm)
+            if not shell and type(comm) is str:
+                comm = comm.split()
+            p = subprocess.Popen(comm, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            c = p.communicate()
+            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
+        except:
+            if c == None:
+                return ("", "Command not found!", 1)
+            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
+
+
+    def _compare_versions(self, vers1, vers2):
+        # Helper method to compare ##.## strings and determine
+        # if vers1 is <= vers2
+        #
+        # vers1 < vers2 = True
+        # vers1 = vers2 = None
+        # vers1 > vers2 = False
+        #
+        try:
+            v1_parts = vers1.split(".")
+            v2_parts = vers2.split(".")
+        except:
+            # Formatted wrong - return None
+            return None
+        for i in range(len(v1_parts)):
+            if int(v1_parts[i]) < int(v2_parts[i]):
+                return True
+            elif int(v1_parts[i]) > int(v2_parts[i]):
+                return False
+        # Never differed - return None, must be equal
+        return None
+
+    def _have_sdk(self, sdk_vers):
+        # First break it into ##.## format
+        sdk_vers = sdk_vers.lower().replace("macosx", "").replace(".sdk", "")
+        for sdk in self.sdk_list:
+            if sdk["version"] == sdk_vers:
+                return True
+        return False
+
+    def _can_use_sdk(self, sdk_vers):
+        # First break it into ##.## format
+        sdk_vers = sdk_vers.lower().replace("macosx", "").replace(".sdk", "")
+        if not self._compare_versions(sdk_vers, self.sdk_min_version) == True:
+            # sdk_verse is >= self.sdk_min_version
+            return True
+        return False
 
     def _get_string(self, url):
         response = urlopen(url)
@@ -114,7 +245,7 @@ class Updater:
         print("www.reddit.com/u/corpnewt")
         print("www.github.com/corpnewt\n")
         print("Have a nice day/night!\n\n")
-        exit(0)
+        os._exit(0)
 
     def profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -343,8 +474,45 @@ class Updater:
         else:
             # Verify
             if not menu.lower().startswith("macosx"):
+                # doesn't start with macosx - let's see if it fits the ##.## format
+                try:
+                    int_stuff = list(map(int, menu.split(".")))
+                    if not len(int_stuff) == 2:
+                        # Too many parts
+                        self.sdk_override()
+                        return
+                    # set it to macosx##.## now
+                    menu = "macosx" + menu
+                except:
+                    # not ##.## format - skip
+                    self.sdk_override()
+                    return
+
+            # Got one - let's make sure we have it
+            if not self._have_sdk(menu):
+                self.head("Missing SDK!")
+                print(" ")
+                print("You don't currently have a {} sdk.".format(menu))
+                print("You can visit the following site to download more sdks:\n")
+                print("https://github.com/phracker/MacOSX-SDKs")
+                print(" ")
+                self.grab("Press [enter] to continue...")
                 self.sdk_override()
                 return
+
+            # We have it - let's make sure Xcode will use it
+            if not self._can_use_sdk(menu):
+                self.head("SDK Below Minimum!")
+                print(" ")
+                print("Xcode is currently set to allow sdks of {} or higher.".format(self.sdk_min_version))
+                print("You can edit the MinimumSDKVersion property in the Info.plist located at:\n")
+                print(self.sdk_version_plist)
+                print("\nto update this setting.")
+                print(" ")
+                self.grab("Press [enter] to continue...")
+                self.sdk_override()
+                return
+            
             if not self.sdk_over == menu:
                 # Profile change!
                 self.selected_profile = None
@@ -360,10 +528,15 @@ class Updater:
         return False
 
     def check_update(self):
-        # Checks against https://github.com/corpnewt/Lilu-and-Friends/raw/master/Scripts/plugins.json to see if we need to update
+        # Checks against https://raw.githubusercontent.com/corpnewt/Lilu-And-Friends/master/Scripts/plugins.json to see if we need to update
         self.head("Checking for Updates")
         print(" ")
-        newjson = self._get_string(self.version_url)
+        try:
+            newjson = self._get_string(self.version_url)
+        except:
+            # Not valid json data
+            print("Error checking for updates (network issue)")
+            return
         try:
             newjson_dict = json.loads(newjson)
         except:
@@ -557,6 +730,8 @@ class Updater:
                     out = ["", "An error occurred!", 1]
                 if out == None:
                     success.append("    " + plug["Name"])
+                elif out == True:
+                    success.append("    " + plug["Name"] + " (Build errored, but continued.  Use with caution)")
                 else:
                     print(out[1])
                     fail.append("    " + plug["Name"])
