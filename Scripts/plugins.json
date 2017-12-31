@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.23", 
+  "Version": "0.0.24", 
   "Plugins": [
     {
       "Build Opts": [
@@ -139,17 +139,17 @@
       "Desc": "spoofs IOPCIDevices to allow drivers to load"
     }, 
     {
-      "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
-      "Folder": "hwsensors-hwsensors3-code3", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-target", 
+        "FakeSMC"
+      ], 
       "Build Dir": "./Build/Release 10.6", 
       "Name": "FakeSMC", 
-      "Desc": "only FakeSMC",
-      "Build Opts": [
-        "-sdk",
-        "macosx",
-        "-target",
-        "FakeSMC"
-      ]
+      "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
+      "Folder": "hwsensors-hwsensors3-code3", 
+      "Desc": "only FakeSMC"
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -183,48 +183,48 @@
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-target", 
+        "ACPIMonitor", 
+        "-target", 
+        "ADT7470", 
+        "-target", 
+        "AmdCPUMonitor", 
+        "-target", 
+        "Andigilog", 
+        "-target", 
+        "DIMMSensor", 
+        "-target", 
+        "F718x", 
+        "-target", 
+        "FakeSMC", 
+        "-target", 
+        "GeforceSensor", 
+        "-target", 
+        "HWInfo", 
+        "-target", 
+        "IntelCPUMonitor", 
+        "-target", 
+        "NVClockX", 
+        "-target", 
+        "PC8739x", 
+        "-target", 
+        "RadeonMonitor", 
+        "-target", 
+        "W836x", 
+        "-target", 
+        "X3100", 
+        "-target", 
+        "VoodooBatterySMC"
+      ], 
       "Build Dir": "./Build/Release 10.6", 
       "Name": "HWSensors (FakeSMC + Plugins)", 
       "Zip": "../Release 10.6", 
       "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
       "Folder": "hwsensors-hwsensors3-code3", 
-      "Desc": "contains FakeSMC + HWSensors plugins",
-      "Build Opts": [
-        "-sdk",
-        "macosx",
-        "-target",
-        "ACPIMonitor",
-        "-target",
-        "ADT7470",
-        "-target",
-        "AmdCPUMonitor",
-        "-target",
-        "Andigilog",
-        "-target",
-        "DIMMSensor",
-        "-target",
-        "F718x",
-        "-target",
-        "FakeSMC",
-        "-target",
-        "GeforceSensor",
-        "-target",
-        "HWInfo",
-        "-target",
-        "IntelCPUMonitor",
-        "-target",
-        "NVClockX",
-        "-target",
-        "PC8739x",
-        "-target",
-        "RadeonMonitor",
-        "-target",
-        "W836x",
-        "-target",
-        "X3100",
-        "-target",
-        "VoodooBatterySMC"
-      ]
+      "Desc": "contains FakeSMC + HWSensors plugins"
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -286,6 +286,17 @@
       "Desc": "for arbitrary kext, library, and program patching"
     }, 
     {
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-arch", 
+        "x86_64"
+      ], 
+      "URL": "git clone https://github.com/PMheart/LiluFriend", 
+      "Name": "LiluFriend", 
+      "Desc": "Lilu helper for those who keep kexts in /L/E and /S/L/E"
+    }, 
+    {
       "Lilu": true, 
       "URL": "git clone https://github.com/Austere-J/NightShiftUnlocker", 
       "Name": "NightShiftUnlocker", 
@@ -328,6 +339,23 @@
     }, 
     {
       "Build Opts": [
+        "-workspace", 
+        "VoodooI2C.xcworkspace", 
+        "-scheme", 
+        "VoodooI2C", 
+        "-sdk", 
+        "macosx",
+        "DEBUG_INFORMATION_FORMAT=none"
+      ], 
+      "Build Dir": "./build/Products/Release", 
+      "Name": "VoodooI2C", 
+      "Zip": "../Release", 
+      "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
+      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X",
+      "Ignore Errors" : true
+    }, 
+    {
+      "Build Opts": [
         "-sdk", 
         "macosx", 
         "-alltargets"
@@ -349,17 +377,6 @@
       "URL": "svn co -r HEAD http://forge.voodooprojects.org/svn/voodootscsync", 
       "Name": "VoodooTSCSync", 
       "Desc": "change IOCPUNumber to your core count - 1 in Info.plist!"
-    },
-    {
-      "Build Opts": [
-        "-sdk", 
-        "macosx", 
-        "-arch", 
-        "x86_64"
-      ], 
-      "URL": "git clone https://github.com/PMheart/LiluFriend", 
-      "Name": "LiluFriend", 
-      "Desc": "Lilu helper for those who keep kexts in /L/E and /S/L/E"
     }
   ]
 }
