@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.24", 
+  "Version": "0.0.25", 
   "Plugins": [
     {
       "Build Opts": [
@@ -27,7 +27,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/chunnann/ATH9KFixup", 
+      "URL": "git clone https://github.com/black-dragon74/ATH9KFixup", 
       "Name": "ATH9KFixup", 
       "Desc": "for AR946X (AR9462 & AR9463) AR9485 AR9565"
     }, 
