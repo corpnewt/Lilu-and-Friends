@@ -6,6 +6,20 @@ Additional SDKs can be found [here](https://github.com/phracker/MacOSX-SDKs) if 
  * Copy them to */Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs* to use
  * You may need to change the `MinimumSDKVersion` in */Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist* if using Xcode 7.3+
 
+***
+
+## To install:
+
+Do the following one line at a time in Terminal:
+
+    git clone https://github.com/corpnewt/Lilu-and-Friends
+    cd ./Lilu-and-Friends
+    chmod +x ./Run.command
+    
+Then run with either `./Run.command` or by double-clicking *Run.command*
+
+***
+
 Currently builds 34 kexts:
 
 * ACPIBacklight
