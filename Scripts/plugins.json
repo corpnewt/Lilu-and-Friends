@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.25", 
+  "Version": "0.0.26", 
   "Plugins": [
     {
       "Build Opts": [
@@ -154,6 +154,23 @@
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
       "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-workspace", 
+        "HWSensors.xcworkspace", 
+        "-scheme", 
+        "Build Kexts"
+      ], 
+      "Build Dir": "./Binaries", 
+      "Name": "FakeSMC (Kozlek)", 
+      "Zip": "./FakeSMC.kext", 
+      "URL": "git clone https://github.com/kozlek/HWSensors", 
+      "Folder": "HWSensors", 
+      "Desc": "only Kozlek's FakeSMC"
+    }, 
+    {
+      "Info": "FakeSMC.kext/Contents/Info.plist", 
+      "Build Opts": [
         "-project", 
         "HWSensors.xcodeproj"
       ], 
@@ -225,6 +242,23 @@
       "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
       "Folder": "hwsensors-hwsensors3-code3", 
       "Desc": "contains FakeSMC + HWSensors plugins"
+    }, 
+    {
+      "Info": "FakeSMC.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-workspace", 
+        "HWSensors.xcworkspace", 
+        "-scheme", 
+        "Build Kexts"
+      ], 
+      "Build Dir": "./Binaries", 
+      "Name": "HWSensors (Kozlek)", 
+      "Zip": "../Binaries", 
+      "URL": "git clone https://github.com/kozlek/HWSensors", 
+      "Folder": "HWSensors", 
+      "Desc": "Kozlek's FakeSMC + Sensors"
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -344,15 +378,15 @@
         "-scheme", 
         "VoodooI2C", 
         "-sdk", 
-        "macosx",
+        "macosx", 
         "DEBUG_INFORMATION_FORMAT=none"
       ], 
       "Build Dir": "./build/Products/Release", 
       "Name": "VoodooI2C", 
       "Zip": "../Release", 
       "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
-      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X",
-      "Ignore Errors" : true
+      "Ignore Errors": true, 
+      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X"
     }, 
     {
       "Build Opts": [
