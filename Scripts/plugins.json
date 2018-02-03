@@ -1,5 +1,5 @@
 {
-  "Version": "0.0.26", 
+  "Version": "0.0.27", 
   "Plugins": [
     {
       "Build Opts": [
@@ -24,6 +24,12 @@
       "URL": "git clone https://github.com/RehabMan/OS-X-ACPI-Battery-Driver", 
       "Folder": "OS-X-ACPI-Battery-Driver", 
       "Desc": "implements an ACPI based battery manager kext"
+    }, 
+    {
+      "URL": "git clone https://github.com/Dolnor/OSX-ALXEthernet", 
+      "Folder": "OSX-ALXEthernet", 
+      "Name": "ALXEthernet", 
+      "Desc": "Atheros OSX driver originally coded by Shailua"
     }, 
     {
       "Lilu": true, 
