@@ -20,10 +20,11 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 38 kexts
+Currently Builds 39 kexts
 
 * ACPIBacklight
 * ACPIBatteryManager
+* ALXEthernet
 * ATH9KFixup
 * AirportBrcmFixup
 * AppleALC
