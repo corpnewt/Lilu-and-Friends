@@ -105,6 +105,7 @@ class KextBuilder:
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
         prerun     = plug.get("Pre-Run", None)
+        skip_dsym  = plug.get("Skip dSYM", True)
 
         return_val = None
 
@@ -184,7 +185,10 @@ class KextBuilder:
         zip_dir = plug.get("Zip", name+".kext")
         if not os.path.exists(zip_dir):
             return ["", "{} missing!".format(zip_dir), 1]
-        output = self._get_output([self.zip, "-r", file_name, zip_dir])
+        if skip_dsym:
+            output = self._get_output([self.zip, "-r", file_name, zip_dir, "-x", "*.dSYM*"])
+        else:
+            output = self._get_output([self.zip, "-r", file_name, zip_dir])
         if not output[2] == 0:
             # self._clean_up(output)
             return output
