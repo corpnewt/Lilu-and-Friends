@@ -14,7 +14,7 @@ Do the following one line at a time in Terminal:
 
     git clone https://github.com/corpnewt/Lilu-and-Friends
     cd Lilu-and-Friends
-    chmod +x ./Run.command
+    chmod +x Run.command
     
 Then run with either `./Run.command` or by double-clicking *Run.command*
 
