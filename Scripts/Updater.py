@@ -45,7 +45,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 18
+        self.hpad = 17
         self.wpad = 5
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -238,7 +238,7 @@ class Updater:
 
     def custom_quit(self):
         self.resize(self.w, self.h)
-        self.head("Lilu And Friends")
+        self.head("Lilu And Friends v"+self.version)
         print("by CorpNewt\n")
         print("Thanks for testing it out, for bugs/comments/complaints")
         print("send me a message on Reddit, or check out my GitHub:\n")
@@ -650,7 +650,7 @@ class Updater:
         if not self.checked_updates:
             self.check_update()
             self.checked_updates = True
-        self.head("Lilu And Friends")
+        self.head("Lilu And Friends v"+self.version)
         print(" ")
         # Print out options
         ind = 0
