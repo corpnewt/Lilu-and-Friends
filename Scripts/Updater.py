@@ -566,7 +566,7 @@ class Updater:
         while True:
             if changelist:
                 # We have changes to display
-                msg = "v{} is available (v{} installed)\nChangelog: {}\n\nUpdate? (y/n):  ".format(check_version, self.version, changelist)
+                msg = "v{} is available (v{} installed)\nWhat's New: {}\n\nUpdate? (y/n):  ".format(check_version, self.version, changelist)
             else:
                 msg = "v{} is available (v{} installed)\n\nUpdate? (y/n):  ".format(check_version, self.version)
             up = self.grab(msg)
