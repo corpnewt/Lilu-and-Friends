@@ -544,6 +544,7 @@ class Updater:
             print("Error checking for updates (json data malformed or non-existent)")
             return
         check_version = newjson_dict.get("Version", "0.0.0")
+        changelist    = newjson_dict.get("Changes", None)
         if self.version == check_version:
             # The same - return
             print("v{} is already current.".format(self.version))
@@ -563,7 +564,12 @@ class Updater:
     
         # We need to update
         while True:
-            up = self.grab("v{} is available (v{} installed)\n\nUpdate? (y/n):  ".format(check_version, self.version))
+            if changelist:
+                # We have changes to display
+                msg = "v{} is available (v{} installed)\nChangelog: {}\n\nUpdate? (y/n):  ".format(check_version, self.version, changelist)
+            else:
+                msg = "v{} is available (v{} installed)\n\nUpdate? (y/n):  ".format(check_version, self.version)
+            up = self.grab(msg)
             if up[:1].lower() in ["y", "n"]:
                 break
         if up[:1].lower() == "n":
