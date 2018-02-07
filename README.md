@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 39 kexts
+Currently Builds 40 kexts
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -61,3 +61,4 @@ Currently Builds 39 kexts
 * VoodooI2C
 * VoodooPS2Controller
 * VoodooTSCSync
+* WhateverGreen
