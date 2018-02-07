@@ -1,5 +1,6 @@
 {
-  "Version": "0.0.28", 
+  "Version": "0.0.29",
+  "Changes": "Added WhateverGreen.kext and simplified changelog", 
   "Plugins": [
     {
       "Build Opts": [
@@ -417,6 +418,12 @@
       "URL": "svn co -r HEAD http://forge.voodooprojects.org/svn/voodootscsync", 
       "Name": "VoodooTSCSync", 
       "Desc": "change IOCPUNumber to your core count - 1 in Info.plist!"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/vit9696/WhateverGreen", 
+      "Name": "WhateverGreen", 
+      "Desc": "provides patches to select ATI/AMD GPUs"
     }
   ]
 }
