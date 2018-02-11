@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.29",
-  "Changes": "Added WhateverGreen.kext and simplified changelog", 
+  "Version": "0.0.30",
+  "Changes": "Added fallback to default opts/sdk on kext build failure (if using custom opts)", 
   "Plugins": [
     {
       "Build Opts": [
