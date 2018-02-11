@@ -45,7 +45,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 17
+        self.hpad = 18
         self.wpad = 5
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -91,6 +91,7 @@ class Updater:
 
         self.xcode_opts = None
         self.sdk_over = None
+        self.default_on_fail = False
 
         if os.path.exists("profiles.json"):
             self.profiles = json.load(open("profiles.json"))
@@ -262,8 +263,9 @@ class Updater:
                 else:
                     pick = "[ ]"
                 extra = "1 kext " if len(option.get("Kexts", [])) == 1 else "{} kexts ".format(len(option.get("Kexts", [])))
-                extra += "- Default build options " if option.get("Xcode", None) == None else "- \"{}\"".format(option.get("Xcode", None))
-                extra += "- Default sdk" if option.get("SDK", None) == None else "- \"{}\"".format(option.get("SDK", None))
+                extra += "- Def build opts " if option.get("Xcode", None) == None else "- \"{}\"".format(option.get("Xcode", None))
+                extra += "- Def sdk" if option.get("SDK", None) == None else "- \"{}\"".format(option.get("SDK", None))
+                extra += " - DoF" if option.get("DefOnFail", False) else ""
                 en = "{} {}. {} - {}".format(pick, ind, option.get("Name", None), extra)
                 if len(en) + self.wpad > self.w:
                     self.w = len(en) + self.wpad
@@ -335,6 +337,7 @@ class Updater:
         self.xcode_opts = selected.get("Xcode", None)
         self.selected_profile = selected.get("Name", None)
         self.sdk_over = selected.get("SDK", None)
+        self.default_on_fail = selected.get("DefOnFail", False)
         
     def save_profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -356,6 +359,7 @@ class Updater:
             info += "SDK:\n\nDefault\n\n"
         else:
             info += "SDK:\n\n{}\n\n".format(self.sdk_over)
+        info += "Defaults on Failure:\n\n{}\n\n".format(self.default_on_fail)
         info += "If a profile is named \"Default\" it will be loaded automatically\n\n"
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         print(info)
@@ -380,12 +384,13 @@ class Updater:
                 option["Kexts"] = kextlist
                 option["Xcode"] = self.xcode_opts
                 option["SDK"] = self.sdk_over
+                option["DefOnFail"] = self.default_on_fail
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
                 self.selected_profile = option["Name"]
                 return
         # Didn't find it
-        new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts, "SDK" : self.sdk_over }
+        new_pro = { "Name" : menu, "Kexts" : kextlist, "Xcode" : self.xcode_opts, "SDK" : self.sdk_over, "DefOnFail" : self.default_on_fail }
         self.profiles.append(new_pro)
         # Save to file
         json.dump(self.profiles, open("profiles.json", "w"), indent=2)
@@ -679,13 +684,14 @@ class Updater:
         self.resize(self.w, self.h)
 
         if not self.xcode_opts:
-            print("Build Options: Default")
+            print("Build Options:       Default")
         else:
-            print("Build Options: {}".format(self.xcode_opts))
+            print("Build Options:       {}".format(self.xcode_opts))
         if not self.sdk_over:
-            print("SDK Options:   Default")
+            print("SDK Options:         Default")
         else:
-            print("SDK Options:   {}".format(self.sdk_over))
+            print("SDK Options:         {}".format(self.sdk_over))
+        print("Defaults on Failure: {}".format(self.default_on_fail))
 
         print(" ")
         print("B. Build Selected")
@@ -694,6 +700,7 @@ class Updater:
         print("N. Select None")
         print("X. Xcodebuild Options")
         print("P. Profiles")
+        print("F. Toggle Defaults on Failure")
         print("Q. Quit")
         print(" ")
         menu = self.grab("Please make a selection:  ")
@@ -703,6 +710,10 @@ class Updater:
         
         if menu[:1].lower() == "q":
             self.custom_quit()
+        elif menu[:1].lower() == "f":
+            # Profile change!
+            self.selected_profile = None
+            self.default_on_fail ^= True
         elif menu[:1].lower() == "x":
             self.xcodeopts()
         elif menu.lower() == self.es:
@@ -714,6 +725,9 @@ class Updater:
             build_list = []
             for plug in self.plugs:
                 if "Picked" in plug and plug["Picked"] == True:
+                    # Initialize overrides
+                    plug["xcode_opts"] = self.xcode_opts
+                    plug["sdk_over"]   = self.sdk_over
                     build_list.append(plug)
             if not len(build_list):
                 self.head("WARNING")
@@ -726,11 +740,13 @@ class Updater:
             fail    = []
             # Take time
             start_time = time.time()
+            total_kexts = len(build_list)
             self.head("Building 1 kext") if len(build_list) == 1 else self.head("Building {} kexts".format(len(build_list)))
-            for plug in build_list:
+            while len(build_list):
+                plug = build_list.pop(0)
                 ind += 1
                 try:
-                    out = self.kb.build(plug, ind, len(build_list), self.xcode_opts, self.sdk_over)
+                    out = self.kb.build(plug, ind, total_kexts, plug["xcode_opts"], plug["sdk_over"])
                 except Exception as e:
                     print(e)
                     out = ["", "An error occurred!", 1]
@@ -740,13 +756,22 @@ class Updater:
                     success.append("    " + plug["Name"] + " (Build errored, but continued.  Use with caution)")
                 else:
                     print(out[1])
+                    if self.default_on_fail:
+                        if plug["sdk_over"] or plug["xcode_opts"]:
+                            print("\nRetrying {} with Xcode and SDK defaults.  Appended to end of list.\n".format(plug["Name"]))
+                            plug["sdk_over"]   = None
+                            plug["xcode_opts"] = None
+                            build_list.append(plug)
+                            # Back up the index
+                            ind -=1
+                            continue
                     fail.append("    " + plug["Name"])
             # Clean up temp
             print("Cleaning up...")
             self.kb._del_temp()
             # Take time
             total_time = time.time() - start_time
-            self.head("{} of {} Succeeded".format(len(success), len(build_list)))
+            self.head("{} of {} Succeeded".format(len(success), total_kexts))
             print(" ")
             if len(success):
                 print("Succeeded:\n\n{}".format("\n".join(success)))
