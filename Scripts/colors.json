@@ -1,0 +1,94 @@
+{
+  "error": "<rb>",
+  "colors": [
+    {
+      "replace": "\u001b[35m",
+      "find": "<m>",
+      "name": "Magenta"
+    },
+    {
+      "replace": "\u001b[32m",
+      "find": "<g>",
+      "name": "Green"
+    },
+    {
+      "replace": "\u001b[37;1m",
+      "find": "<wb>",
+      "name": "White bold"
+    },
+    {
+      "replace": "\u001b[31m",
+      "find": "<r>",
+      "name": "Red"
+    },
+    {
+      "replace": "\u001b[36m",
+      "find": "<c>",
+      "name": "Cyan"
+    },
+    {
+      "replace": "\u001b[33;1m",
+      "find": "<yb>",
+      "name": "Yellow bold"
+    },
+    {
+      "replace": "\u001b[31;1m",
+      "find": "<rb>",
+      "name": "Red bold"
+    },
+    {
+      "replace": "\u001b[32;1m",
+      "find": "<gb>",
+      "name": "Green bold"
+    },
+    {
+      "replace": "\u001b[30;1m",
+      "find": "<bkb>",
+      "name": "Black bold"
+    },
+    {
+      "replace": "\u001b[37m",
+      "find": "<w>",
+      "name": "White"
+    },
+    {
+      "replace": "\u001b[34m",
+      "find": "<b>",
+      "name": "Blue"
+    },
+    {
+      "replace": "\u001b[34;1m",
+      "find": "<bb>",
+      "name": "Blue bold"
+    },
+    {
+      "replace": "\u001b[0m",
+      "find": "<rt>",
+      "name": "Reset"
+    },
+    {
+      "replace": "\u001b[35;1m",
+      "find": "<mb>",
+      "name": "Magenta bold"
+    },
+    {
+      "replace": "\u001b[33m",
+      "find": "<y>",
+      "name": "Yellow"
+    },
+    {
+      "replace": "\u001b[36;1m",
+      "find": "<cb>",
+      "name": "Cyan bold"
+    },
+    {
+      "replace": "\u001b[30m",
+      "find": "<bk>",
+      "name": "Black"
+    }
+  ],
+  "success": "<gb>",
+  "changed": "<cb>",
+  "highlight": "<bkb>",
+  "reset": "<rt>"
+}
