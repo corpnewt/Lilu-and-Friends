@@ -327,7 +327,7 @@ class Updater:
 
     def custom_quit(self):
         self.resize(self.w, self.h)
-        self.head("Lilu And Friends v"+self.version)
+        self.head("Lilu And Friends v"+self.gd_color+self.version)
         print("by CorpNewt\n")
         print("Thanks for testing it out, for bugs/comments/complaints")
         print("send me a message on Reddit, or check out my GitHub:\n")
