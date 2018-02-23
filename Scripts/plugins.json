@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.30",
-  "Changes": "Added fallback to default opts/sdk on kext build failure (if using custom opts)", 
+  "Version": "0.0.31",
+  "Changes": "<r>C<y>O<g>L<b>O<m>R<c>S<rt>!\nAdded ability to increment SDK on build failure", 
   "Plugins": [
     {
       "Build Opts": [
