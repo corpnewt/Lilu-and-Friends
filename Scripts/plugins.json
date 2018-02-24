@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.31",
-  "Changes": "<r>C<y>O<g>L<b>O<m>R<c>S<rt>!\nAdded ability to increment SDK on build failure", 
+  "Version": "0.0.32", 
+  "Changes": "Added RehabMan's fork of Kozlek's FakeSMC/HWMonitor repo", 
   "Plugins": [
     {
       "Build Opts": [
@@ -194,6 +194,23 @@
       "Desc": "only FakeSMC (Legacy)"
     }, 
     {
+      "Info": "FakeSMC.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-workspace", 
+        "HWSensors.xcworkspace", 
+        "-scheme", 
+        "Build Kexts"
+      ], 
+      "Build Dir": "./Build/Products/Release", 
+      "Name": "FakeSMC (RehabMan)", 
+      "Zip": "./FakeSMC.kext", 
+      "URL": "git clone https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
+      "Folder": "OS-X-FakeSMC-kozlek", 
+      "Desc": "only RehabMan's FakeSMC"
+    }, 
+    {
       "Build Opts": [
         "-sdk", 
         "macosx10.10", 
@@ -285,6 +302,23 @@
       "Build Dir": "./Binaries", 
       "Folder": "hwsensors-code", 
       "Desc": "contains legacy FakeSMC + HWSensors plugins"
+    }, 
+    {
+      "Info": "FakeSMC.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-workspace", 
+        "HWSensors.xcworkspace", 
+        "-scheme", 
+        "Build Kexts"
+      ], 
+      "Build Dir": "./Build/Products/Release", 
+      "Name": "HWSensors (RehabMan)", 
+      "Zip": "../Release", 
+      "URL": "git clone https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
+      "Folder": "OS-X-FakeSMC-kozlek", 
+      "Desc": "RehabMan's FakeSMC + Sensors"
     }, 
     {
       "Lilu": true, 
