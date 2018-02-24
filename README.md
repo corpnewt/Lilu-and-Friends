@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 40 kexts
+Currently Builds 42 kexts
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -41,10 +41,12 @@ Currently Builds 40 kexts
 * FakeSMC
 * FakeSMC (Kozlek)
 * FakeSMC (Legacy)
+* FakeSMC (RehabMan)
 * GenericUSBXHCI
 * HWSensors (FakeSMC + Plugins)
 * HWSensors (Kozlek)
 * HWSensors (Legacy)
+* HWSensors (RehabMan)
 * HibernationFixup
 * IntelBacklight
 * IntelGraphicsDVMTFixup
