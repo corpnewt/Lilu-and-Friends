@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.32", 
-  "Changes": "Added RehabMan's fork of Kozlek's FakeSMC/HWMonitor repo", 
+  "Version": "0.0.33", 
+  "Changes": "Fixed some missing custom color print commands and cleaned up some unneeded comments.", 
   "Plugins": [
     {
       "Build Opts": [
