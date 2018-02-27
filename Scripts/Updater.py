@@ -503,11 +503,11 @@ class Updater:
         if not self.xcode_opts:
             print("Build Options: Default")
         else:
-            print("Build Options: {}{}{}".format(self.ch_color, self.xcode_opts, self.rt_color))
+            self.cprint("Build Options: {}{}{}".format(self.ch_color, self.xcode_opts, self.rt_color))
         if not self.sdk_over:
             print("SDK Options:   Default")
         else:
-            print("SDK Options:   {}{}{}".format(self.ch_color, self.sdk_over, self.rt_color))
+            self.cprint("SDK Options:   {}{}{}".format(self.ch_color, self.sdk_over, self.rt_color))
         print(" ")
         print("C. Clear")
         print("M. Main Menu")
@@ -546,11 +546,11 @@ class Updater:
         if not self.xcode_opts:
             print("Build Options: Default")
         else:
-            print("Build Options: {}{}{}".format(self.ch_color, self.xcode_opts, self.rt_color))
+            self.cprint("Build Options: {}{}{}".format(self.ch_color, self.xcode_opts, self.rt_color))
         if not self.sdk_over:
             print("SDK Options:   Default")
         else:
-            print("SDK Options:   {}{}{}".format(self.ch_color, self.sdk_over, self.rt_color))
+            self.cprint("SDK Options:   {}{}{}".format(self.ch_color, self.sdk_over, self.rt_color))
         print(" ")
         print("C. Clear")
         print("X. Xcode Options")
@@ -809,12 +809,6 @@ class Updater:
             return
         # Have a valid thing now
         var = c[menu]["find"]
-        '''self.colors   = self.colors_dict.get("colors", [])
-        self.hi_color = self.colors_dict.get("highlight", "")
-        self.er_color = self.colors_dict.get("error", "")
-        self.ch_color = self.colors_dict.get("changed", "")
-        self.gd_color = self.colors_dict.get("success", "")
-        self.rt_color = self.colors_dict.get("reset", "")'''
         self.colors_dict[name.lower()] = var
         if name.lower() == "highlight":
             self.hi_color = var
