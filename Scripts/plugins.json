@@ -40,8 +40,8 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git svn clone svn://svn.code.sf.net/p/airportbrcmfixup/code/ airportbrcmfixup-code", 
-      "Folder": "airportbrcmfixup-code/trunk", 
+      "URL": "git clone https://github.com/lvs1974/AirportBrcmFixup airportbrcmfixup-code", 
+      "Folder": "airportbrcmfixup-code", 
       "Name": "AirportBrcmFixup", 
       "Desc": "for non-native Airport Broadcom Wi-Fi cards"
     }, 
@@ -75,8 +75,8 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git svn clone svn://svn.code.sf.net/p/bt4lecontiunityfixup/code/ bt4lecontiunityfixup-code", 
-      "Folder": "bt4lecontiunityfixup-code/trunk", 
+      "URL": "git clone https://github.com/lvs1974/BT4LEContiunityFixup bt4lecontiunityfixup-code", 
+      "Folder": "bt4lecontiunityfixup-code", 
       "Name": "BT4LEContiunityFixup", 
       "Desc": "for BT4LE-Handoff-Hotspot features"
     }, 
@@ -322,7 +322,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git svn clone https://svn.code.sf.net/p/hibernationfixup/svn/trunk HibernationFixup", 
+      "URL": "git clone https://github.com/lvs1974/HibernationFixup.git HibernationFixup", 
       "Name": "HibernationFixup", 
       "Desc": "saves IOHibernateRTCVariables in NVRAM"
     }, 
@@ -346,7 +346,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git svn clone https://svn.code.sf.net/p/intelgraphicsfixup/svn/trunk IntelGraphicsFixup", 
+      "URL": "git clone https://github.com/lvs1974/IntelGraphicsFixup IntelGraphicsFixup", 
       "Name": "IntelGraphicsFixup", 
       "Desc": "provides patches for Intel GPUs"
     }, 
@@ -379,7 +379,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git svn clone https://svn.code.sf.net/p/nvidiagraphicsfixup/svn/trunk NvidiaGraphicsFixup", 
+      "URL": "git clone https://github.com/lvs1974/NvidiaGraphicsFixup NvidiaGraphicsFixup", 
       "Name": "NvidiaGraphicsFixup", 
       "Desc": "provides patches for NVidia GPUs"
     }, 
