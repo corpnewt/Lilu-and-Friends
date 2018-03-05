@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.33", 
-  "Changes": "Fixed some missing custom color print commands and cleaned up some unneeded comments.", 
+  "Version": "0.0.34", 
+  "Changes": "Update repo locations to github for lvs1974 kexts thanks to ReddestDream.", 
   "Plugins": [
     {
       "Build Opts": [
