@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.34", 
-  "Changes": "Update repo locations to github for lvs1974 kexts thanks to ReddestDream.", 
+  "Version": "0.0.35", 
+  "Changes": "RealtekRTL8111 and AtherosE2200Ethernet now default to v2", 
   "Plugins": [
     {
       "Build Opts": [
@@ -54,7 +54,14 @@
     {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
       "Name": "AtherosE2200Ethernet", 
-      "Desc": "for Killer and Atheros LAN"
+      "Desc": "for Killer and Atheros LAN",
+      "Build Dir": "./build/Products/Release", 
+      "Build Opts": [
+        "-scheme",
+        "AtherosE2200EthernetV2",
+        "-configuration",
+        "Release"
+      ]
     }, 
     {
       "Lilu": true, 
@@ -392,7 +399,14 @@
       "URL": "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", 
       "Folder": "RTL8111_driver_for_OS_X", 
       "Name": "RealtekRTL8111", 
-      "Desc": "for RTL8111/8168 LAN"
+      "Desc": "for RTL8111/8168 LAN",
+      "Build Dir": "./build/Products/Release", 
+      "Build Opts": [
+        "-scheme",
+        "RealtekRTL8111-V2",
+        "-configuration",
+        "Release"
+      ]
     }, 
     {
       "Lilu": true, 
