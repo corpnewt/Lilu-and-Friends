@@ -21,6 +21,31 @@ class Updater:
     def __init__(self):
         self.kb = KextBuilder.KextBuilder()
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        # Init our colors before we need to print anything
+        if os.path.exists("colors.json"):
+            self.colors_dict = json.load(open("colors.json"))
+        else:
+            self.colors_dict = {}
+        self.colors   = self.colors_dict.get("colors", [])
+        self.hi_color = self.colors_dict.get("highlight", "")
+        self.er_color = self.colors_dict.get("error", "")
+        self.ch_color = self.colors_dict.get("changed", "")
+        self.gd_color = self.colors_dict.get("success", "")
+        self.rt_color = self.colors_dict.get("reset", "")
+
+        # Order the colors quick
+        if len(self.colors):
+            reg = []
+            bold = []
+            for c in self.colors:
+                if "bold" in c["name"].lower():
+                    bold.append(c)
+                else:
+                    reg.append(c)
+            reg.sort(key=lambda x: x["name"])
+            bold.sort(key=lambda x: x["name"])
+            reg.extend(bold)
+            self.colors = reg
         if not os.path.exists("plugins.json"):
             self.head("Missing Files!")
             print(" ")
@@ -79,31 +104,6 @@ class Updater:
         else:
             self.profiles = []
         self.selected_profile = None
-
-        if os.path.exists("colors.json"):
-            self.colors_dict = json.load(open("colors.json"))
-        else:
-            self.colors_dict = {}
-        self.colors   = self.colors_dict.get("colors", [])
-        self.hi_color = self.colors_dict.get("highlight", "")
-        self.er_color = self.colors_dict.get("error", "")
-        self.ch_color = self.colors_dict.get("changed", "")
-        self.gd_color = self.colors_dict.get("success", "")
-        self.rt_color = self.colors_dict.get("reset", "")
-
-        # Order the colors quick
-        if len(self.colors):
-            reg = []
-            bold = []
-            for c in self.colors:
-                if "bold" in c["name"].lower():
-                    bold.append(c)
-                else:
-                    reg.append(c)
-            reg.sort(key=lambda x: x["name"])
-            bold.sort(key=lambda x: x["name"])
-            reg.extend(bold)
-            self.colors = reg
 
         self.version_url = "https://raw.githubusercontent.com/corpnewt/Lilu-And-Friends/master/Scripts/plugins.json"
 
