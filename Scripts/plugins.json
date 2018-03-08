@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.35", 
-  "Changes": "RealtekRTL8111 and AtherosE2200Ethernet now default to v2", 
+  "Version": "0.0.36", 
+  "Changes": "Init colors correctly to avoid print errors when checking for Xcode", 
   "Plugins": [
     {
       "Build Opts": [
