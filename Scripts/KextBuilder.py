@@ -183,12 +183,18 @@ class KextBuilder:
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
         zip_dir = plug.get("Zip", name+".kext")
-        if not os.path.exists(zip_dir):
-            return ["", "{} missing!".format(zip_dir), 1]
-        if skip_dsym:
-            output = self._get_output([self.zip, "-r", file_name, zip_dir, "-x", "*.dSYM*"])
+        if type(zip_dir) is str:
+            if not os.path.exists(zip_dir):
+                return ["", "{} missing!".format(zip_dir), 1]
+        zip_args = [self.zip, "-r", file_name]
+        if type(zip_dir) is list:
+            zip_args.extend(zip_dir)
         else:
-            output = self._get_output([self.zip, "-r", file_name, zip_dir])
+            zip_args.append(zip_dir)
+        if skip_dsym:
+            zip_args.extend(["-x", "*.dSYM*"])
+        output = self._get_output(zip_args)
+
         if not output[2] == 0:
             # self._clean_up(output)
             return output
@@ -204,4 +210,4 @@ class KextBuilder:
         # Reset shell position
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Return None on success
-        return return_val
+        return (return_val, version)
