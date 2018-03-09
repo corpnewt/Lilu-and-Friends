@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 42 kexts
+Currently Builds 44 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -55,11 +55,13 @@ Currently Builds 42 kexts
 * Lilu
 * LiluFriend
 * NightShiftUnlocker
+* NullCPUPowerManagement
 * NvidiaGraphicsFixup
 * RealtekRTL8100
 * RealtekRTL8111
 * Shiki
 * USBInjectAll
+* VoodooHDA
 * VoodooI2C
 * VoodooPS2Controller
 * VoodooTSCSync
