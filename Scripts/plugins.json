@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.36", 
-  "Changes": "Init colors correctly to avoid print errors when checking for Xcode", 
+  "Version": "0.0.37", 
+  "Changes": "* Add modified NullCPUPowerManagment.kext (thanks al3xtjames)\n* Added VoodooHDA\n* Append versions to build kext output\n* Add injector kexts to USBInjectAll", 
   "Plugins": [
     {
       "Build Opts": [
@@ -53,15 +53,15 @@
     }, 
     {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
-      "Name": "AtherosE2200Ethernet", 
-      "Desc": "for Killer and Atheros LAN",
-      "Build Dir": "./build/Products/Release", 
       "Build Opts": [
-        "-scheme",
-        "AtherosE2200EthernetV2",
-        "-configuration",
+        "-scheme", 
+        "AtherosE2200EthernetV2", 
+        "-configuration", 
         "Release"
-      ]
+      ], 
+      "Build Dir": "./build/Products/Release", 
+      "Name": "AtherosE2200Ethernet", 
+      "Desc": "for Killer and Atheros LAN"
     }, 
     {
       "Lilu": true, 
@@ -385,6 +385,17 @@
       "Desc": "unlocks night shift on unsupported SMBIOS"
     }, 
     {
+      "URL": "git clone https://github.com/corpnewt/NullCPUPowerManagement", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-arch", 
+        "x86_64"
+      ], 
+      "Name": "NullCPUPowerManagement", 
+      "Desc": "disables power management on unsupported CPUs"
+    }, 
+    {
       "Lilu": true, 
       "URL": "git clone https://github.com/lvs1974/NvidiaGraphicsFixup NvidiaGraphicsFixup", 
       "Name": "NvidiaGraphicsFixup", 
@@ -396,17 +407,17 @@
       "Desc": "for RTL810X LAN"
     }, 
     {
+      "Build Opts": [
+        "-scheme", 
+        "RealtekRTL8111-V2", 
+        "-configuration", 
+        "Release"
+      ], 
+      "Build Dir": "./build/Products/Release", 
+      "Name": "RealtekRTL8111", 
       "URL": "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", 
       "Folder": "RTL8111_driver_for_OS_X", 
-      "Name": "RealtekRTL8111", 
-      "Desc": "for RTL8111/8168 LAN",
-      "Build Dir": "./build/Products/Release", 
-      "Build Opts": [
-        "-scheme",
-        "RealtekRTL8111-V2",
-        "-configuration",
-        "Release"
-      ]
+      "Desc": "for RTL8111/8168 LAN"
     }, 
     {
       "Lilu": true, 
@@ -422,9 +433,20 @@
       ], 
       "Build Dir": "./build/Products/Release", 
       "Name": "USBInjectAll", 
+      "Zip": [
+        "USBInjectAll.kext", 
+        "../../../XHCI-200-series-injector.kext", 
+        "../../../XHCI-x99-injector.kext"
+      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
       "Folder": "OS-X-USB-Inject-All", 
       "Desc": "injects all USB ports"
+    }, 
+    {
+      "URL": "git svn clone https://svn.code.sf.net/p/voodoohda/code/ voodoohda-code", 
+      "Folder": "voodoohda-code/branches/zdev", 
+      "Name": "VoodooHDA", 
+      "Desc": "open source audio driver for devices compliant with the Intel HDA spec"
     }, 
     {
       "Build Opts": [
@@ -451,7 +473,7 @@
       ], 
       "Build Dir": "./build/Products/Release", 
       "Name": "VoodooPS2Controller", 
-      "Zip": "../Release", 
+      "Zip": "../Release/", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
       "Desc": "PS2 driver for desktops/laptops"
