@@ -967,12 +967,12 @@ class Updater:
                     print(e)
                     out = ["", "An error occurred!", 1]
                 success_string = ""
-                if out in [ None, True ]:
+                if out[0] in [ None, True ]:
                     # Format our output
-                    if out == None:
-                        success_string += "    " + self.hi_color + plug["Name"] + self.rt_color
+                    if out[0] == None:
+                        success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color
                     elif out == True:
-                        success_string += "    " + self.hi_color + plug["Name"] + self.rt_color + " - " + self.er_color + "Errored, use with caution" + self.rt_color
+                        success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color + " - " + self.er_color + "Errored, use with caution" + self.rt_color
                     if plug["inc_sdk_on_fail"]:
                         success_string += " - {}{} SDK{}".format(self.ch_color, plug["sdk_over"].lower().replace("macosx", "").replace(".sdk", ""), self.rt_color)
                     if plug["xcode_def_on_fail"]:
