@@ -424,8 +424,8 @@
       "Name": "USBInjectAll", 
       "Zip": [
         "USBInjectAll.kext", 
-        "../../../XHCI-200-series-injector.kext", 
-        "../../../XHCI-x99-injector.kext"
+        "../../XHCI-200-series-injector.kext", 
+        "../../XHCI-x99-injector.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
       "Folder": "OS-X-USB-Inject-All", 
