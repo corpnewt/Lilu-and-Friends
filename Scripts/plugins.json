@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.37", 
-  "Changes": "* Add modified NullCPUPowerManagment.kext (thanks al3xtjames)\n* Added VoodooHDA\n* Append versions to build kext output\n* Add injector kexts to USBInjectAll", 
+  "Version": "0.0.38", 
+  "Changes": "Add BUILD_DIR xcodebuild arg by default to normalize build output location.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -8,7 +8,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "ACPIBacklight", 
       "URL": "git clone https://github.com/RehabMan/OS-X-ACPI-Backlight", 
       "Folder": "OS-X-ACPI-Backlight", 
@@ -20,7 +19,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "ACPIBatteryManager", 
       "URL": "git clone https://github.com/RehabMan/OS-X-ACPI-Battery-Driver", 
       "Folder": "OS-X-ACPI-Battery-Driver", 
@@ -59,7 +57,6 @@
         "-configuration", 
         "Release"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "AtherosE2200Ethernet", 
       "Desc": "for Killer and Atheros LAN"
     }, 
@@ -103,7 +100,6 @@
         "-target", 
         "BrcmBluetoothInjector"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "BrcmPatchRAM", 
       "Zip": "../Release", 
       "URL": "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM", 
@@ -122,7 +118,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "CodecCommander", 
       "URL": "git clone https://github.com/RehabMan/EAPD-Codec-Commander", 
       "Folder": "EAPD-Codec-Commander", 
@@ -145,7 +140,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Release", 
       "Name": "FakePCIID", 
       "Zip": "../Release", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Fake-PCI-ID", 
@@ -210,7 +204,6 @@
         "-scheme", 
         "Build Kexts"
       ], 
-      "Build Dir": "./Build/Products/Release", 
       "Name": "FakeSMC (RehabMan)", 
       "Zip": "./FakeSMC.kext", 
       "URL": "git clone https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
@@ -320,7 +313,6 @@
         "-scheme", 
         "Build Kexts"
       ], 
-      "Build Dir": "./Build/Products/Release", 
       "Name": "HWSensors (RehabMan)", 
       "Zip": "../Release", 
       "URL": "git clone https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
@@ -339,7 +331,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "IntelBacklight", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Backlight", 
       "Folder": "OS-X-Intel-Backlight", 
@@ -413,7 +404,6 @@
         "-configuration", 
         "Release"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "RealtekRTL8111", 
       "URL": "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", 
       "Folder": "RTL8111_driver_for_OS_X", 
@@ -431,7 +421,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "USBInjectAll", 
       "Zip": [
         "USBInjectAll.kext", 
@@ -458,7 +447,6 @@
         "macosx", 
         "DEBUG_INFORMATION_FORMAT=none"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "VoodooI2C", 
       "Zip": "../Release", 
       "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
@@ -471,7 +459,6 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Build Dir": "./build/Products/Release", 
       "Name": "VoodooPS2Controller", 
       "Zip": "../Release/", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
