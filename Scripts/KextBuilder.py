@@ -155,6 +155,8 @@ class KextBuilder:
             xcode_args.extend(ops.split())
         else:
             xcode_args.extend(plug.get("Build Opts", []))
+        # Make sure it builds in the local directory - but only if using -scheme
+        xcode_args.append("BUILD_DIR=" + os.path.join(os.getcwd(), "build/"))
         if sdk:
             ind = -1
             for s in xcode_args:
