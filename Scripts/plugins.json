@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.38", 
-  "Changes": "Add BUILD_DIR xcodebuild arg by default to normalize build output location.", 
+  "Version": "0.0.39", 
+  "Changes": "Allow multiple different delimiters in main menu - so 1,2,3 and 1 2 3 will both work.", 
   "Plugins": [
     {
       "Build Opts": [
