@@ -9,6 +9,7 @@ import shutil
 import base64
 import plistlib
 import random
+import re
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -1047,9 +1048,9 @@ class Updater:
             self.selected_profile = None
             return
         
-        # First try to split
-        menu = menu.replace(" ", "")
-        menu_list = menu.split(",")
+        # Split args using regex
+        menu_list = re.findall(r"[\w']+", menu)
+
         for m in menu_list:
             # Get numeric value
             try:
