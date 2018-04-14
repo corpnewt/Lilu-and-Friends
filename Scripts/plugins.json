@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.39", 
-  "Changes": "Allow multiple different delimiters in main menu - so 1,2,3 and 1 2 3 will both work.", 
+  "Version": "0.0.40", 
+  "Changes": "* Added debug mode\n* Added Xcode min SDK config\n* Migrated subprocess to new class\n* Added a number of SDK checks", 
   "Plugins": [
     {
       "Build Opts": [

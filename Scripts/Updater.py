@@ -10,6 +10,7 @@ import base64
 import plistlib
 import random
 import re
+import Run
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -33,6 +34,8 @@ class Updater:
         self.ch_color = self.colors_dict.get("changed", "")
         self.gd_color = self.colors_dict.get("success", "")
         self.rt_color = self.colors_dict.get("reset", "")
+        
+        self.r = Run.Run()
 
         # Order the colors quick
         if len(self.colors):
@@ -61,18 +64,18 @@ class Updater:
             print(" ")
             os._exit(1)
 
-        out = self._run_command("xcodebuild -checkFirstLaunchStatus", True)
+        out = self.r.run({"args":["xcodebuild", "-checkFirstLaunchStatus"]})
         if not out[2] == 0:
             self.head("Xcode First Launch")
             print(" ")
-            self._stream_output("sudo xcodebuild -runFirstLaunch", True)
+            self.r.run({"args" : ["xcodebuild", "-runFirstLaunch"], "sudo" : True, "stream" : True})
             print(" ")
             print("If everything ran correctly please relaunch the script.\n")
             os._exit(1)
 
         self.h = 0
         self.w = 0
-        self.hpad = 22
+        self.hpad = 26
         self.wpad = 8
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -80,17 +83,6 @@ class Updater:
 
         self.sdk_path = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
         self.sdk_version_plist = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist"
-
-        self.sdk_min_version = None
-        if os.path.exists(self.sdk_version_plist):
-            try:
-                sdk_plist = plistlib.readPlist(self.sdk_version_plist)
-                self.sdk_min_version = sdk_plist["MinimumSDKVersion"]
-            except:
-                pass
-        if not self.sdk_min_version:
-            cur_vers = self._get_output(["sw_vers", "-productVersion"])[0]
-            self.sdk_min_version = ".".join(cur_vers.split(".")[:2])
 
         # Try to get our available SDKs
         self.sdk_list = self._get_sdk_list()
@@ -114,9 +106,6 @@ class Updater:
         self.version = theJSON.get("Version", "0.0.0")
         self.checked_updates = False
 
-        # Select default profile
-        self._select_profile("default")
-
 
     # Helper methods
     def grab(self, prompt):
@@ -139,42 +128,18 @@ class Updater:
         sys.stdout.write(message)
         print(reset)
 
-    def _stream_output(self, comm, shell = False):
-        output = ""
-        try:
-            if shell and type(comm) is list:
-                comm = " ".join(comm)
-            if not shell and type(comm) is str:
-                comm = comm.split()
-            p = subprocess.Popen(comm, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, universal_newlines=True)
-            
-            while True:
-                cur = p.stdout.read(1)
-                if(not cur):
-                    break
-                sys.stdout.write(cur)
-                output += cur
-                sys.stdout.flush()
-
-            return output
-        except:
-            return output
-
-    def _run_command(self, comm, shell = False):
-        c = None
-        try:
-            if shell and type(comm) is list:
-                comm = " ".join(comm)
-            if not shell and type(comm) is str:
-                comm = comm.split()
-            p = subprocess.Popen(comm, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            c = p.communicate()
-            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
-        except:
-            if c == None:
-                return ("", "Command not found!", 1)
-            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
-
+    def _get_sdk_min_version(self):
+        sdk_min = None
+        if os.path.exists(self.sdk_version_plist):
+            try:
+                sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+                sdk_min = sdk_plist["MinimumSDKVersion"]
+            except:
+                pass
+        if not sdk_min:
+            cur_vers = self._get_output(["sw_vers", "-productVersion"])[0]
+            sdk_min = ".".join(cur_vers.split(".")[:2])
+        return sdk_min
 
     def _compare_versions(self, vers1, vers2):
         # Helper method to compare ##.## strings and determine
@@ -239,8 +204,8 @@ class Updater:
     def _can_use_sdk(self, sdk_vers):
         # First break it into ##.## format
         sdk_vers = sdk_vers.lower().replace("macosx", "").replace(".sdk", "")
-        if not self._compare_versions(sdk_vers, self.sdk_min_version) == True:
-            # sdk_verse is >= self.sdk_min_version
+        if not self._compare_versions(sdk_vers, self._get_sdk_min_version()) == True:
+            # sdk_verse is >= self._get_sdk_min_version()
             return True
         return False
 
@@ -337,6 +302,94 @@ class Updater:
         print("Have a nice day/night!\n\n")
         os._exit(0)
 
+    def custom_min_sdk(self):
+        self.head("Xcode MinimumSDKVersion")
+        print(" ")
+        print("Current MinimumSDKVersion:  {}".format(self._get_sdk_min_version()))
+        print(" ")
+        print("M. Main Menu")
+        print("Q. Quit")
+        print(" ")
+        menu = self.grab("Please enter a new version in XX.XX format:  ")
+        if not len(menu):
+            self.custom_min_sdk()
+            return
+        
+        if menu.lower() == "q":
+            self.custom_quit()
+        elif menu.lower() == "m":
+            return
+
+        # Check the format
+        try:
+            v_split = menu.split(".")
+            majo = int(v_split[0])
+            mino = int(v_split[1])
+            vers = "{}.{}".format(majo, mino)
+        except:
+            self.head("Xcode MinimumSDKVersion")
+            print(" ")
+            self.cprint(self.er_color+"Invalid format!")
+            print(" ")
+            print("Must be in XX.XX format!")
+            print(" ")
+            time.sleep(3)
+            self.custom_min_sdk()
+            return
+
+        # Check if we need to clear our SDK override
+        if self.sdk_over and self._compare_versions(self.sdk_over.lower().replace("macosx", "").replace(".sdk", ""), vers):
+            while True:
+                sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
+                self.head(self.er_color+"SDK Conflict!")
+                print(" ")
+                print("The {} SDK Override doesn't meet the minimum!".format(sdk_vers))
+                print(" ")
+                m = self.grab("Would you like to clear it and continue? (y/n):  ")
+                if m.lower() == "y":
+                    self.sdk_over = None
+                    self.selected_profile = None
+                    break
+                if m.lower() == "n":
+                    self.custom_min_sdk()
+                    return
+
+        # Got a valid number - set it in the config
+        # Create temp folder
+        t = tempfile.mkdtemp()
+        try:
+            self.apply_min_sdk(vers, t)
+        except:
+            print("Something went wrong!")
+            pass
+        shutil.rmtree(t)
+
+    def apply_min_sdk(self, version, temp):
+        self.head("Updating Min SDK to {}".format(version))
+        print(" ")
+        if os.access(self.sdk_version_plist, os.W_OK):
+            print("Have write permissions already...")
+            # Can write to it normally
+            print("Loading Info.plist...")
+            sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+            print("Updating MinimumSDKVersion...")
+            sdk_plist["MinimumSDKVersion"] = version
+            print("Done!")
+            time.sleep(3)
+            return
+        print("No write permissions, using temp folder...")
+        # Need to use a temp folder and then sudo it back
+        self.r.run({"args":["cp", self.sdk_version_plist, temp], "stream" : True})
+        print("Loading Info.plist...")
+        sdk_plist = plistlib.readPlist(os.path.join(temp, "Info.plist"))
+        print("Updating MinimumSDKVersion...")
+        sdk_plist["MinimumSDKVersion"] = version
+        print("Writing Info.plist...")
+        plistlib.writePlist(sdk_plist, os.path.join(temp, "Info.plist"))
+        print("Copying back to {}...".format(self.sdk_version_plist))
+        # Copy back over
+        self.r.run({"args":["cp", os.path.join(temp, "Info.plist"), self.sdk_version_plist], "stream": True, "sudo" : True})
+
     def profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         self.head("Profiles")
@@ -424,10 +477,30 @@ class Updater:
         # Pick only the ones needed
         for p in self.plugs:
             p["Picked"] = True if p["Name"] in selected["Kexts"] else False
+                      
         # Set the rest of the options
         self.xcode_opts = selected.get("Xcode", None)
         self.selected_profile = selected.get("Name", None)
         self.sdk_over = selected.get("SDK", None)
+        # Revert SDK changes if there's an issue
+        if self.sdk_over and not self._have_sdk(self.sdk_over):
+            sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
+            self.head(self.er_color+"SDK Error"+self.rt_color+" Selecting: {}".format(profile_name))
+            print(" ")
+            print("Missing the {} SDK!  SDK override removed!".format(sdk_vers))
+            print(" ")
+            self.sdk_over = None
+            self.selected_profile = None
+            time.sleep(5)
+        if self.sdk_over and not self._can_use_sdk(self.sdk_over):
+            sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
+            self.head(self.er_color+"SDK Error"+self.rt_color+" Selecting: {}".format(profile_name))
+            print(" ")
+            print("{} is below Xcode's minimum!  SDK override removed!".format(sdk_vers))
+            print(" ")
+            self.sdk_over = None
+            self.selected_profile = None
+            time.sleep(5)
         self.default_on_fail = selected.get("DefOnFail", False)
         self.increment_sdk = selected.get("IncrementSDK", False)
         
@@ -610,7 +683,7 @@ class Updater:
             if not self._can_use_sdk(menu):
                 self.head("SDK Below Minimum!")
                 print(" ")
-                self.cprint(self.er_color+"Xcode is currently set to allow sdks of {} or higher.".format(self.sdk_min_version))
+                self.cprint(self.er_color+"Xcode is currently set to allow sdks of {} or higher.".format(self._get_sdk_min_version()))
                 print("You can edit the MinimumSDKVersion property in the Info.plist located at:\n")
                 print(self.sdk_version_plist)
                 print("\nto update this setting.")
@@ -867,6 +940,8 @@ class Updater:
         if not self.checked_updates:
             self.check_update()
             self.checked_updates = True
+            # Select default profile
+            self._select_profile("default")
         self.head("Lilu And Friends v"+self.gd_color+self.version)
         print(" ")
         # Print out options
@@ -899,6 +974,11 @@ class Updater:
             self.cprint("SDK Options:           {}{}".format(self.ch_color, self.sdk_over))
         self.cprint("Increment SDK on Fail: {}{}".format(self.ch_color, self.increment_sdk))
         self.cprint("Defaults on Failure:   {}{}".format(self.ch_color, self.default_on_fail))
+        self.cprint("Xcode Min SDK:         {}{}".format(self.ch_color, self._get_sdk_min_version()))
+        if self.kb.debug:
+            self.cprint("Debug:                 {}{}".format(self.ch_color, self.kb.debug))
+        else:
+            print("Debug:                 {}".format(self.kb.debug))
 
         print(" ")
         print("B. Build Selected")
@@ -906,9 +986,11 @@ class Updater:
         print("A. Select All")
         print("N. Select None")
         print("X. Xcodebuild Options")
+        print("S. Update Xcode Min SDK")
         print("P. Profiles")
         print("I. Increment SDK on Fail")
         print("F. Toggle Defaults on Failure")
+        print("D. Toggle Debugging")
         print("C. Color Picker")
         print("Q. Quit")
         print(" ")
@@ -917,27 +999,33 @@ class Updater:
         if not len(menu):
             return
         
-        if menu[:1].lower() == "q":
+        if menu.lower() == "q":
             self.custom_quit()
-        elif menu[:1].lower() == "f":
+        elif menu.lower() == "f":
             # Profile change!
             self.selected_profile = None
             self.default_on_fail ^= True
-        elif menu[:1].lower() == "i":
+        elif menu.lower() == "i":
             # Profile change!
             self.selected_profile = None
             self.increment_sdk ^= True
-        elif menu[:1].lower() == "x":
+        elif menu.lower() == "x":
             self.xcodeopts()
         elif menu.lower() == self.es:
             self.animate()
-        elif menu[:1].lower() == "p":
+        elif menu.lower() == "p":
             self.profile()
-        elif menu[:1].lower() == "c":
+        elif menu.lower() == "c":
             self.color_picker()
-        elif menu[:1].lower() == "b":
+        elif menu.lower() == "d":
+            self.kb.debug ^= True
+        elif menu.lower() == "s":
+            self.custom_min_sdk()
+        elif menu.lower() == "b":
             # Building
-            build_list = []
+            build_list   = []
+            sdk_missing  = []
+            sdk_too_high = []
             for plug in self.plugs:
                 if "Picked" in plug and plug["Picked"] == True:
                     # Initialize overrides
@@ -945,9 +1033,60 @@ class Updater:
                     plug["sdk_over"]   = self.sdk_over
                     plug["xcode_def_on_fail"] = False
                     plug["inc_sdk_on_fail"] = False
+                    # Verify we can actually add it
+                    if not plug["sdk_over"]:
+                        # No override - so we're checking for each kext individually
+                        # Check for -sdk macosxXX.XX
+                        low_opts = [ x.lower() for x in plug.get("Build Opts", []) ]
+                        if "-sdk" in low_opts:
+                            s_vers = None
+                            try:
+                                # Get the index of "-sdk" and
+                                # then try to get the following
+                                # index - which should be macosxXX.XX
+                                s_ind  = low_opts.index("-sdk")
+                                # strip the macosx and/or .sdk parts out
+                                s_vers = low_opts[s_ind+1].replace("macosx", "").replace(".sdk", "")
+                            except:
+                                # Failed - skip
+                                pass
+                            if s_vers:
+                                # We got a version, check it
+                                if not self._have_sdk(s_vers):
+                                    sdk_missing.append(plug["Name"] + " - " + s_vers)
+                                    continue
+                                if not self._can_use_sdk(s_vers):
+                                    sdk_too_high.append(plug["Name"] + " - " + s_vers)
+                                    continue
                     build_list.append(plug)
+            if len(sdk_missing) or len(sdk_too_high):
+                while True:
+                    # We excluded kexts
+                    self.head(self.er_color+"Kexts Omitted!")
+                    if len(sdk_missing):
+                        print(" ")
+                        print("Kexts needing a missing sdk:\n")
+                        self.cprint(self.er_color+"\n".join(sdk_missing))
+                    if len(sdk_too_high):
+                        print(" ")
+                        print("Kexts needing an sdk below Xcode's minimum:\n")
+                        self.cprint(self.er_color+"\n".join(sdk_too_high))
+                    print(" ")
+                    # Find out if we need to give the user the option to continue
+                    if len(build_list):
+                        prompt = "Continue building the remaining "
+                        prompt = prompt + "1 kext? (y/n):  " if len(build_list) == 1 else prompt + "{} kexts? (y/n):  ".format(len(build_list))
+                        m = self.grab(prompt)
+                        if m.lower() == "y":
+                            break
+                        if m.lower() == "n":
+                            return
+                        continue
+                    # No other kexts to build
+                    self.grab("No other kexts in queue - press [enter] to return to the menu...")
+                    return
             if not len(build_list):
-                self.head("WARNING")
+                self.head(self.er_color+"WARNING")
                 print(" ")
                 print("Nothing to build - you must select at least one plugin!")
                 time.sleep(3)

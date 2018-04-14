@@ -4,25 +4,17 @@ import os
 import tempfile
 import shutil
 import datetime
+import Run
 
 class KextBuilder:
 
     def __init__(self):
+        self.r = Run.Run()
         self.git = self._get_git()
         self.xcodebuild = self._get_xcodebuild()
         self.zip = self._get_zip()
         self.temp = None
-
-    def _get_output(self, comm):
-        c = None
-        try:
-            p = subprocess.Popen(comm, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            c = p.communicate()
-            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
-        except:
-            if c == None:
-                return ("", "Command not found", 1)
-            return (c[0].decode("utf-8"), c[1].decode("utf-8"), p.returncode)
+        self.debug = False
 
     def _del_temp(self):
         # Removes the saved temporary file
@@ -42,22 +34,22 @@ class KextBuilder:
 
     def _get_xcodebuild(self):
         # Returns the path to the xcodebuild binary
-        return self._get_output(["which", "xcodebuild"])[0].split("\n")[0].split("\r")[0]
+        return self.r.run({"args":["which", "xcodebuild"]})[0].split("\n")[0].split("\r")[0]
 
     def _get_git(self):
         # Returns the path to the git binary
-        return self._get_output(["which", "git"])[0].split("\n")[0].split("\r")[0]
+        return self.r.run({"args":["which", "git"]})[0].split("\n")[0].split("\r")[0]
     
     def _get_zip(self):
         # Returns the path to the zip binary
-        return self._get_output(["which", "zip"])[0].split("\n")[0].split("\r")[0]
+        return self.r.run({"args":["which", "zip"]})[0].split("\n")[0].split("\r")[0]
 
     def _get_lilu_debug(self):
         # Downloads and compiles the latest lilu - then returns the path to it
         if not self._get_temp():
             return None
         os.chdir(self.temp)
-        output = self._get_output([self.git, "clone", "https://github.com/vit9696/Lilu"])
+        output = self.self.r.run({"args":[self.git, "clone", "https://github.com/vit9696/Lilu"], "stream" : self.debug})
         if not output[2]:
             exit(1)
 
@@ -85,12 +77,12 @@ class KextBuilder:
         if not os.path.exists(self.temp + "/Lilu"):
             # Only download if we need to
             print("    Downloading Lilu...")
-            output = self._get_output([self.git, "clone", "https://github.com/vit9696/Lilu"])
+            output = self.r.run({"args":[self.git, "clone", "https://github.com/vit9696/Lilu"], "stream" : self.debug})
             if not output[2] == 0:
                 return None
         os.chdir("Lilu")
         print("    Building debug version...")
-        output = self._get_output([self.xcodebuild, "-configuration", "Debug"])
+        output = self.r.run({"args":[self.xcodebuild, "-configuration", "Debug"], "stream" : self.debug})
         if not output[2] == 0:
             return None
         if os.path.exists(self.temp + "/Lilu/build/Debug/Lilu.kext"):
@@ -127,26 +119,21 @@ class KextBuilder:
             print("Building " + name + ":")
         if not os.path.exists(folder):
             print("    Downloading " + name + "...")
-            # args = [self.git]
             # Split the args by space and stuff
-            # args.extend(url.split())
             args = url.split()
-            output = self._get_output(args)
+            output = self.r.run({"args":args, "stream" : self.debug})
             if not output[2] == 0:
-                # self._clean_up(output)
                 return output
         os.chdir(folder)
         if prerun:
             # Run this first
-            output = self._get_output(prerun)
+            output = self.r.run({"args":prerun, "stream" : self.debug})
             if not output[2] == 0:
-                # self._clean_up(output)
                 return output
         if needs_lilu:
             # Copy in our beta kext
-            output = self._get_output(["cp", "-R", l, "."])
+            output = self.r.run({"args":["cp", "-R", l, "."], "stream" : self.debug})
             if not output[2] == 0:
-                # self._clean_up(output)
                 return output
         print("    Building release version...")
         xcode_args = [ self.xcodebuild ]
@@ -169,14 +156,13 @@ class KextBuilder:
                 del xcode_args[ind]
             xcode_args.extend(["-sdk", sdk])
             print("    SDK Override \"{}\"...".format(" ".join(xcode_args[1:])))
-        output = self._get_output(xcode_args)
+        output = self.r.run({"args":xcode_args, "stream" : self.debug})
 
         if not output[2] == 0:
             if plug.get("Ignore Errors", False):
                 print("    Build had errors - attempting to continue past the following:\n\n{}".format(output[1]))
                 return_val = True
             else:
-                # self._clean_up(output)
                 return output
 
         os.chdir(plug.get("Build Dir", "./Build/Release"))
@@ -195,10 +181,9 @@ class KextBuilder:
             zip_args.append(zip_dir)
         if skip_dsym:
             zip_args.extend(["-x", "*.dSYM*"])
-        output = self._get_output(zip_args)
+        output = self.r.run({"args":zip_args, "stream" : self.debug})
 
         if not output[2] == 0:
-            # self._clean_up(output)
             return output
         zip_path = os.getcwd() + "/" + file_name
         print("Built " + name + " v" + version)
