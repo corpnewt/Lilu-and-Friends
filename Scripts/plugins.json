@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.40", 
-  "Changes": "* Added debug mode\n* Added Xcode min SDK config\n* Migrated subprocess to new class\n* Added a number of SDK checks", 
+  "Version": "0.0.41", 
+  "Changes": "Include XHCI-300-series-injector.kext in USBInjectAll zip.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -424,7 +424,8 @@
       "Name": "USBInjectAll", 
       "Zip": [
         "USBInjectAll.kext", 
-        "../../XHCI-200-series-injector.kext", 
+        "../../XHCI-200-series-injector.kext",
+        "../../XHCI-300-series-injector.kext",
         "../../XHCI-x99-injector.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
