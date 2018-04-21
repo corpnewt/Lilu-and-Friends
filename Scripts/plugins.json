@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.41", 
-  "Changes": "Include XHCI-300-series-injector.kext in USBInjectAll zip.", 
+  "Version": "0.0.42", 
+  "Changes": "Added NoTouchID Lilu plugin.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -8,9 +8,9 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Name": "ACPIBacklight", 
       "URL": "git clone https://github.com/RehabMan/OS-X-ACPI-Backlight", 
       "Folder": "OS-X-ACPI-Backlight", 
+      "Name": "ACPIBacklight", 
       "Desc": "uses ACPI methods to control laptop backlight - pre-10.12.4"
     }, 
     {
@@ -19,9 +19,9 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Name": "ACPIBatteryManager", 
       "URL": "git clone https://github.com/RehabMan/OS-X-ACPI-Battery-Driver", 
       "Folder": "OS-X-ACPI-Battery-Driver", 
+      "Name": "ACPIBatteryManager", 
       "Desc": "implements an ACPI based battery manager kext"
     }, 
     {
@@ -118,9 +118,9 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Name": "CodecCommander", 
       "URL": "git clone https://github.com/RehabMan/EAPD-Codec-Commander", 
       "Folder": "EAPD-Codec-Commander", 
+      "Name": "CodecCommander", 
       "Desc": "aids in non-functioning audio after sleep"
     }, 
     {
@@ -331,9 +331,9 @@
         "macosx", 
         "-alltargets"
       ], 
-      "Name": "IntelBacklight", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Backlight", 
       "Folder": "OS-X-Intel-Backlight", 
+      "Name": "IntelBacklight", 
       "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4"
     }, 
     {
@@ -376,6 +376,12 @@
       "Desc": "unlocks night shift on unsupported SMBIOS"
     }, 
     {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/al3xtjames/NoTouchID", 
+      "Name": "NoTouchID", 
+      "Desc": "Lilu plugin for disabling Touch ID checks"
+    }, 
+    {
       "URL": "git clone https://github.com/corpnewt/NullCPUPowerManagement", 
       "Build Opts": [
         "-sdk", 
@@ -404,9 +410,9 @@
         "-configuration", 
         "Release"
       ], 
-      "Name": "RealtekRTL8111", 
       "URL": "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", 
       "Folder": "RTL8111_driver_for_OS_X", 
+      "Name": "RealtekRTL8111", 
       "Desc": "for RTL8111/8168 LAN"
     }, 
     {
@@ -424,8 +430,8 @@
       "Name": "USBInjectAll", 
       "Zip": [
         "USBInjectAll.kext", 
-        "../../XHCI-200-series-injector.kext",
-        "../../XHCI-300-series-injector.kext",
+        "../../XHCI-200-series-injector.kext", 
+        "../../XHCI-300-series-injector.kext", 
         "../../XHCI-x99-injector.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
