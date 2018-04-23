@@ -798,10 +798,10 @@ class Updater:
             shutil.rmtree(t)
         self.head("Updated!")
         print(" ")
-        print("Lilu and Friends has been updated!\nPlease restart the script to see the changes.")
+        print("Lilu and Friends has been updated!")
         print(" ")
-        self.grab("Press [enter] to quit...")
-        exit(0)            
+        self.grab("Press [enter] to restart the script...")
+        os.execv(sys.executable, ['python'] + sys.argv)
 
     def get_time(self, t):
         # A helper function to make a readable string between two times
