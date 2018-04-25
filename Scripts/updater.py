@@ -984,7 +984,7 @@ class Updater:
         print("Launch Agent (LA) Info:\n")
         self.cprint("{}LA Installed:      {}{}".format(self.hi_color, self.ch_color, self.k.is_installed()))
         self.cprint("{}LA Loaded:         {}{}".format(self.hi_color, self.ch_color, self.k.is_loaded()))
-        self.cprint("{}LA Check Interval: {}{}".format(self.hi_color, self.ch_color, self.read_time(self.hashes.get("update_wait", 0))))
+        self.cprint("{}LA Check Interval: {}{}".format(self.hi_color, self.ch_color, self.read_time(self.hashes.get("update_wait", 172800))))
         print(" ")
         print("I. Install LA")
         print("L. Load LA")
