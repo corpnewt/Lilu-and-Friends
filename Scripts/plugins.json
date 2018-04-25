@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.43", 
-  "Changes": "Added script restart on update.", 
+  "Version": "0.0.44", 
+  "Changes": "Added experimental LaunchAgent update notifier.", 
   "Plugins": [
     {
       "Build Opts": [
