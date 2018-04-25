@@ -995,7 +995,7 @@ class Updater:
         print("Q. Quit")
         print(" ")
         print("Please pick an option - or type a new check interval with the")
-        menu = self.grab("following format - N(w/d/h/m/s) - so 30 seconds would be 30s:  ")
+        menu = self.grab("following format - N(w/d/h/m/s) - so 10 minutes would be 10m:  ")
 
         if not len(menu):
             self.update_menu()
@@ -1031,6 +1031,7 @@ class Updater:
                     t_adj = n * 60
 
                 self.hashes["update_wait"] = t_adj
+                os.chdir(os.path.dirname(os.path.realpath(__file__)))
                 json.dump(self.hashes, open("hashes.json", "w"), indent=2)
         except:
             pass
