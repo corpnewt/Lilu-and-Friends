@@ -1031,10 +1031,11 @@ class Updater:
                     t_adj = n * 60
 
                 self.hashes["update_wait"] = t_adj
-                os.chdir(os.path.dirname(os.path.realpath(__file__)))
-                json.dump(self.hashes, open("hashes.json", "w"), indent=2)
         except:
             pass
+        # Ensure settings are updated
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        json.dump(self.hashes, open("hashes.json", "w"), indent=2)
         self.update_menu()
         return
         # json.dump(self.hashes, open("hashes.json", "w"), indent=2)
