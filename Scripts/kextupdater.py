@@ -6,7 +6,7 @@ class KextUpdater:
 
     def __init__(self):
         self.json_file = "hashes.json"
-        self.update_min = 10
+        self.update_min = 60
         self.r = run.Run()
         self.re = reveal.Reveal()
         self.plist = "com.corpnewt.LiluAndFriends.plist"
@@ -76,8 +76,8 @@ class KextUpdater:
             except:
                 update_wait = None
             if update_wait == None or update_wait < self.update_min: # Can't go under a minute - too much
-                # Bail
-                exit(1)
+                # Set to the min
+                update_wait = self.update_min
             # Get our hash list
             built = j_data.get("built_kexts", [])
             # Check kexts!
