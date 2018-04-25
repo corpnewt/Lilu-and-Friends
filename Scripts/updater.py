@@ -99,6 +99,8 @@ class Updater:
             self.hashes = json.load(open("hashes.json"))
         else:
             self.hashes = {}
+        if self.hashes.get("update_wait", None) == None:
+            self.hashes["update_wait"] = 172800
 
         if os.path.exists("profiles.json"):
             self.profiles = json.load(open("profiles.json"))
