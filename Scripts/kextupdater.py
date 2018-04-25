@@ -6,7 +6,7 @@ class KextUpdater:
 
     def __init__(self):
         self.json_file = "hashes.json"
-        self.update_min = 60
+        self.update_min = 10
         self.r = run.Run()
         self.re = reveal.Reveal()
         self.plist = "com.corpnewt.LiluAndFriends.plist"
