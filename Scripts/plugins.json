@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.44", 
-  "Changes": "Added experimental LaunchAgent update notifier.", 
+  "Version": "0.0.45", 
+  "Changes": "Fixed an issue with non-normalized case after file-name changes.", 
   "Plugins": [
     {
       "Build Opts": [
