@@ -1,5 +1,16 @@
 import sys
 import os
+
+# Fix case differences
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+for file in os.listdir(os.getcwd()):
+    if not file.lower().endswith(".py"):
+        # Skip non-py files
+        continue
+    # Normalize the name to lower-case
+    os.rename(os.path.join(os.getcwd(), file), os.path.join(os.getcwd(), file.lower()))
+
+# Continue importing
 import time
 import json
 import kextbuilder
