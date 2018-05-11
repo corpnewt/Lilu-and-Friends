@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.45", 
-  "Changes": "Fixed an issue with non-normalized case after file-name changes.", 
+  "Version": "0.0.46", 
+  "Changes": "Fixed an issue a sudo toggle retaining a trailing newline.", 
   "Plugins": [
     {
       "Build Opts": [
