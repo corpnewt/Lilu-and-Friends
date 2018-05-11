@@ -110,10 +110,11 @@ class Run:
                 out = self._run_command(["which", "sudo"])
                 if "sudo" in out[0]:
                     # Can sudo
+                    # Strip the trailing newline
                     if type(args) is list:
-                        args.insert(0, out[0]) # add to start of list
+                        args.insert(0, out[0].replace("\n", "")) # add to start of list
                     elif type(args) is str:
-                        args = out[0] + " " + args # add to start of string
+                        args = out[0].replace("\n", "") + " " + args # add to start of string
             
             if stream:
                 # Stream it!
