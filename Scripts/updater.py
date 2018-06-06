@@ -71,7 +71,7 @@ class Updater:
             print(" ")
             os._exit(1)
 
-        if not os.path.exists("/Applications/Xcode.app"):
+        if not os.path.exists("/Applications/Xcode.app") and not os.path.exists("/Applications/Xcode-beta.app"):
             self.head("Xcode Missing!")
             print(" ")
             print("Xcode is not installed in your /Applications folder!\n\nExiting...")
