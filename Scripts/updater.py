@@ -420,6 +420,8 @@ class Updater:
             sdk_plist = self._get_plist_dict(self.sdk_version_plist)
             print("Updating MinimumSDKVersion...")
             sdk_plist["MinimumSDKVersion"] = version
+            print("Flushing changes...")
+            plistlib.writePlist(sdk_plist, self.sdk_version_plist)
             print("Done!")
             time.sleep(3)
             return
