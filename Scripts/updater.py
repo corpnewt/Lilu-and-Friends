@@ -923,6 +923,12 @@ class Updater:
             self.ch_color = var
         elif name.lower() == "success":
             self.gd_color = var
+        # Flush color changes
+        self.colors_dict["highlight"] = self.hi_color
+        self.colors_dict["error"]     = self.er_color
+        self.colors_dict["changed"]   = self.ch_color
+        self.colors_dict["success"]   = self.gd_color
+        # Save to json
         json.dump(self.colors_dict, open("colors.json", "w"), indent=2)
 
     def color_picker(self):
