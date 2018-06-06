@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.47", 
-  "Changes": "Allow Xcode-beta and fix color saving.", 
+  "Version": "0.0.48", 
+  "Changes": "Plist reading is now done through plutil to allow py2 to read binary plists.", 
   "Plugins": [
     {
       "Build Opts": [
