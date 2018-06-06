@@ -1,6 +1,6 @@
 {
   "Version": "0.0.48", 
-  "Changes": "Plist reading is now done through plutil to allow py2 to read binary plists.", 
+  "Changes": "Plist writing fixed - plist reading now works via plutil with py2 and plistlib with py3.", 
   "Plugins": [
     {
       "Build Opts": [
