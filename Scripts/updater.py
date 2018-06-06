@@ -155,8 +155,11 @@ class Updater:
             print("{} doesn't exist!".format(path))
             return None
         try:
-            p_string = self._get_output(["plutil", "-convert", "json", "-o", "-", "--", path ])[0]
-            d = json.loads(p_string)
+            if sys.version_info >= (3, 0):
+                d = plistlib.readPlist(path)
+            else:
+                p_string = self._get_output(["plutil", "-convert", "json", "-o", "-", "--", path ])[0]
+                d = json.loads(p_string)
         except Exception as e:
             print(str(e))
             return None
