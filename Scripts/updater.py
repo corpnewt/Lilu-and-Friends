@@ -152,11 +152,13 @@ class Updater:
     def _get_plist_dict(self, path):
         # Returns a dict of the plist data as a dict
         if not os.path.exists(path):
+            print("{} doesn't exist!".format(path))
             return None
         try:
-            p_string = self.run({"args" : ["plutil", "-convert", "json", "-o", "-", "--", path ]})[0]
+            p_string = self._get_output(["plutil", "-convert", "json", "-o", "-", "--", path ])[0]
             d = json.loads(p_string)
-        except:
+        except Exception as e:
+            print(str(e))
             return None
         return d
 
