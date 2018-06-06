@@ -148,12 +148,24 @@ class Updater:
             return message
         sys.stdout.write(message)
         print(reset)
+        
+    def _get_plist_dict(self, path):
+        # Returns a dict of the plist data as a dict
+        if not os.path.exists(path):
+            return None
+        try:
+            p_string = self.run({"args" : ["plutil", "-convert", "json", "-o", "-", "--", path ]})[0]
+            d = json.loads(p_string)
+        except:
+            return None
+        return d
 
     def _get_sdk_min_version(self):
         sdk_min = None
         if os.path.exists(self.sdk_version_plist):
             try:
-                sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+                # sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+                sdk_plist = self._get_plist_dict(self.sdk_version_plist)
                 sdk_min = sdk_plist["MinimumSDKVersion"]
             except:
                 pass
@@ -402,7 +414,8 @@ class Updater:
             print("Have write permissions already...")
             # Can write to it normally
             print("Loading Info.plist...")
-            sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+            # sdk_plist = plistlib.readPlist(self.sdk_version_plist)
+            sdk_plist = self._get_plist_dict(self.sdk_version_plist)
             print("Updating MinimumSDKVersion...")
             sdk_plist["MinimumSDKVersion"] = version
             print("Done!")
@@ -412,7 +425,8 @@ class Updater:
         # Need to use a temp folder and then sudo it back
         self.r.run({"args":["cp", self.sdk_version_plist, temp], "stream" : True})
         print("Loading Info.plist...")
-        sdk_plist = plistlib.readPlist(os.path.join(temp, "Info.plist"))
+        # sdk_plist = plistlib.readPlist(os.path.join(temp, "Info.plist"))
+        sdk_plist = self._get_plist_dict(os.path.join(temp, "Info.plist"))
         print("Updating MinimumSDKVersion...")
         sdk_plist["MinimumSDKVersion"] = version
         print("Writing Info.plist...")
