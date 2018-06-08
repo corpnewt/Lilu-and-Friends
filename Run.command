@@ -4,7 +4,7 @@ py="$( which python )"
 py3="$( which python3 )"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 python_install=""
-script_name="Scripts/Updater.py"
+script_name="Scripts/updater.py"
 arg="$1"
 
 if [[ "$py3" == "" ]]; then
