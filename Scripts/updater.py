@@ -156,7 +156,8 @@ class Updater:
             return None
         try:
             if sys.version_info >= (3, 0):
-                d = plistlib.readPlist(path)
+                with open(path, 'rb') as p:
+                    d = plistlib.load(p)
             else:
                 p_string = self._get_output(["plutil", "-convert", "json", "-o", "-", "--", path ])[0]
                 d = json.loads(p_string)
