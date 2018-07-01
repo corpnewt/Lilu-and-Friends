@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.48", 
-  "Changes": "Plist writing fixed - plist reading now works via plutil with py2 and plistlib with py3.", 
+  "Version": "0.0.49", 
+  "Changes": "Py3 plist read deprecation warning fixed - and Lilu repo address updated (thanks ReddestDream!).", 
   "Plugins": [
     {
       "Build Opts": [
