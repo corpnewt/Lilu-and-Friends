@@ -354,7 +354,7 @@
       "Desc": "for most Intel LAN"
     }, 
     {
-      "URL": "git clone https://github.com/vit9696/Lilu", 
+      "URL": "git clone https://github.com/acidanthera/Lilu", 
       "Name": "Lilu", 
       "Desc": "for arbitrary kext, library, and program patching"
     }, 

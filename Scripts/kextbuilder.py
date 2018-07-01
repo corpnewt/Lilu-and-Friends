@@ -49,7 +49,7 @@ class KextBuilder:
         if not self._get_temp():
             return None
         os.chdir(self.temp)
-        output = self.self.r.run({"args":[self.git, "clone", "https://github.com/vit9696/Lilu"], "stream" : self.debug})
+        output = self.self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})
         if not output[2]:
             exit(1)
 
@@ -77,7 +77,7 @@ class KextBuilder:
         if not os.path.exists(self.temp + "/Lilu"):
             # Only download if we need to
             print("    Downloading Lilu...")
-            output = self.r.run({"args":[self.git, "clone", "https://github.com/vit9696/Lilu"], "stream" : self.debug})
+            output = self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})
             if not output[2] == 0:
                 return None
         os.chdir("Lilu")
