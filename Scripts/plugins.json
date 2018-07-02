@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.49", 
-  "Changes": "Py3 plist read deprecation warning fixed - and Lilu repo address updated (thanks ReddestDream!).", 
+  "Version": "0.0.50", 
+  "Changes": "Fixed issues with sdk detection and Min SDK Version patching when using Xcode-beta.app.", 
   "Plugins": [
     {
       "Build Opts": [
