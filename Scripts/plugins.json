@@ -45,7 +45,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/vit9696/AppleALC", 
+      "URL": "git clone https://github.com/acidanthera/AppleALC", 
       "Name": "AppleALC", 
       "Desc": "dynamic audio patching"
     }, 
@@ -485,7 +485,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/vit9696/WhateverGreen", 
+      "URL": "git clone https://github.com/acidanthera/WhateverGreen", 
       "Name": "WhateverGreen", 
       "Desc": "provides patches to select ATI/AMD GPUs"
     }
