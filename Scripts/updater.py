@@ -42,11 +42,6 @@ class Updater:
         else:
             self.colors_dict = {}
         self.colors   = self.colors_dict.get("colors", [])
-        self.hi_color = self.colors_dict.get("highlight", "")
-        self.er_color = self.colors_dict.get("error", "")
-        self.ch_color = self.colors_dict.get("changed", "")
-        self.gd_color = self.colors_dict.get("success", "")
-        self.rt_color = self.colors_dict.get("reset", "")
         
         self.r = run.Run()
         self.k = kextupdater.KextUpdater()
@@ -124,6 +119,18 @@ class Updater:
         else:
             self.profiles = []
         self.selected_profile = None
+
+        # Save colors in own file now
+        if os.path.exists("colorsettings.json"):
+            self.colorsettings = json.load(open("colorsettings.json"))
+        else:
+            self.colorsettings = {}
+        # Get them
+        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight", ""))
+        self.er_color = self.colorsettings.get("error", self.colors_dict.get("error", ""))
+        self.ch_color = self.colorsettings.get("changed", self.colors_dict.get("changed", ""))
+        self.gd_color = self.colorsettings.get("success", self.colors_dict.get("success", ""))
+        self.rt_color = self.colorsettings.get("reset", self.colors_dict.get("reset", ""))
 
         self.version_url = "https://raw.githubusercontent.com/corpnewt/Lilu-And-Friends/master/Scripts/plugins.json"
 
@@ -963,7 +970,7 @@ class Updater:
             return
         # Have a valid thing now
         var = c[menu]["find"]
-        self.colors_dict[name.lower()] = var
+        self.colorsettings[name.lower()] = var
         if name.lower() == "highlight":
             self.hi_color = var
         elif name.lower() == "error":
@@ -973,12 +980,12 @@ class Updater:
         elif name.lower() == "success":
             self.gd_color = var
         # Flush color changes
-        self.colors_dict["highlight"] = self.hi_color
-        self.colors_dict["error"]     = self.er_color
-        self.colors_dict["changed"]   = self.ch_color
-        self.colors_dict["success"]   = self.gd_color
+        self.colorsettings["highlight"] = self.hi_color
+        self.colorsettings["error"]     = self.er_color
+        self.colorsettings["changed"]   = self.ch_color
+        self.colorsettings["success"]   = self.gd_color
         # Save to json
-        json.dump(self.colors_dict, open("colors.json", "w"), indent=2)
+        json.dump(self.colorsettings, open("colorsettings.json", "w"), indent=2)
 
     def color_picker(self):
         c_list = [self.hi_color, self.ch_color, self.gd_color, self.er_color]
@@ -1003,11 +1010,11 @@ class Updater:
         elif menu[:1].lower() == "q":
             self.custom_quit()
         elif menu[:1].lower() == "d":
-            self.hi_color = self.colors_dict["highlight"] = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<bkb>"), "")
-            self.er_color = self.colors_dict["error"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<rb>"), "")
-            self.ch_color = self.colors_dict["changed"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<cb>"), "")
-            self.gd_color = self.colors_dict["success"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<gb>"), "")
-            json.dump(self.colors_dict, open("colors.json", "w"), indent=2)
+            self.hi_color = self.colorsettings["highlight"] = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<bkb>"), "")
+            self.er_color = self.colorsettings["error"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<rb>"), "")
+            self.ch_color = self.colorsettings["changed"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<cb>"), "")
+            self.gd_color = self.colorsettings["success"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<gb>"), "")
+            json.dump(self.colorsettings, open("colorsettings.json", "w"), indent=2)
         try:
             menu = int(menu)
         except:
