@@ -133,6 +133,27 @@ class Updater:
         self.version = theJSON.get("Version", "0.0.0")
         self.checked_updates = False
 
+        # Migrate stuff
+        self.migrate_profiles()
+
+    def migrate_profiles(self):
+        # Helper method to migrate some profile info
+        migrate = [
+            {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup"],"replace":["WhateverGreen"]}
+        ]
+        changes = False
+        for m in migrate:
+            for profile in self.profiles:
+                temp = [ x for x in profile["Kexts"] if x not in m["find"] ]
+                if len(temp) != len(profile["Kexts"]):
+                    # Something changed - add the replace kext(s) if they don't exist
+                    [ temp.append(x) for x in m["replace"] if not x in temp ]
+                    profile["Kexts"] = temp
+                    changes = True
+        # Check if anything changed - and apply
+        if changes:
+            # Save to file
+            json.dump(self.profiles, open("profiles.json", "w"), indent=2)
 
     # Helper methods
     def grab(self, prompt):
