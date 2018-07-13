@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.50", 
-  "Changes": "Fixed issues with sdk detection and Min SDK Version patching when using Xcode-beta.app.", 
+  "Version": "0.0.51", 
+  "Changes": "Added migration code for IGFU/NGFU/Shiki/CDFU --> WEG as vit9696 merged them.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -125,12 +125,6 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/PMheart/CoreDisplayFixup", 
-      "Name": "CoreDisplayFixup", 
-      "Desc": "enable 4K or greater res on certain graphics"
-    }, 
-    {
-      "Lilu": true, 
       "URL": "git clone https://github.com/syscl/EnableLidWake", 
       "Name": "EnableLidWake"
     }, 
@@ -157,7 +151,7 @@
       "Name": "FakeSMC", 
       "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
       "Folder": "hwsensors-hwsensors3-code3", 
-      "Desc": "only FakeSMC"
+      "Desc": "only FakeSMC from the HWSensors3 repo"
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -343,12 +337,6 @@
       "Desc": "alternative to the min-stolen patch"
     }, 
     {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/lvs1974/IntelGraphicsFixup IntelGraphicsFixup", 
-      "Name": "IntelGraphicsFixup", 
-      "Desc": "provides patches for Intel GPUs"
-    }, 
-    {
       "URL": "git clone https://github.com/Mieze/IntelMausiEthernet", 
       "Name": "IntelMausiEthernet", 
       "Desc": "for most Intel LAN"
@@ -391,12 +379,6 @@
       ], 
       "Name": "NullCPUPowerManagement", 
       "Desc": "disables power management on unsupported CPUs"
-    }, 
-    {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/lvs1974/NvidiaGraphicsFixup NvidiaGraphicsFixup", 
-      "Name": "NvidiaGraphicsFixup", 
-      "Desc": "provides patches for NVidia GPUs"
     }, 
     {
       "URL": "git clone https://github.com/Mieze/RealtekRTL8100", 
@@ -487,7 +469,7 @@
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/WhateverGreen", 
       "Name": "WhateverGreen", 
-      "Desc": "provides patches to select ATI/AMD GPUs"
+      "Desc": "provides patches for AMD/Nvidia/Intel GPUs"
     }
   ]
 }
