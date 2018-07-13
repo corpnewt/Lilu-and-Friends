@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.51", 
-  "Changes": "Added migration code for IGFU/NGFU/Shiki/CDFU --> WEG as vit9696 merged them.", 
+  "Version": "0.0.52", 
+  "Changes": "Added migration code for IGFU/NGFU/Shiki/CDFU --> WEG as vit9696 merged them.\nTouch-up - removed Shiki from plugins.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -396,12 +396,6 @@
       "Folder": "RTL8111_driver_for_OS_X", 
       "Name": "RealtekRTL8111", 
       "Desc": "for RTL8111/8168 LAN"
-    }, 
-    {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/vit9696/Shiki", 
-      "Name": "Shiki", 
-      "Desc": "for protected video playback"
     }, 
     {
       "Build Opts": [
