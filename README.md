@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 45 kexts
+Currently Builds 41 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -35,7 +35,6 @@ Currently Builds 45 kexts
 * BrcmPatchRAM
 * CPUFriend
 * CodecCommander
-* CoreDisplayFixup
 * EnableLidWake
 * FakePCIID
 * FakeSMC
@@ -50,17 +49,14 @@ Currently Builds 45 kexts
 * HibernationFixup
 * IntelBacklight
 * IntelGraphicsDVMTFixup
-* IntelGraphicsFixup
 * IntelMausiEthernet
 * Lilu
 * LiluFriend
 * NightShiftUnlocker
 * NoTouchID
 * NullCPUPowerManagement
-* NvidiaGraphicsFixup
 * RealtekRTL8100
 * RealtekRTL8111
-* Shiki
 * USBInjectAll
 * VoodooHDA
 * VoodooI2C
