@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.52", 
-  "Changes": "Added migration code for IGFU/NGFU/Shiki/CDFU --> WEG as vit9696 merged them.\nTouch-up - removed Shiki from plugins.", 
+  "Version": "0.0.53", 
+  "Changes": "Updated AirportBrcmFixup and HibernationFixup repo locations.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -38,7 +38,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/lvs1974/AirportBrcmFixup airportbrcmfixup-code", 
+      "URL": "git clone https://github.com/acidanthera/AirportBrcmFixup airportbrcmfixup-code", 
       "Folder": "airportbrcmfixup-code", 
       "Name": "AirportBrcmFixup", 
       "Desc": "for non-native Airport Broadcom Wi-Fi cards"
@@ -315,7 +315,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/lvs1974/HibernationFixup.git HibernationFixup", 
+      "URL": "git clone https://github.com/acidanthera/HibernationFixup.git HibernationFixup", 
       "Name": "HibernationFixup", 
       "Desc": "saves IOHibernateRTCVariables in NVRAM"
     }, 
