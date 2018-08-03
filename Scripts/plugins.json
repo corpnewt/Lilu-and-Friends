@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.53", 
-  "Changes": "Updated AirportBrcmFixup and HibernationFixup repo locations.", 
+  "Version": "0.0.54", 
+  "Changes": "Updated AirportBrcmFixup, HibernationFixup, and BT4LEContiunityFixup repo locations.\nRemoved IntelGraphicsDVMTFixup as it's merged into WEG.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -79,10 +79,10 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/lvs1974/BT4LEContiunityFixup bt4lecontiunityfixup-code", 
+      "URL": "git clone https://github.com/acidanthera/BT4LEContiunityFixup bt4lecontiunityfixup-code", 
       "Folder": "bt4lecontiunityfixup-code", 
       "Name": "BT4LEContiunityFixup", 
-      "Desc": "for BT4LE-Handoff-Hotspot features"
+      "Desc": "Provides Handoff, Instant Hotspot, and New Airdrop patches for IOBluetoothFamily."
     }, 
     {
       "Info": "BrcmPatchRam2.kext/Contents/Info.plist", 
@@ -329,12 +329,6 @@
       "Folder": "OS-X-Intel-Backlight", 
       "Name": "IntelBacklight", 
       "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4"
-    }, 
-    {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/BarbaraPalvin/IntelGraphicsDVMTFixup", 
-      "Name": "IntelGraphicsDVMTFixup", 
-      "Desc": "alternative to the min-stolen patch"
     }, 
     {
       "URL": "git clone https://github.com/Mieze/IntelMausiEthernet", 
