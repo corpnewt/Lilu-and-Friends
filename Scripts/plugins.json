@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.54", 
-  "Changes": "Updated AirportBrcmFixup, HibernationFixup, and BT4LEContiunityFixup repo locations.\nRemoved IntelGraphicsDVMTFixup as it's merged into WEG.", 
+  "Version": "0.0.55", 
+  "Changes": "Fixed an issue accessing color vars before they're initialized.", 
   "Plugins": [
     {
       "Build Opts": [
