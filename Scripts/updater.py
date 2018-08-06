@@ -42,6 +42,17 @@ class Updater:
         else:
             self.colors_dict = {}
         self.colors   = self.colors_dict.get("colors", [])
+        # Save colors in own file now
+        if os.path.exists("colorsettings.json"):
+            self.colorsettings = json.load(open("colorsettings.json"))
+        else:
+            self.colorsettings = {}
+        # Get them
+        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight", ""))
+        self.er_color = self.colorsettings.get("error", self.colors_dict.get("error", ""))
+        self.ch_color = self.colorsettings.get("changed", self.colors_dict.get("changed", ""))
+        self.gd_color = self.colorsettings.get("success", self.colors_dict.get("success", ""))
+        self.rt_color = self.colorsettings.get("reset", self.colors_dict.get("reset", ""))
         
         self.r = run.Run()
         self.k = kextupdater.KextUpdater()
@@ -119,18 +130,6 @@ class Updater:
         else:
             self.profiles = []
         self.selected_profile = None
-
-        # Save colors in own file now
-        if os.path.exists("colorsettings.json"):
-            self.colorsettings = json.load(open("colorsettings.json"))
-        else:
-            self.colorsettings = {}
-        # Get them
-        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight", ""))
-        self.er_color = self.colorsettings.get("error", self.colors_dict.get("error", ""))
-        self.ch_color = self.colorsettings.get("changed", self.colors_dict.get("changed", ""))
-        self.gd_color = self.colorsettings.get("success", self.colors_dict.get("success", ""))
-        self.rt_color = self.colorsettings.get("reset", self.colors_dict.get("reset", ""))
 
         self.version_url = "https://raw.githubusercontent.com/corpnewt/Lilu-And-Friends/master/Scripts/plugins.json"
 
