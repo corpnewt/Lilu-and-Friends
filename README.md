@@ -58,6 +58,7 @@ Currently Builds 41 kexts:
 * RealtekRTL8111
 * USBInjectAll
 * VirtualSMC
+* VirtualSMC (All Tools)
 * VoodooHDA
 * VoodooI2C
 * VoodooPS2Controller
