@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.57", 
-  "Changes": "Added another entry to zip all the targets of the VirtualSMC repo.", 
+  "Version": "0.0.58", 
+  "Changes": "Only zip the package folder from the VirtualSMC output.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -423,7 +423,7 @@
       "Build Opts": [
         "-alltargets"
       ],
-      "Zip":"../Release",
+      "Zip":"../Release/package",
       "Info": "VirtualSMC.kext/Contents/Info.plist"
     }, 
     {
