@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.56", 
-  "Changes": "Added VirtualSMC.", 
+  "Version": "0.0.57", 
+  "Changes": "Added another entry to zip all the targets of the VirtualSMC repo.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -412,7 +412,19 @@
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Name": "VirtualSMC", 
-      "Desc": "advanced Apple SMC emulator in the kernel."
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
+      "Name": "VirtualSMC (All Tools)",
+      "Folder": "VirtualSMC", 
+      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)",
+      "Build Opts": [
+        "-alltargets"
+      ],
+      "Zip":"../Release",
+      "Info": "VirtualSMC.kext/Contents/Info.plist"
     }, 
     {
       "URL": "git svn clone https://svn.code.sf.net/p/voodoohda/code/ voodoohda-code", 
