@@ -48,7 +48,6 @@ Currently Builds 41 kexts:
 * HWSensors (RehabMan)
 * HibernationFixup
 * IntelBacklight
-* IntelGraphicsDVMTFixup
 * IntelMausiEthernet
 * Lilu
 * LiluFriend
@@ -58,6 +57,7 @@ Currently Builds 41 kexts:
 * RealtekRTL8100
 * RealtekRTL8111
 * USBInjectAll
+* VirtualSMC
 * VoodooHDA
 * VoodooI2C
 * VoodooPS2Controller
