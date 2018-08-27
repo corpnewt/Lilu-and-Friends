@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.55", 
-  "Changes": "Fixed an issue accessing color vars before they're initialized.", 
+  "Version": "0.0.56", 
+  "Changes": "Added VirtualSMC.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -407,6 +407,12 @@
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
       "Folder": "OS-X-USB-Inject-All", 
       "Desc": "injects all USB ports"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
+      "Name": "VirtualSMC", 
+      "Desc": "advanced Apple SMC emulator in the kernel."
     }, 
     {
       "URL": "git svn clone https://svn.code.sf.net/p/voodoohda/code/ voodoohda-code", 
