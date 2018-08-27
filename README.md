@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 41 kexts:
+Currently Builds 42 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
