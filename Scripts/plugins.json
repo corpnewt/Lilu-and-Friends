@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.58", 
-  "Changes": "Only zip the package folder from the VirtualSMC output.", 
+  "Version": "0.0.59", 
+  "Changes": "Allow requirements prior to building (specifically nasm and mtoc/mtoc.NEW for VirtualSMC + Tools).", 
   "Plugins": [
     {
       "Build Opts": [
@@ -415,16 +415,23 @@
       "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
     }, 
     {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
-      "Name": "VirtualSMC (All Tools)",
-      "Folder": "VirtualSMC", 
-      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)",
       "Build Opts": [
         "-alltargets"
-      ],
-      "Zip":"../Release/package",
-      "Info": "VirtualSMC.kext/Contents/Info.plist"
+      ], 
+      "Info": "VirtualSMC.kext/Contents/Info.plist", 
+      "Name": "VirtualSMC (All Tools)", 
+      "Zip": "../Release/package", 
+      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
+      "Required": [
+        "nasm", 
+        [
+          "mtoc", 
+          "mtoc.NEW"
+        ]
+      ], 
+      "Lilu": true, 
+      "Folder": "VirtualSMC", 
+      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
     }, 
     {
       "URL": "git svn clone https://svn.code.sf.net/p/voodoohda/code/ voodoohda-code", 
