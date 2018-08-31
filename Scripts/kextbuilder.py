@@ -89,6 +89,9 @@ class KextBuilder:
             return self.temp + "/Lilu/build/Debug/Lilu.kext"
         return None
 
+    def _get_bin(self, bin):
+        return self.r.run({"args":["which", bin]})[0].split("\n")[0].split("\r")[0]
+
     def build(self, plug, curr = None, total = None, ops = None, sdk = None):
         # Builds a kext
         # Gather info
@@ -98,14 +101,25 @@ class KextBuilder:
         folder     = plug.get("Folder", plug["Name"])
         prerun     = plug.get("Pre-Run", None)
         skip_dsym  = plug.get("Skip dSYM", True)
+        required   = plug.get("Required",[])
 
         return_val = None
 
-        '''if total:
-            self.head("Updating " + name + " ({} of {})".format(curr, total))
-        else:
-            self.head("Updating " + name)'''
         print(" ")
+
+        missing = []
+        for x in required:
+            if isinstance(x, list):
+                m = [z for z in x if not len(self._get_bin(z))]
+                if len(m) == len(x):
+                    # Missing all of them in our optional list
+                    missing.extend(x)
+            else:
+                if not len(self._get_bin(x)):
+                    missing.append(x)
+        if len(missing):
+            return ("","Missing requirements to build {}:\n{}".format(name, ", ".join(missing)))
+
         if not self._get_temp():
             print("Something went wrong!")
             exit(1)
