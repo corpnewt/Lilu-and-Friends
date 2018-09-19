@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.59", 
-  "Changes": "Allow requirements prior to building (specifically nasm and mtoc/mtoc.NEW for VirtualSMC + Tools).", 
+  "Version": "0.0.60", 
+  "Changes": "Run macbuild.tool by default when building VirtualSMC.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -177,9 +177,13 @@
         "HWSensors.xcodeproj"
       ], 
       "Pre-Run": [
-        "xcodebuild", 
-        "-project", 
-        "Versioning And Distribution.xcodeproj"
+        {
+          "path" : "xcodebuild",
+          "args" : [
+            "-project",
+            "Versioning And Distribution.xcodeproj"
+          ]
+        }
       ], 
       "Name": "FakeSMC (Legacy)", 
       "Zip": "./FakeSMC.kext", 
@@ -286,9 +290,13 @@
         "HWSensors.xcodeproj"
       ], 
       "Pre-Run": [
-        "xcodebuild", 
-        "-project", 
-        "Versioning And Distribution.xcodeproj"
+        {
+          "path" : "xcodebuild",
+          "args" : [
+            "-project",
+            "Versioning And Distribution.xcodeproj"
+          ]
+        }
       ], 
       "Name": "HWSensors (Legacy)", 
       "Zip": "../Binaries", 
@@ -412,7 +420,14 @@
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Name": "VirtualSMC", 
-      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)",
+      "Pre-Run": [
+        {
+          "path" : "./VirtualSmcPkg/macbuild.tool",
+          "env"  : {"FORCE_INSTALL":"1"},
+          "lang" : "bash"
+        }
+      ]
     }, 
     {
       "Build Opts": [
@@ -421,14 +436,14 @@
       "Info": "VirtualSMC.kext/Contents/Info.plist", 
       "Name": "VirtualSMC (All Tools)", 
       "Zip": "../Release/package", 
-      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
-      "Required": [
-        "nasm", 
-        [
-          "mtoc", 
-          "mtoc.NEW"
-        ]
-      ], 
+      "URL": "git clone https://github.com/acidanthera/VirtualSMC",
+      "Pre-Run": [
+        {
+          "path" : "./VirtualSmcPkg/macbuild.tool",
+          "env"  : {"FORCE_INSTALL":"1"},
+          "lang" : "bash"
+        }
+      ],
       "Lilu": true, 
       "Folder": "VirtualSMC", 
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
