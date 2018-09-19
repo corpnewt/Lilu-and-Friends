@@ -99,7 +99,7 @@ class KextBuilder:
         url        = plug["URL"]
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
-        prerun     = plug.get("Pre-Run", None)
+        prerun     = plug.get("Pre-Run", [])
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
 
@@ -139,11 +139,45 @@ class KextBuilder:
             if not output[2] == 0:
                 return output
         os.chdir(folder)
-        if prerun:
-            # Run this first
-            output = self.r.run({"args":prerun, "stream" : self.debug})
+        if len(prerun):
+            print("    Running Pre-Run Tasks ({})...".format(len(prerun)))
+        currtask = 0
+        for task in prerun:
+            # Iterate the tasks, and run them as needed
+            args = []
+            currtask += 1
+            # Format for the command should be:
+            #
+            # lang path [arg1, arg2, arg3, ...]
+            # 
+            # With environment vars set as needed
+            #
+            # lang = path to the calling binary if the path is a script
+            # path = path to the target relative to our current dir
+            # args = list of arguments
+            # env  = environment variables to set
+            # bail = to bail on errors - default is true
+
+            # Build the arguments list
+            if task.get("lang",None):
+                args.append(task["lang"])
+            args.append(task.get("path",""))
+            args.extend(task.get("args",[]))
+
+            # Set the env vars if they exist
+            if task.get("env", None):
+                for e in task["env"]:
+                    os.environ[e] = str(task["env"][e])
+
+            # Run the task
+            print("     - Running task {} of {} - {}...".format(currtask, len(prerun), os.path.basename(task.get("path","Unknown"))))
+            output = self.r.run({"args":args, "stream" : self.debug})
             if not output[2] == 0:
-                return output
+                output = (output[0], "Pre-Run Task Failed!\n\n{}".format(output[1]), output[2])
+                if task.get("bail", True):
+                    return output
+                print(output[1])
+                
         if needs_lilu:
             # Copy in our beta kext
             output = self.r.run({"args":["cp", "-R", l, "."], "stream" : self.debug})
