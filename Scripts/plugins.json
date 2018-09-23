@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.60", 
-  "Changes": "Run macbuild.tool by default when building VirtualSMC.", 
+  "Version": "0.0.61", 
+  "Changes": "Added pre-build fixes for AppleALC and BrcmPatchRAM2 on Xcode 10.\nAppleALC:  run 'xcodebuild -target ResourceConverter' first\nBrcmPatchRAM2:  run 'xcodebuild -target Prebuild' first", 
   "Plugins": [
     {
       "Build Opts": [
@@ -46,6 +46,17 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
+      "Pre-Run": [
+        {
+          "path": "xcodebuild", 
+          "args": [
+            "-sdk", 
+            "macosx", 
+            "-target", 
+            "ResourceConverter"
+          ]
+        }
+      ], 
       "Name": "AppleALC", 
       "Desc": "dynamic audio patching"
     }, 
@@ -99,6 +110,17 @@
         "BrcmNonPatchRAM2", 
         "-target", 
         "BrcmBluetoothInjector"
+      ], 
+      "Pre-Run": [
+        {
+          "path": "xcodebuild", 
+          "args": [
+            "-sdk", 
+            "macosx", 
+            "-target", 
+            "Prebuild"
+          ]
+        }
       ], 
       "Name": "BrcmPatchRAM", 
       "Zip": "../Release", 
@@ -178,9 +200,9 @@
       ], 
       "Pre-Run": [
         {
-          "path" : "xcodebuild",
-          "args" : [
-            "-project",
+          "path": "xcodebuild", 
+          "args": [
+            "-project", 
             "Versioning And Distribution.xcodeproj"
           ]
         }
@@ -291,9 +313,9 @@
       ], 
       "Pre-Run": [
         {
-          "path" : "xcodebuild",
-          "args" : [
-            "-project",
+          "path": "xcodebuild", 
+          "args": [
+            "-project", 
             "Versioning And Distribution.xcodeproj"
           ]
         }
@@ -419,31 +441,35 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
-      "Name": "VirtualSMC", 
-      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)",
       "Pre-Run": [
         {
-          "path" : "./VirtualSmcPkg/macbuild.tool",
-          "env"  : {"FORCE_INSTALL":"1"},
-          "lang" : "bash"
+          "lang": "bash", 
+          "path": "./VirtualSmcPkg/macbuild.tool", 
+          "env": {
+            "FORCE_INSTALL": "1"
+          }
         }
-      ]
+      ], 
+      "Name": "VirtualSMC", 
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
     }, 
     {
       "Build Opts": [
         "-alltargets"
       ], 
       "Info": "VirtualSMC.kext/Contents/Info.plist", 
-      "Name": "VirtualSMC (All Tools)", 
-      "Zip": "../Release/package", 
-      "URL": "git clone https://github.com/acidanthera/VirtualSMC",
       "Pre-Run": [
         {
-          "path" : "./VirtualSmcPkg/macbuild.tool",
-          "env"  : {"FORCE_INSTALL":"1"},
-          "lang" : "bash"
+          "lang": "bash", 
+          "path": "./VirtualSmcPkg/macbuild.tool", 
+          "env": {
+            "FORCE_INSTALL": "1"
+          }
         }
-      ],
+      ], 
+      "Name": "VirtualSMC (All Tools)", 
+      "Zip": "../Release/package", 
+      "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Lilu": true, 
       "Folder": "VirtualSMC", 
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
