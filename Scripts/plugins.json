@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.62", 
-  "Changes": "Avoid building VoodooPS2Daemon as of VoodooPS2Controller 1.9.0", 
+  "Version": "0.0.63", 
+  "Changes": "Added ability to skip targets via exclusion list.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -99,18 +99,12 @@
       "Info": "BrcmPatchRam2.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
-        "macosx", 
-        "-target", 
-        "BrcmPatchRAM2", 
-        "-target", 
-        "BrcmFirmwareRepo", 
-        "-target", 
-        "BrcmFirmwareData", 
-        "-target", 
-        "BrcmNonPatchRAM2", 
-        "-target", 
-        "BrcmBluetoothInjector"
+        "macosx"
       ], 
+      "Skip Targets": [
+        "BrcmPatchRAM",
+        "BrcmNonPatchRAM"
+      ],
       "Pre-Run": [
         {
           "path": "xcodebuild", 
@@ -246,40 +240,12 @@
       "Info": "FakeSMC.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
-        "macosx", 
-        "-target", 
-        "ACPIMonitor", 
-        "-target", 
-        "ADT7470", 
-        "-target", 
-        "AmdCPUMonitor", 
-        "-target", 
-        "Andigilog", 
-        "-target", 
-        "DIMMSensor", 
-        "-target", 
-        "F718x", 
-        "-target", 
-        "FakeSMC", 
-        "-target", 
-        "GeforceSensor", 
-        "-target", 
-        "HWInfo", 
-        "-target", 
-        "IntelCPUMonitor", 
-        "-target", 
-        "NVClockX", 
-        "-target", 
-        "PC8739x", 
-        "-target", 
-        "RadeonMonitor", 
-        "-target", 
-        "W836x", 
-        "-target", 
-        "X3100", 
-        "-target", 
-        "VoodooBatterySMC"
+        "macosx"
       ], 
+      "Skip Targets": [
+        "IT87x",
+        "SMIMonitor"
+      ],
       "Build Dir": "./Build/Release 10.6", 
       "Name": "HWSensors (FakeSMC + Plugins)", 
       "Zip": "../Release 10.6", 
@@ -499,20 +465,11 @@
     {
       "Build Opts": [
         "-sdk", 
-        "macosx", 
-        "-target",
-        "VoodooPS2Controller",
-        "-target",
-        "VoodooPS2Keyboard",
-        "-target",
-        "VoodooPS2Mouse",
-        "-target",
-        "VoodooPS2Trackpad",
-        "-target",
-        "VoodooPS2synapticsPane",
-        "-target",
-        "synapticsconfigload"
+        "macosx"
       ], 
+      "Skip Targets": [
+        "VoodooPS2Daemon"
+      ],
       "Name": "VoodooPS2Controller", 
       "Zip": "../Release/", 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
