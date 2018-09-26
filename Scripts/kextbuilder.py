@@ -102,6 +102,7 @@ class KextBuilder:
         prerun     = plug.get("Pre-Run", [])
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
+        skip_targ  = plug.get("Skip Targets",[])
 
         return_val = None
 
@@ -183,6 +184,31 @@ class KextBuilder:
             output = self.r.run({"args":["cp", "-R", l, "."], "stream" : self.debug})
             if not output[2] == 0:
                 return output
+
+        # Check target exclusions
+        target_specs = []
+        if len(skip_targ):
+            print("    Verifying target exclusions...")
+            output = self.r.run({"args":[self.xcodebuild, "-list"]})
+            primed = False
+            for line in output[0].split("\n"):
+                line = line.strip()
+                if line.lower() == "targets:":
+                    primed = True
+                    continue
+                if not primed:
+                    continue
+                # Primed - let's see if we hit a break
+                if not len(line):
+                    break
+                # Made it here, add the target if not in our list of targets
+                if not line.lower() in [x.lower() for x in skip_targ]:
+                    print("     - {} allowed".format(line))
+                    target_specs.append("-target")
+                    target_specs.append(line)
+                else:
+                    print("     - {} skipped".format(line))
+
         print("    Building release version...")
         xcode_args = [ self.xcodebuild ]
         if ops:
@@ -190,6 +216,8 @@ class KextBuilder:
             xcode_args.extend(ops.split())
         else:
             xcode_args.extend(plug.get("Build Opts", []))
+        # Add the targets if we have skips
+        xcode_args.extend(target_specs)
         # Make sure it builds in the local directory - but only if using -scheme
         xcode_args.append("BUILD_DIR=" + os.path.join(os.getcwd(), "build/"))
         if sdk:
