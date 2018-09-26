@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.61", 
-  "Changes": "Added pre-build fixes for AppleALC and BrcmPatchRAM2 on Xcode 10.\nAppleALC:  run 'xcodebuild -target ResourceConverter' first\nBrcmPatchRAM2:  run 'xcodebuild -target Prebuild' first", 
+  "Version": "0.0.62", 
+  "Changes": "Avoid building VoodooPS2Daemon as of VoodooPS2Controller 1.9.0", 
   "Plugins": [
     {
       "Build Opts": [
@@ -500,7 +500,18 @@
       "Build Opts": [
         "-sdk", 
         "macosx", 
-        "-alltargets"
+        "-target",
+        "VoodooPS2Controller",
+        "-target",
+        "VoodooPS2Keyboard",
+        "-target",
+        "VoodooPS2Mouse",
+        "-target",
+        "VoodooPS2Trackpad",
+        "-target",
+        "VoodooPS2synapticsPane",
+        "-target",
+        "synapticsconfigload"
       ], 
       "Name": "VoodooPS2Controller", 
       "Zip": "../Release/", 
