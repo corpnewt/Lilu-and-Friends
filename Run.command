@@ -1,27 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-py="$( which python )"
-py3="$( which python3 )"
+[[ -x "$( command -v python3 )" ]] && python3="true"
+[[ -x "$( command -v python )" ]] && python="true"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 python_install=""
 script_name="Scripts/updater.py"
 arg="$1"
 
-if [[ "$py3" == "" ]]; then
-	# No python 3
-	if [[ "$py" == "" ]]; then
-		# No python 2 either
-		echo "Python is not installed!"
+if [[ ! "$python3" ]]; then
+	if [[ ! "$python" ]]; then
+		echo "Python not found! Please install Python2 or Python3."
 		exit 1
 	else
-		python_install=$py
+		python_install="python"
 	fi
 else
-	python_install=$py3
+	python_install="python3"
 fi
 
-if [[ "$arg" != "" ]]; then
-	# We got an arg passed - try to launch it
+if [[ "$arg" ]]; then
+	# Launch arg
 	"$python_install" "$arg"
 else
 	"$python_install" "$DIR"/"$script_name"
