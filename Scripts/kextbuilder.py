@@ -141,7 +141,7 @@ class KextBuilder:
                 return output
         os.chdir(folder)
         if len(prerun):
-            print("    Running Pre-Run Tasks ({})...".format(len(prerun)))
+            print("    Running Pre-Build Tasks ({})...".format(len(prerun)))
         currtask = 0
         for task in prerun:
             # Iterate the tasks, and run them as needed
