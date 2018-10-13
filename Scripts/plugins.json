@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.63", 
-  "Changes": "Added ability to skip targets via exclusion list.", 
+  "Version": "0.0.64", 
+  "Changes": "Remove documentation and linting build phases from VoodooI2C.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -456,6 +456,21 @@
         "macosx", 
         "DEBUG_INFORMATION_FORMAT=none"
       ], 
+      "Remove Phases": [
+        {
+          "path": "VoodooI2C/VoodooI2C.xcodeproj/project.pbxproj",
+          "phases": [
+            "Generate Documentation",
+            "Linting"
+          ]
+        },
+        {
+          "path": "VoodooI2C Satellites/VoodooI2CFTE/VoodooI2CFTE.xcodeproj/project.pbxproj",
+          "phases": [
+            "Linting"
+          ]
+        }  
+      ],
       "Name": "VoodooI2C", 
       "Zip": "../Release", 
       "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
