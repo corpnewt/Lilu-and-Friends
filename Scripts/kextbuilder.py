@@ -99,6 +99,7 @@ class KextBuilder:
         url        = plug["URL"]
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
+        skip_phase = plug.get("Remove Phases", [])
         prerun     = plug.get("Pre-Run", [])
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
@@ -140,6 +141,47 @@ class KextBuilder:
             if not output[2] == 0:
                 return output
         os.chdir(folder)
+        if len(skip_phase):
+            print("    Removing Build Phases...")
+        currtask = 0
+        for task in skip_phase:
+            # Iterate the files given, and remove the existing text from the buildPhases
+            # section if they exist.  We can take either the id or the name (providing they)
+            # both exist.  All compares are done case-insensitively
+            currtask += 1
+            f = task.get("path", "")
+            if not os.path.exists(f):
+                print("     - {} not found!".format(f))
+                continue
+            # Found our file - scrape it
+            found_phases = False
+            found_count  = 0
+            temp_text = ""
+            with open(f, "r") as x:
+                for line in x:
+                    phase_match = [x for x in task.get("phases",[]) if x.lower() in line.lower()]
+                    if found_phases and len(phase_match):
+                        # Primed and we found a skip
+                        print("     - Found {} - skipping...".format(", ".join(phase_match)))
+                        found_count += 1
+                        continue
+                    # If we *are* primed - we need to make sure that we only add phases that don't exist
+                    # in our exception list - and if we hit ");" we need to unprime again.
+                    if ");" in line and found_phases:
+                        # Primed and we found the end - unprime
+                        found_phases = False
+                    # Check to see if we can prime last - to avoid pre-priming or something weird
+                    if "buildphases" in line.lower():
+                        found_phases = True
+                    # Append the line
+                    temp_text += line
+            print("     - {} of {} phase{} skipped.".format(found_count, len(task.get("phases",[])), "" if len(task.get("phases",[])) == 1 else "s"))
+            # Check if we found any phases, and if so - write the changes
+            if found_count:
+                print("     - Flushing changes to {}...".format(f))
+                with open(f,"w") as x:
+                    x.write(temp_text)
+
         if len(prerun):
             print("    Running Pre-Build Tasks ({})...".format(len(prerun)))
         currtask = 0
