@@ -201,11 +201,20 @@ class KextBuilder:
             # env  = environment variables to set
             # bail = to bail on errors - default is true
 
+            # Also allow object replacement in the passed scripts
+            # [[scripts]] = the path to the scripts folder
+            # [[kexts]] = the path to the kexts folder
+            # [[cwd]] = the current working directory
+
             # Build the arguments list
             if task.get("lang",None):
                 args.append(task["lang"])
-            args.append(task.get("path",""))
-            args.extend(task.get("args",[]))
+            sp = os.path.dirname(os.path.realpath(__file__))
+            kp = os.path.dirname(sp)
+            cp = os.getcwd()
+            args.append(task.get("path","").replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
+            for arg in task.get("args",[]):
+                args.append(arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
 
             # Set the env vars if they exist
             if task.get("env", None):
