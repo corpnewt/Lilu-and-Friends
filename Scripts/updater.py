@@ -149,7 +149,6 @@ class Updater:
         # Make sure we have iasl
         self.iasl_url = "https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip"
         self.iasl = self.check_iasl()
-        print(self.iasl)
 
     def check_iasl(self):
         target = os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
