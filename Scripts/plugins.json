@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.65", 
-  "Changes": "Added NoVPAJpeg - and the option to prevent Kexts folder reveal on successful builds.", 
+  "Version": "0.0.66", 
+  "Changes": "Added AppleBacklightFixup.kext + iasl\nAllow rudimentary variable substitution in Pre-Run tasks.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -61,6 +61,26 @@
       "Desc": "dynamic audio patching"
     }, 
     {
+      "Pre-Run": [
+        {
+          "path": "[[scripts]]/iasl", 
+          "args": [
+            "SSDT-PNLF.dsl"
+          ]
+        }
+      ], 
+      "Name": "AppleBacklightFixup", 
+      "Zip": [
+        "AppleBacklightFixup.kext", 
+        "../../SSDT-PNLF.dsl", 
+        "../../SSDT-PNLF.aml"
+      ], 
+      "URL": "git clone https://github.com/RehabMan/AppleBacklightFixup", 
+      "Lilu": true, 
+      "Folder": "AppleBacklightFixup", 
+      "Desc": "Lilu plugin for enabling support for backlight using RehabMan's patches"
+    }, 
+    {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
       "Build Opts": [
         "-scheme", 
@@ -101,10 +121,6 @@
         "-sdk", 
         "macosx"
       ], 
-      "Skip Targets": [
-        "BrcmPatchRAM",
-        "BrcmNonPatchRAM"
-      ],
       "Pre-Run": [
         {
           "path": "xcodebuild", 
@@ -118,6 +134,10 @@
       ], 
       "Name": "BrcmPatchRAM", 
       "Zip": "../Release", 
+      "Skip Targets": [
+        "BrcmPatchRAM", 
+        "BrcmNonPatchRAM"
+      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM", 
       "Folder": "OS-X-BrcmPatchRAM", 
       "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices"
@@ -242,13 +262,13 @@
         "-sdk", 
         "macosx"
       ], 
-      "Skip Targets": [
-        "IT87x",
-        "SMIMonitor"
-      ],
       "Build Dir": "./Build/Release 10.6", 
       "Name": "HWSensors (FakeSMC + Plugins)", 
       "Zip": "../Release 10.6", 
+      "Skip Targets": [
+        "IT87x", 
+        "SMIMonitor"
+      ], 
       "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
       "Folder": "hwsensors-hwsensors3-code3", 
       "Desc": "contains FakeSMC + HWSensors plugins"
@@ -464,19 +484,19 @@
       ], 
       "Remove Phases": [
         {
-          "path": "VoodooI2C/VoodooI2C.xcodeproj/project.pbxproj",
+          "path": "VoodooI2C/VoodooI2C.xcodeproj/project.pbxproj", 
           "phases": [
-            "Generate Documentation",
+            "Generate Documentation", 
             "Linting"
           ]
-        },
+        }, 
         {
-          "path": "VoodooI2C Satellites/VoodooI2CFTE/VoodooI2CFTE.xcodeproj/project.pbxproj",
+          "path": "VoodooI2C Satellites/VoodooI2CFTE/VoodooI2CFTE.xcodeproj/project.pbxproj", 
           "phases": [
             "Linting"
           ]
-        }  
-      ],
+        }
+      ], 
       "Name": "VoodooI2C", 
       "Zip": "../Release", 
       "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
@@ -488,11 +508,11 @@
         "-sdk", 
         "macosx"
       ], 
-      "Skip Targets": [
-        "VoodooPS2Daemon"
-      ],
       "Name": "VoodooPS2Controller", 
       "Zip": "../Release/", 
+      "Skip Targets": [
+        "VoodooPS2Daemon"
+      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
       "Desc": "PS2 driver for desktops/laptops"
