@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 43 kexts:
+Currently Builds 44 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -28,6 +28,7 @@ Currently Builds 43 kexts:
 * ATH9KFixup
 * AirportBrcmFixup
 * AppleALC
+* AppleBacklightFixup
 * AtherosE2200Ethernet
 * AzulPatcher4600
 * BCM5722D
