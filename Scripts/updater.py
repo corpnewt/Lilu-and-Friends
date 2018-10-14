@@ -95,7 +95,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 27
+        self.hpad = 29
         self.wpad = 8
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -117,6 +117,7 @@ class Updater:
         self.sdk_over = None
         self.default_on_fail = False
         self.increment_sdk = False
+        self.reveal = True
 
         if os.path.exists("hashes.json"):
             self.hashes = json.load(open("hashes.json"))
@@ -495,6 +496,7 @@ class Updater:
                 extra += "- Def sdk" if option.get("SDK", None) == None else "- {}{}{}".format(self.ch_color, option.get("SDK", None), self.rt_color)
                 extra += " - {}DoF{}".format(self.ch_color, self.rt_color) if option.get("DefOnFail", False) else ""
                 extra += " - {}iSDK{}".format(self.ch_color, self.rt_color) if option.get("IncrementSDK", False) else ""
+                extra += " - {}Reveal{}".format(self.ch_color, self.rt_color) if option.get("Reveal", True) else ""
                 en = "{} {}. {}{}{} - {}".format(pick, ind, self.hi_color, option.get("Name", None), self.rt_color, extra)
                 if len(self.cprint(en, strip_colors=True)) + self.wpad > self.w:
                     self.w = len(self.cprint(en, strip_colors=True)) + self.wpad
@@ -589,6 +591,7 @@ class Updater:
             time.sleep(5)
         self.default_on_fail = selected.get("DefOnFail", False)
         self.increment_sdk = selected.get("IncrementSDK", False)
+        self.reveal = selected.get("Reveal", True)
         
     def save_profile(self):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -611,6 +614,7 @@ class Updater:
         else:
             info += "SDK:\n\n{}{}{}\n\n".format(self.ch_color, self.sdk_over, self.rt_color)
         info += "Defaults on Failure:\n\n{}{}{}\n\n".format(self.ch_color, self.default_on_fail, self.rt_color)
+        info += "Reveal Kexts Folder On Success:\n\n{}{}{}\n\n".format(self.ch_color, self.reveal, self.rt_color)
         info += "Increment SDK on Fail:\n\n{}{}{}\n\n".format(self.ch_color, self.increment_sdk, self.rt_color)
         info += "If a profile is named \"{}Default{}\" it will be loaded automatically\n\n".format(self.hi_color, self.rt_color)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
@@ -638,6 +642,7 @@ class Updater:
                 option["SDK"] = self.sdk_over
                 option["DefOnFail"] = self.default_on_fail
                 option["IncrementSDK"] = self.increment_sdk
+                option["Reveal"] = self.reveal
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
                 self.selected_profile = option["Name"]
@@ -1153,6 +1158,7 @@ class Updater:
         self.cprint("Increment SDK on Fail: {}{}".format(self.ch_color, self.increment_sdk))
         self.cprint("Defaults on Failure:   {}{}".format(self.ch_color, self.default_on_fail))
         self.cprint("Xcode Min SDK:         {}{}".format(self.ch_color, self._get_sdk_min_version()))
+        self.cprint("Reveal Kexts Folder:   {}{}".format(self.ch_color, self.reveal))
         if self.kb.debug:
             self.cprint("Debug:                 {}{}".format(self.ch_color, self.kb.debug))
         else:
@@ -1168,6 +1174,7 @@ class Updater:
         print("P. Profiles")
         print("I. Increment SDK on Fail")
         print("F. Toggle Defaults on Failure")
+        print("R. Toggle Reveal Kexts Folder")
         print("D. Toggle Debugging")
         print("C. Color Picker")
         print("U. Update Menu")
@@ -1198,6 +1205,10 @@ class Updater:
             self.color_picker()
         elif menu.lower() == "d":
             self.kb.debug ^= True
+        elif menu.lower() == "r":
+            # Profile change!
+            self.selected_profile = None
+            self.reveal ^= True
         elif menu.lower() == "s":
             self.custom_min_sdk()
         elif menu.lower() == "u":
@@ -1357,13 +1368,15 @@ class Updater:
             print(" ")
             if len(success):
                 self.cprint("{}Succeeded:{}\n\n{}".format(self.hi_color, self.rt_color, "\n".join(success)))
-                try:
-                    # Attempt to locate and open the kexts directory
-                    os.chdir(os.path.dirname(os.path.realpath(__file__)))
-                    os.chdir("../Kexts")
-                    subprocess.Popen("open \"" + os.getcwd() + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                except:
-                    pass
+                # Only attempt if we reveal
+                if self.reveal:
+                    try:
+                        # Attempt to locate and open the kexts directory
+                        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+                        os.chdir("../Kexts")
+                        subprocess.Popen("open \"" + os.getcwd() + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    except:
+                        pass
             else:
                 self.cprint("{}Succeeded:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.er_color))
             if len(fail):
