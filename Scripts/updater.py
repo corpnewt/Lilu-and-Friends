@@ -24,6 +24,8 @@ import re
 import datetime
 import run
 import kextupdater
+import downloader
+import zipfile
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -56,6 +58,7 @@ class Updater:
         
         self.r = run.Run()
         self.k = kextupdater.KextUpdater()
+        self.d = downloader.Downloader()
 
         # Order the colors quick
         if len(self.colors):
@@ -142,6 +145,47 @@ class Updater:
 
         # Migrate stuff
         self.migrate_profiles()
+
+        # Make sure we have iasl
+        self.iasl_url = "https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip"
+        self.iasl = self.check_iasl()
+        print(self.iasl)
+
+    def check_iasl(self):
+        target = os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
+        if not os.path.exists(target):
+            # Need to download
+            self.head("Downloading iasl")
+            print("")
+            temp = tempfile.mkdtemp()
+            #try:
+            self._download_and_extract(temp,self.iasl_url)
+            #except:
+            #    print("An error occurred :(")
+            shutil.rmtree(temp, ignore_errors=True)
+        if os.path.exists(target):
+            return target
+        return None
+
+    def _download_and_extract(self, temp, url):
+        ztemp = tempfile.mkdtemp(dir=temp)
+        zfile = os.path.basename(url)
+        print("Downloading {}...".format(os.path.basename(url)))
+        self.d.stream_to_file(url, os.path.join(ztemp,zfile), False)
+        print(" - Extracting...")
+        btemp = tempfile.mkdtemp(dir=temp)
+        # Extract with built-in tools \o/
+        with zipfile.ZipFile(os.path.join(ztemp,zfile)) as z:
+            z.extractall(os.path.join(temp,btemp))
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        for x in os.listdir(os.path.join(temp,btemp)):
+            if "iasl" in x.lower():
+                # Found one
+                print(" - Found {}".format(x))
+                print("   - Chmod +x...")
+                self.r.run({"args":["chmod","+x",os.path.join(btemp,x)]})
+                print("   - Copying to {} directory...".format(os.path.basename(script_dir)))
+                shutil.copy(os.path.join(btemp,x), os.path.join(script_dir,x))
 
     def migrate_profiles(self):
         # Helper method to migrate some profile info
