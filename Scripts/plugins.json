@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.64", 
-  "Changes": "Remove documentation and linting build phases from VoodooI2C.", 
+  "Version": "0.0.65", 
+  "Changes": "Added NoVPAJpeg - and the option to prevent Kexts folder reveal on successful builds.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -358,6 +358,12 @@
       "URL": "git clone https://github.com/al3xtjames/NoTouchID", 
       "Name": "NoTouchID", 
       "Desc": "Lilu plugin for disabling Touch ID checks"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/vulgo/NoVPAJpeg", 
+      "Name": "NoVPAJpeg", 
+      "Desc": "disables the hardware JPEG decoding feature of the AppleVPA framework"
     }, 
     {
       "URL": "git clone https://github.com/corpnewt/NullCPUPowerManagement", 
