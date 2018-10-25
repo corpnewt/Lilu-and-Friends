@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.66", 
-  "Changes": "Added AppleBacklightFixup.kext + iasl\nAllow rudimentary variable substitution in Pre-Run tasks.", 
+  "Version": "0.0.67", 
+  "Changes": "Adjust USBInjectAll to zip up the XHCI-unsupported.kext.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -422,9 +422,7 @@
       "Name": "USBInjectAll", 
       "Zip": [
         "USBInjectAll.kext", 
-        "../../XHCI-200-series-injector.kext", 
-        "../../XHCI-300-series-injector.kext", 
-        "../../XHCI-x99-injector.kext"
+        "../../XHCI-unsupported.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
       "Folder": "OS-X-USB-Inject-All", 
