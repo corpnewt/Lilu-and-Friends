@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.67", 
-  "Changes": "Adjust USBInjectAll to zip up the XHCI-unsupported.kext.", 
+  "Version": "0.0.68", 
+  "Changes": "Add RehabMan's IntelMausiEthernet.kext per ReddestDream.  Fixes issue with 10.14.1.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -351,6 +351,20 @@
       "Name": "IntelMausiEthernet", 
       "Desc": "for most Intel LAN"
     }, 
+    {
+      "Info": "IntelMausiEthernet.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-sdk", 
+        "macosx",
+        "-configuration",
+        "Release"
+        ],
+      "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Network", 
+      "Folder": "OS-X-Intel-Network",
+      "Zip": "./IntelMausiEthernet.kext", 
+      "Name": "IntelMausiEthernet (RehabMan)",
+      "Desc": "Rehabman's IntelMausiEthernet"
+    },
     {
       "URL": "git clone https://github.com/acidanthera/Lilu", 
       "Name": "Lilu", 
