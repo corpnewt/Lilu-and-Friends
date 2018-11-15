@@ -221,7 +221,6 @@ class KextBuilder:
                                 fe = fe.decode("utf-8")
                             with open(os.path.join(root, n), "w") as g:
                                 g.write(fe)
-                            shutil.copyfile(os.path.join(root, n), "/Users/corp/Desktop/thing.xib")
                     except Exception as e:
                         print("    --> Failed!")
                         pass
