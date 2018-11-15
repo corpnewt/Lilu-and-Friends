@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.68", 
-  "Changes": "Add RehabMan's IntelMausiEthernet.kext per ReddestDream.  Fixes issue with 10.14.1.", 
+  "Version": "0.0.69", 
+  "Changes": "Fix Xib targets on VoodooPS2Controller's Synaptics PrefPane.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -525,6 +525,7 @@
       "Skip Targets": [
         "VoodooPS2Daemon"
       ], 
+      "FixXib": true,
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
       "Desc": "PS2 driver for desktops/laptops"
