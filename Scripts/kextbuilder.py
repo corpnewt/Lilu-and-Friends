@@ -216,13 +216,11 @@ class KextBuilder:
                         if changed:
                             # Write the changes
                             print("    --> Saving changes...")
-                            ft = '<?xml version="1.0" encoding="UTF-8"?>\n'
                             fe = ET.tostring(r)
                             if isinstance(fe, bytes):
                                 fe = fe.decode("utf-8")
-                            ft+=fe
                             with open(os.path.join(root, n), "w") as g:
-                                g.write(ft)
+                                g.write(fe)
                             shutil.copyfile(os.path.join(root, n), "/Users/corp/Desktop/thing.xib")
                     except Exception as e:
                         print("    --> Failed!")
