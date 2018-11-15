@@ -5,6 +5,7 @@ import tempfile
 import shutil
 import datetime
 import run
+import xml.etree.ElementTree as ET
 
 class KextBuilder:
 
@@ -15,6 +16,7 @@ class KextBuilder:
         self.zip = self._get_zip()
         self.temp = None
         self.debug = False
+        self.fix_xib = "1060"
 
     def _del_temp(self):
         # Removes the saved temporary file
@@ -104,6 +106,9 @@ class KextBuilder:
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
         skip_targ  = plug.get("Skip Targets",[])
+        fix_xib    = plug.get("FixXib", False)
+
+        print("Fix Xib: {}".format(fix_xib))
 
         return_val = None
 
@@ -181,6 +186,47 @@ class KextBuilder:
                 print("     - Flushing changes to {}...".format(f))
                 with open(f,"w") as x:
                     x.write(temp_text)
+        if fix_xib:
+            print("    Fixing Xibs...")
+            # Scans for .xib files and ensure that the IBDocument.PluginDeclaredDependencies real value
+            # is set to our fix_xib value
+            for root, dirs, files in os.walk("."):
+                for n in files:
+                    if not n.lower().endswith(".xib"):
+                        continue
+                    print("    - Found {}".format(n))
+                    # We have a .xib file - let's load it, check the values,
+                    # make changes if needed, and save it
+                    try:
+                        changed = False
+                        print("    --> Loading...")
+                        tree = ET.parse(os.path.join(root, n))
+                        r = tree.getroot()
+                        # Let's see if we can find the value
+                        for x in r[0]:
+                            # Loop each item in the root's data, and look for IBDocument.PluginDeclaredDependencies key
+                            # if found, check each element and if located, set the fix_xib value
+                            if x.attrib.get("key","") == "IBDocument.PluginDeclaredDependencies":
+                                for y in x:
+                                    if y.tag == "integer" and "value" in y.attrib:
+                                        # Set the value
+                                        print("    --> Changing {} --> {}...".format(y.attrib["value"], self.fix_xib))
+                                        y.set("value", self.fix_xib)
+                                        changed = True
+                        if changed:
+                            # Write the changes
+                            print("    --> Saving changes...")
+                            ft = '<?xml version="1.0" encoding="UTF-8"?>\n'
+                            fe = ET.tostring(r)
+                            if isinstance(fe, bytes):
+                                fe = fe.decode("utf-8")
+                            ft+=fe
+                            with open(os.path.join(root, n), "w") as g:
+                                g.write(ft)
+                            shutil.copyfile(os.path.join(root, n), "/Users/corp/Desktop/thing.xib")
+                    except Exception as e:
+                        print("    --> Failed!")
+                        pass
 
         if len(prerun):
             print("    Running Pre-Build Tasks ({})...".format(len(prerun)))
