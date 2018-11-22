@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.69", 
-  "Changes": "Fix Xib targets on VoodooPS2Controller's Synaptics PrefPane.", 
+  "Version": "0.0.70", 
+  "Changes": "Remove errant logging.", 
   "Plugins": [
     {
       "Build Opts": [
