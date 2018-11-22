@@ -108,8 +108,6 @@ class KextBuilder:
         skip_targ  = plug.get("Skip Targets",[])
         fix_xib    = plug.get("FixXib", False)
 
-        print("Fix Xib: {}".format(fix_xib))
-
         return_val = None
 
         print(" ")
