@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.70", 
-  "Changes": "Remove errant logging.", 
+  "Version": "0.0.71", 
+  "Changes": "Add post-build tasks, names for pre/post-build tasks, and add globbing support in pre/post-build and zip tasks.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -46,7 +46,8 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
-      "Pre-Run": [
+      "Desc": "dynamic audio patching", 
+      "Pre-Build": [
         {
           "path": "xcodebuild", 
           "args": [
@@ -54,21 +55,13 @@
             "macosx", 
             "-target", 
             "ResourceConverter"
-          ]
+          ], 
+          "name": "Compile ResourceConverter Prerequisite"
         }
       ], 
-      "Name": "AppleALC", 
-      "Desc": "dynamic audio patching"
+      "Name": "AppleALC"
     }, 
     {
-      "Pre-Run": [
-        {
-          "path": "[[scripts]]/iasl", 
-          "args": [
-            "SSDT-PNLF.dsl"
-          ]
-        }
-      ], 
       "Name": "AppleBacklightFixup", 
       "Zip": [
         "AppleBacklightFixup.kext", 
@@ -78,6 +71,15 @@
       "URL": "git clone https://github.com/RehabMan/AppleBacklightFixup", 
       "Lilu": true, 
       "Folder": "AppleBacklightFixup", 
+      "Pre-Build": [
+        {
+          "path": "[[scripts]]/iasl", 
+          "args": [
+            "SSDT-PNLF.dsl"
+          ], 
+          "name": "Compile SSDT-PNLF.dsl"
+        }
+      ], 
       "Desc": "Lilu plugin for enabling support for backlight using RehabMan's patches"
     }, 
     {
@@ -121,17 +123,6 @@
         "-sdk", 
         "macosx"
       ], 
-      "Pre-Run": [
-        {
-          "path": "xcodebuild", 
-          "args": [
-            "-sdk", 
-            "macosx", 
-            "-target", 
-            "Prebuild"
-          ]
-        }
-      ], 
       "Name": "BrcmPatchRAM", 
       "Zip": "../Release", 
       "Skip Targets": [
@@ -140,6 +131,18 @@
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM", 
       "Folder": "OS-X-BrcmPatchRAM", 
+      "Pre-Build": [
+        {
+          "path": "xcodebuild", 
+          "args": [
+            "-sdk", 
+            "macosx", 
+            "-target", 
+            "Prebuild"
+          ], 
+          "name": "Compile Prebuild Prerequisite"
+        }
+      ], 
       "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices"
     }, 
     {
@@ -212,20 +215,21 @@
         "-project", 
         "HWSensors.xcodeproj"
       ], 
-      "Pre-Run": [
+      "Build Dir": "./Binaries", 
+      "Name": "FakeSMC (Legacy)", 
+      "Zip": "./FakeSMC.kext", 
+      "URL": "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code", 
+      "Folder": "hwsensors-code", 
+      "Pre-Build": [
         {
           "path": "xcodebuild", 
           "args": [
             "-project", 
             "Versioning And Distribution.xcodeproj"
-          ]
+          ], 
+          "name": "Compile Versioning And Distribution Prerequisite"
         }
       ], 
-      "Name": "FakeSMC (Legacy)", 
-      "Zip": "./FakeSMC.kext", 
-      "URL": "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code", 
-      "Build Dir": "./Binaries", 
-      "Folder": "hwsensors-code", 
       "Desc": "only FakeSMC (Legacy)"
     }, 
     {
@@ -297,20 +301,21 @@
         "-project", 
         "HWSensors.xcodeproj"
       ], 
-      "Pre-Run": [
+      "Build Dir": "./Binaries", 
+      "Name": "HWSensors (Legacy)", 
+      "Zip": "../Binaries", 
+      "URL": "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code", 
+      "Folder": "hwsensors-code", 
+      "Pre-Build": [
         {
           "path": "xcodebuild", 
           "args": [
             "-project", 
             "Versioning And Distribution.xcodeproj"
-          ]
+          ], 
+          "name": "Compile Versioning And Distribution Prerequisite"
         }
       ], 
-      "Name": "HWSensors (Legacy)", 
-      "Zip": "../Binaries", 
-      "URL": "git clone https://git.code.sf.net/p/hwsensors/code hwsensors-code", 
-      "Build Dir": "./Binaries", 
-      "Folder": "hwsensors-code", 
       "Desc": "contains legacy FakeSMC + HWSensors plugins"
     }, 
     {
@@ -355,16 +360,16 @@
       "Info": "IntelMausiEthernet.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
-        "macosx",
-        "-configuration",
+        "macosx", 
+        "-configuration", 
         "Release"
-        ],
-      "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Network", 
-      "Folder": "OS-X-Intel-Network",
+      ], 
+      "Name": "IntelMausiEthernet (RehabMan)", 
       "Zip": "./IntelMausiEthernet.kext", 
-      "Name": "IntelMausiEthernet (RehabMan)",
+      "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Network", 
+      "Folder": "OS-X-Intel-Network", 
       "Desc": "Rehabman's IntelMausiEthernet"
-    },
+    }, 
     {
       "URL": "git clone https://github.com/acidanthera/Lilu", 
       "Name": "Lilu", 
@@ -435,47 +440,58 @@
       ], 
       "Name": "USBInjectAll", 
       "Zip": [
-        "USBInjectAll.kext", 
-        "../../XHCI-unsupported.kext"
+        "*.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
+      "Post-Build": [
+        {
+          "path": "mv", 
+          "args": [
+            "*.kext", 
+            "Build/Release/"
+          ], 
+          "name": "Move Injector Kexts to Release Folder"
+        }
+      ], 
       "Folder": "OS-X-USB-Inject-All", 
       "Desc": "injects all USB ports"
     }, 
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
-      "Pre-Run": [
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)", 
+      "Pre-Build": [
         {
           "lang": "bash", 
           "path": "./VirtualSmcPkg/macbuild.tool", 
+          "name": "Run macbuild.tool", 
           "env": {
             "FORCE_INSTALL": "1"
           }
         }
       ], 
-      "Name": "VirtualSMC", 
-      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
+      "Name": "VirtualSMC"
     }, 
     {
       "Build Opts": [
         "-alltargets"
       ], 
       "Info": "VirtualSMC.kext/Contents/Info.plist", 
-      "Pre-Run": [
-        {
-          "lang": "bash", 
-          "path": "./VirtualSmcPkg/macbuild.tool", 
-          "env": {
-            "FORCE_INSTALL": "1"
-          }
-        }
-      ], 
       "Name": "VirtualSMC (All Tools)", 
       "Zip": "../Release/package", 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Lilu": true, 
       "Folder": "VirtualSMC", 
+      "Pre-Build": [
+        {
+          "lang": "bash", 
+          "path": "./VirtualSmcPkg/macbuild.tool", 
+          "name": "Run macbuild.tool", 
+          "env": {
+            "FORCE_INSTALL": "1"
+          }
+        }
+      ], 
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
     }, 
     {
@@ -520,14 +536,35 @@
         "-sdk", 
         "macosx"
       ], 
+      "FixXib": true, 
       "Name": "VoodooPS2Controller", 
-      "Zip": "../Release/", 
+      "Zip": [
+        "../Release/"
+      ], 
       "Skip Targets": [
         "VoodooPS2Daemon"
       ], 
-      "FixXib": true,
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
+      "Post-Build": [
+        {
+          "path": "mv", 
+          "args": [
+            "*.aml", 
+            "Build/Release/"
+          ], 
+          "name": "Move SSDTs to Release Folder"
+        }
+      ], 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
+      "Pre-Build": [
+        {
+          "path": "[[scripts]]/iasl", 
+          "args": [
+            "*.dsl"
+          ], 
+          "name": "Compile SSDTs"
+        }
+      ], 
       "Desc": "PS2 driver for desktops/laptops"
     }, 
     {
