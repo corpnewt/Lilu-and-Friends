@@ -1424,6 +1424,10 @@ class Updater:
             self.kb._del_temp()
             # Take time
             total_time = time.time() - start_time
+            # Resize the window if need be
+            h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
+            h = h if h > 24 else 24
+            self.resize(80,h)
             self.head("{} of {} Succeeded".format(len(success), total_kexts))
             print(" ")
             if len(success):
