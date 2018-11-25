@@ -408,7 +408,7 @@ class Updater:
         print('\033[8;{};{}t'.format(height, width))
 
     def custom_quit(self):
-        self.resize(self.w, self.h)
+        self.resize(80,24)
         self.head("Lilu And Friends v"+self.gd_color+self.version)
         print("by CorpNewt\n")
         print("Thanks for testing it out, for bugs/comments/complaints")
@@ -429,6 +429,7 @@ class Updater:
         os._exit(0)
 
     def custom_min_sdk(self):
+        self.resize(80,24)
         self.head("Xcode MinimumSDKVersion")
         print(" ")
         print("Current MinimumSDKVersion:  {}".format(self._get_sdk_min_version()))
@@ -521,6 +522,7 @@ class Updater:
         self.r.run({"args":["cp", os.path.join(temp, "Info.plist"), self.sdk_version_plist], "stream": True, "sudo" : True})
 
     def profile(self):
+        self.resize(80,24)
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         self.head("Profiles")
         print(" ")
@@ -541,9 +543,11 @@ class Updater:
                 extra += " - {}iSDK{}".format(self.ch_color, self.rt_color) if option.get("IncrementSDK", False) else ""
                 extra += " - {}Reveal{}".format(self.ch_color, self.rt_color) if option.get("Reveal", True) else ""
                 en = "{} {}. {}{}{} - {}".format(pick, ind, self.hi_color, option.get("Name", None), self.rt_color, extra)
-                if len(self.cprint(en, strip_colors=True)) + self.wpad > self.w:
-                    self.w = len(self.cprint(en, strip_colors=True)) + self.wpad
+                #if len(self.cprint(en, strip_colors=True)) + self.wpad > self.w:
+                testw = len(self.cprint(en, strip_colors=True)) + self.wpad
+                self.w = testw if testw > 80 else 80
                 self.cprint(en)
+            self.h = ind+12 if ind+12 > 24 else 24
             self.resize(self.w, self.h)
         print(" ")
         print("S. Save Current Settings to Profile")
@@ -637,6 +641,7 @@ class Updater:
         self.reveal = selected.get("Reveal", True)
         
     def save_profile(self):
+        self.resize(80,24)
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         self.head("Save to Profile")
         print(" ")
@@ -661,6 +666,11 @@ class Updater:
         info += "Increment SDK on Fail:\n\n{}{}{}\n\n".format(self.ch_color, self.increment_sdk, self.rt_color)
         info += "If a profile is named \"{}Default{}\" it will be loaded automatically\n\n".format(self.hi_color, self.rt_color)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
+        # Calculate quick height
+        h = (len(", ".join(kextlist))/80)+35
+        if int(h) < h:
+            h = h+1
+        self.resize(80,int(h))
         self.cprint(info)
         menu = self.grab("Please type a name for your profile:  ")
 
@@ -705,7 +715,7 @@ class Updater:
         self.selected_profile = menu
 
     def xcodeopts(self):
-        self.resize(self.w, self.h)
+        self.resize(80, 24)
         self.head("Xcode Options")
         print(" ")
         if not self.xcode_opts:
@@ -748,7 +758,7 @@ class Updater:
         self.xcodeopts()
 
     def sdk_override(self):
-        self.resize(self.w, self.h)
+        self.resize(80, 24)
         self.head("SDK Overrides")
         print(" ")
         if not self.xcode_opts:
@@ -963,6 +973,7 @@ class Updater:
             return msg[:-2]
 
     def animate(self):
+        self.resize(80, 24)
         self.head("Entirely Required")
         print(" ")
         pad = count = 0
@@ -983,11 +994,13 @@ class Updater:
             time.sleep(.1)
 
     def pick_color(self, name, var):
+        self.resize(80, 24)
         self.head("{}{} Color".format(var, name))
         print(" ")
         c = [ x for x in self.colors if x["replace"] != "\u001b[0m" ]
         for i in range(len(c)):
             self.cprint("{}. {}{}".format(i+1, c[i]["find"], c[i]["name"]))
+        self.resize(80, 24 if 24 > len(c)+12 else len(c)+12)
         print(" ")
         print(" ")
         print("C. Color Picker")
@@ -1035,12 +1048,14 @@ class Updater:
         json.dump(self.colorsettings, open("colorsettings.json", "w"), indent=2)
 
     def color_picker(self):
+        self.resize(80, 24)
         c_list = [self.hi_color, self.ch_color, self.gd_color, self.er_color]
         n_list = ["Highlight", "Changed", "Success", "Error"]
         self.head("{}Color {}Picker".format(random.choice(c_list), random.choice(c_list)))
         print(" ")
         for i in range(len(c_list)):
             self.cprint("{}. {} {}Color".format(i+1, n_list[i], c_list[i]))
+        self.resize(80, len(c_list)+11 if len(c_list)+11 > 24 else 24)
         print(" ")
         print("D. Reset to Defaults")
         print("M. Main Menu")
@@ -1099,6 +1114,7 @@ class Updater:
             return msg[:-2]	
 
     def update_menu(self):
+        self.resize(80,24)
         self.head("Update Menu")
         print(" ")
         print("Kext updates are only checked for those kexts with github repos")
@@ -1257,6 +1273,7 @@ class Updater:
         elif menu.lower() == "u":
             self.update_menu()
         elif menu.lower() == "b":
+            self.resize(80,24)
             # Building
             build_list   = []
             sdk_missing  = []
