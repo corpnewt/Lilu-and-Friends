@@ -5,6 +5,7 @@ import tempfile
 import shutil
 import datetime
 import run
+import glob
 import xml.etree.ElementTree as ET
 
 class KextBuilder:
@@ -102,7 +103,8 @@ class KextBuilder:
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
         skip_phase = plug.get("Remove Phases", [])
-        prerun     = plug.get("Pre-Run", [])
+        prebuild     = plug.get("Pre-Build", [])
+        postbuild  = plug.get("Post-Build", [])
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
         skip_targ  = plug.get("Skip Targets",[])
@@ -223,10 +225,10 @@ class KextBuilder:
                         print("    --> Failed!")
                         pass
 
-        if len(prerun):
-            print("    Running Pre-Build Tasks ({})...".format(len(prerun)))
+        if len(prebuild):
+            print("    Running Pre-Build Tasks ({})...".format(len(prebuild)))
         currtask = 0
-        for task in prerun:
+        for task in prebuild:
             # Iterate the tasks, and run them as needed
             args = []
             currtask += 1
@@ -255,18 +257,31 @@ class KextBuilder:
             cp = os.getcwd()
             args.append(task.get("path","").replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
             for arg in task.get("args",[]):
-                args.append(arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
+                # Expand any pathing, then glob
+                a = arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp)
+                if "*" in a:
+                    try:
+                        # Glob!
+                        a = glob.glob(a)
+                    except:
+                        pass
+                if type(a) is list:
+                    args.extend(a)
+                else:
+                    args.append(a)
 
             # Set the env vars if they exist
             if task.get("env", None):
                 for e in task["env"]:
                     os.environ[e] = str(task["env"][e])
 
+            # Set the task's name if exists, or use the basename of the path
+            tname = task.get("name",os.path.basename(task.get("path","Unknown")))
             # Run the task
-            print("     - Running task {} of {} - {}...".format(currtask, len(prerun), os.path.basename(task.get("path","Unknown"))))
+            print("     - Running task {} of {} - {}...".format(currtask, len(prebuild), tname))
             output = self.r.run({"args":args, "stream" : self.debug})
             if not output[2] == 0:
-                output = (output[0], "Pre-Run Task Failed!\n\n{}".format(output[1]), output[2])
+                output = (output[0], "Pre-Build Task Failed!\n\n{}".format(output[1]), output[2])
                 if task.get("bail", True):
                     return output
                 print(output[1])
@@ -333,6 +348,67 @@ class KextBuilder:
             else:
                 return output
 
+        if len(postbuild):
+            print("    Running Post-Build Tasks ({})...".format(len(postbuild)))
+        currtask = 0
+        for task in postbuild:
+            # Iterate the tasks, and run them as needed
+            args = []
+            currtask += 1
+            # Format for the command should be:
+            #
+            # lang path [arg1, arg2, arg3, ...]
+            # 
+            # With environment vars set as needed
+            #
+            # lang = path to the calling binary if the path is a script
+            # path = path to the target relative to our current dir
+            # args = list of arguments
+            # env  = environment variables to set
+            # bail = to bail on errors - default is true
+
+            # Also allow object replacement in the passed scripts
+            # [[scripts]] = the path to the scripts folder
+            # [[kexts]] = the path to the kexts folder
+            # [[cwd]] = the current working directory
+
+            # Build the arguments list
+            if task.get("lang",None):
+                args.append(task["lang"])
+            sp = os.path.dirname(os.path.realpath(__file__))
+            kp = os.path.dirname(sp)
+            cp = os.getcwd()
+            args.append(task.get("path","").replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
+            for arg in task.get("args",[]):
+                # Expand any pathing, then glob
+                a = arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp)
+                if "*" in a:
+                    try:
+                        # Glob!
+                        a = glob.glob(a)
+                    except:
+                        pass
+                if type(a) is list:
+                    args.extend(a)
+                else:
+                    args.append(a)
+
+            # Set the env vars if they exist
+            if task.get("env", None):
+                for e in task["env"]:
+                    os.environ[e] = str(task["env"][e])
+
+            # Set the task's name if exists, or use the basename of the path
+            tname = task.get("name",os.path.basename(task.get("path","Unknown")))
+            # Run the task
+            print("     - Running task {} of {} - {}...".format(currtask, len(postbuild), tname))
+            output = self.r.run({"args":args, "stream" : self.debug})
+            if not output[2] == 0:
+                output = (output[0], "Post-Build Task Failed!\n\n{}".format(output[1]), output[2])
+                if task.get("bail", True):
+                    return output
+                print(output[1])
+
         os.chdir(plug.get("Build Dir", "./Build/Release"))
         info_plist = plistlib.readPlist(plug.get("Info", name + ".kext/Contents/Info.plist"))
         version = info_plist["CFBundleVersion"]
@@ -343,10 +419,21 @@ class KextBuilder:
             if not os.path.exists(zip_dir):
                 return ["", "{} missing!".format(zip_dir), 1]
         zip_args = [self.zip, "-r", file_name]
-        if type(zip_dir) is list:
-            zip_args.extend(zip_dir)
-        else:
-            zip_args.append(zip_dir)
+        if not type(zip_dir) is list:
+            # Make it a list
+            zip_dir = [zip_dir]
+        # Glob if needed
+        for a in zip_dir:
+            if "*" in a:
+                # Try globbing
+                try:
+                    a = glob.glob(a)
+                except:
+                    pass
+            if type(a) is list:
+                zip_args.extend(a)
+            else:
+                zip_args.append(a)
         if skip_dsym:
             zip_args.extend(["-x", "*.dSYM*"])
         output = self.r.run({"args":zip_args, "stream" : self.debug})
