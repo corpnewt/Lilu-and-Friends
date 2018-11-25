@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.71", 
-  "Changes": "Add post-build tasks, names for pre/post-build tasks, and add globbing support in pre/post-build and zip tasks.", 
+  "Version": "0.0.72", 
+  "Changes": "Better organize VoodooPS2Controller SSDTs and VirtualSMC components.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -478,7 +478,7 @@
       ], 
       "Info": "VirtualSMC.kext/Contents/Info.plist", 
       "Name": "VirtualSMC (All Tools)", 
-      "Zip": "../Release/package", 
+      "Zip": "VirtualSMC", 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Lilu": true, 
       "Folder": "VirtualSMC", 
@@ -492,6 +492,56 @@
           }
         }
       ], 
+      "Post-Build": [
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p", 
+            "./build/Release/VirtualSMC/Kexts"
+          ], 
+          "name": "Create Kexts Folder"
+        },
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p", 
+            "./build/Release/VirtualSMC/Drivers"
+          ], 
+          "name": "Create Drivers Folder"
+        },
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p", 
+            "./build/Release/VirtualSMC/Tools"
+          ], 
+          "name": "Create Tools Folder"
+        },
+        {
+          "path": "mv", 
+          "args": [
+            "./build/Release/package/Kexts/*", 
+            "./build/Release/VirtualSMC/Kexts/"
+          ], 
+          "name": "Move Kexts"
+        },
+        {
+          "path": "mv", 
+          "args": [
+            "./build/Release/package/Drivers/*", 
+            "./build/Release/VirtualSMC/Drivers/"
+          ], 
+          "name": "Move Drivers"
+        },
+        {
+          "path": "mv", 
+          "args": [
+            "./build/Release/package/Tools/*", 
+            "./build/Release/VirtualSMC/Tools/"
+          ], 
+          "name": "Move Tools"
+        }
+      ],
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
     }, 
     {
@@ -547,12 +597,46 @@
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Post-Build": [
         {
+          "path": "mkdir", 
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Source"
+          ], 
+          "name": "Create Source Folder"
+        },
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Compiled"
+          ], 
+          "name": "Create Compiled Folder"
+        },
+        {
+          "path": "ex", 
+          "args": [
+            "-sc",
+            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.",
+            "-cx",
+            "./Build/Release/SSDT/Info.txt"
+          ], 
+          "name": "Create Info.txt"
+        },
+        {
           "path": "mv", 
           "args": [
             "*.aml", 
-            "Build/Release/"
+            "Build/Release/SSDT/Compiled"
           ], 
-          "name": "Move SSDTs to Release Folder"
+          "name": "Move .aml Files to Compiled Folder"
+        },
+        {
+          "path": "mv", 
+          "args": [
+            "*.dsl", 
+            "Build/Release/SSDT/Source"
+          ], 
+          "name": "Move .dsl Files to Source Folder"
         }
       ], 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
