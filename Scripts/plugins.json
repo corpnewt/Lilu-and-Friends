@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.72", 
-  "Changes": "Better organize VoodooPS2Controller SSDTs and VirtualSMC components.", 
+  "Version": "0.0.73", 
+  "Changes": "Add cli args for headless operation.", 
   "Plugins": [
     {
       "Build Opts": [
