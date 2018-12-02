@@ -5,7 +5,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 python_install=""
 script_name="Scripts/updater.py"
-arg="$1"
 
 if [[ ! "$python3" ]]; then
 	if [[ ! "$python" ]]; then
@@ -18,9 +17,4 @@ else
 	python_install="python3"
 fi
 
-if [[ "$arg" ]]; then
-	# Launch arg
-	"$python_install" "$arg"
-else
-	"$python_install" "$DIR"/"$script_name"
-fi
+"$python_install" "$DIR"/"$script_name" "$@"
