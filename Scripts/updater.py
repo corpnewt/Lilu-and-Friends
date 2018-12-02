@@ -26,6 +26,7 @@ import run
 import kextupdater
 import downloader
 import zipfile
+import argparse
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -1178,6 +1179,191 @@ class Updater:
         return
         # json.dump(self.hashes, open("hashes.json", "w"), indent=2)
 
+    def build(self, headless = False):
+        self.resize(80,24)
+        # Building
+        build_list   = []
+        sdk_missing  = []
+        sdk_too_high = []
+        for plug in self.plugs:
+            if "Picked" in plug and plug["Picked"] == True:
+                # Initialize overrides
+                plug["xcode_opts"] = self.xcode_opts
+                plug["sdk_over"]   = self.sdk_over
+                plug["xcode_def_on_fail"] = False
+                plug["inc_sdk_on_fail"] = False
+                # Verify we can actually add it
+                if not plug["sdk_over"]:
+                    # No override - so we're checking for each kext individually
+                    # Check for -sdk macosxXX.XX
+                    low_opts = [ x.lower() for x in plug.get("Build Opts", []) ]
+                    if "-sdk" in low_opts:
+                        s_vers = None
+                        try:
+                            # Get the index of "-sdk" and
+                            # then try to get the following
+                            # index - which should be macosxXX.XX
+                            s_ind  = low_opts.index("-sdk")
+                            # strip the macosx and/or .sdk parts out
+                            s_vers = low_opts[s_ind+1].replace("macosx", "").replace(".sdk", "")
+                        except:
+                            # Failed - skip
+                            pass
+                        if s_vers:
+                            # We got a version, check it
+                            if not self._have_sdk(s_vers):
+                                sdk_missing.append(plug["Name"] + " - " + s_vers)
+                                continue
+                            if not self._can_use_sdk(s_vers):
+                                sdk_too_high.append(plug["Name"] + " - " + s_vers)
+                                continue
+                build_list.append(plug)
+        if len(sdk_missing) or len(sdk_too_high):
+            while True:
+                # We excluded kexts
+                self.head(self.er_color+"Kexts Omitted!")
+                if len(sdk_missing):
+                    print(" ")
+                    print("Kexts needing a missing sdk:\n")
+                    self.cprint(self.er_color+"\n".join(sdk_missing))
+                if len(sdk_too_high):
+                    print(" ")
+                    print("Kexts needing an sdk below Xcode's minimum:\n")
+                    self.cprint(self.er_color+"\n".join(sdk_too_high))
+                print(" ")
+                # Find out if we need to give the user the option to continue
+                if not headless and len(build_list):
+                    prompt = "Continue building the remaining "
+                    prompt = prompt + "1 kext? (y/n):  " if len(build_list) == 1 else prompt + "{} kexts? (y/n):  ".format(len(build_list))
+                    m = self.grab(prompt)
+                    if m.lower() == "y":
+                        break
+                    if m.lower() == "n":
+                        return
+                    continue
+                # No other kexts to build
+                if not headless:
+                    self.grab("No other kexts in queue - press [enter] to return to the menu...")
+                else:
+                    print("No other kexts in queue.")
+                return
+        if not len(build_list):
+            self.head(self.er_color+"WARNING")
+            print(" ")
+            print("Nothing to build - you must select at least one plugin!")
+            time.sleep(3)
+            return
+        ind      = 0
+        success  = []
+        new_hash = []
+        fail     = []
+        # Take time
+        start_time = time.time()
+        total_kexts = len(build_list)
+        self.head("Building 1 kext") if len(build_list) == 1 else self.head("Building {} kexts".format(len(build_list)))
+        while len(build_list):
+            plug = build_list.pop(0)
+            ind += 1
+            try:
+                out = self.kb.build(plug, ind, total_kexts, plug["xcode_opts"], plug["sdk_over"])
+            except Exception as e:
+                print(e)
+                out = ["", "An error occurred!", 1]
+            success_string = ""
+            if out[0] in [ None, True ]:
+                # Format our output
+                if out[0] == None:
+                    success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color
+                elif out == True:
+                    success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color + " - " + self.er_color + "Errored, use with caution" + self.rt_color
+                if plug["inc_sdk_on_fail"]:
+                    success_string += " - {}{} SDK{}".format(self.ch_color, plug["sdk_over"].lower().replace("macosx", "").replace(".sdk", ""), self.rt_color)
+                if plug["xcode_def_on_fail"]:
+                    success_string += " - {}Xcode and SDK defaults{}".format(self.ch_color, self.rt_color)
+                success.append(success_string)
+                # Organize the latest hash info
+                try:
+                    hash_url = "http" + plug["URL"].lower().split("http")[1].split(" ")[0]
+                    hash_val = self.k.get_hash(hash_url)
+                    if hash_val:
+                        new_hash.append({ "name" : plug["Name"], "url" : hash_url, "last_built" : hash_val })
+                except:
+                    pass
+            else:
+                self.cprint(self.er_color + out[1])
+                if self.increment_sdk:
+                    if plug["sdk_over"]:
+                        new_sdk = self._increment_sdk(plug["sdk_over"])
+                        if new_sdk:
+                            self.cprint("\n{}Retrying {} with {} SDK.  Appended to end of list.\n".format(self.ch_color, plug["Name"], new_sdk['version']))
+                            plug["sdk_over"] = "macosx" + new_sdk['version']
+                            plug["inc_sdk_on_fail"] = True
+                            build_list.append(plug)
+                            # Back up the index
+                            ind -= 1
+                            continue
+                if self.default_on_fail:
+                    if plug["sdk_over"] or plug["xcode_opts"]:
+                        self.cprint("\n{}Retrying {} with Xcode and SDK defaults.  Appended to end of list.\n".format(self.ch_color, plug["Name"]))
+                        plug["sdk_over"]   = None
+                        plug["xcode_opts"] = None
+                        plug["xcode_def_on_fail"] = True
+                        # Reset sdk increment
+                        plug["inc_sdk_on_fail"] = False
+                        build_list.append(plug)
+                        # Back up the index
+                        ind -=1
+                        continue
+                fail.append("    " + plug["Name"])
+        
+        # Flush the hashes
+        b_kexts = self.hashes.get("built_kexts", [])
+        overlap = [x["url"] for x in b_kexts for y in new_hash if x["url"].lower() == y["url"].lower()]
+        # Add non-overlapping vars
+        for b in b_kexts:
+            if b["url"].lower() in overlap:
+                continue
+            new_hash.append(b)
+        # Udate changes in json data and flush
+        self.hashes["built_kexts"] = new_hash
+        # Save to file
+        json.dump(self.hashes, open("hashes.json", "w"), indent=2)
+
+        # Clean up temp
+        print("Cleaning up...")
+        self.kb._del_temp()
+        # Take time
+        total_time = time.time() - start_time
+        # Resize the window if need be
+        h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
+        h = h if h > 24 else 24
+        self.resize(80,h)
+        self.head("{} of {} Succeeded".format(len(success), total_kexts))
+        print(" ")
+        if len(success):
+            self.cprint("{}Succeeded:{}\n\n{}".format(self.hi_color, self.rt_color, "\n".join(success)))
+            # Only attempt if we reveal
+            if self.reveal:
+                try:
+                    # Attempt to locate and open the kexts directory
+                    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+                    os.chdir("../Kexts")
+                    subprocess.Popen("open \"" + os.getcwd() + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except:
+                    pass
+        else:
+            self.cprint("{}Succeeded:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.er_color))
+        if len(fail):
+            self.cprint("\n{}Failed:{}\n\n{}{}".format(self.hi_color, self.rt_color, self.er_color, "\n".join(fail)))
+        else:
+            self.cprint("\n{}Failed:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.gd_color))
+        print(" ")
+        s = "second" if total_time == 1 else "seconds"
+        print("Build took {}.\n".format(self.get_time(total_time)))
+        if not headless:
+            self.grab("Press [enter] to return to the main menu...")
+        return
+
     def main(self):
         if not self.checked_updates:
             self.check_update()
@@ -1273,186 +1459,8 @@ class Updater:
         elif menu.lower() == "u":
             self.update_menu()
         elif menu.lower() == "b":
-            self.resize(80,24)
-            # Building
-            build_list   = []
-            sdk_missing  = []
-            sdk_too_high = []
-            for plug in self.plugs:
-                if "Picked" in plug and plug["Picked"] == True:
-                    # Initialize overrides
-                    plug["xcode_opts"] = self.xcode_opts
-                    plug["sdk_over"]   = self.sdk_over
-                    plug["xcode_def_on_fail"] = False
-                    plug["inc_sdk_on_fail"] = False
-                    # Verify we can actually add it
-                    if not plug["sdk_over"]:
-                        # No override - so we're checking for each kext individually
-                        # Check for -sdk macosxXX.XX
-                        low_opts = [ x.lower() for x in plug.get("Build Opts", []) ]
-                        if "-sdk" in low_opts:
-                            s_vers = None
-                            try:
-                                # Get the index of "-sdk" and
-                                # then try to get the following
-                                # index - which should be macosxXX.XX
-                                s_ind  = low_opts.index("-sdk")
-                                # strip the macosx and/or .sdk parts out
-                                s_vers = low_opts[s_ind+1].replace("macosx", "").replace(".sdk", "")
-                            except:
-                                # Failed - skip
-                                pass
-                            if s_vers:
-                                # We got a version, check it
-                                if not self._have_sdk(s_vers):
-                                    sdk_missing.append(plug["Name"] + " - " + s_vers)
-                                    continue
-                                if not self._can_use_sdk(s_vers):
-                                    sdk_too_high.append(plug["Name"] + " - " + s_vers)
-                                    continue
-                    build_list.append(plug)
-            if len(sdk_missing) or len(sdk_too_high):
-                while True:
-                    # We excluded kexts
-                    self.head(self.er_color+"Kexts Omitted!")
-                    if len(sdk_missing):
-                        print(" ")
-                        print("Kexts needing a missing sdk:\n")
-                        self.cprint(self.er_color+"\n".join(sdk_missing))
-                    if len(sdk_too_high):
-                        print(" ")
-                        print("Kexts needing an sdk below Xcode's minimum:\n")
-                        self.cprint(self.er_color+"\n".join(sdk_too_high))
-                    print(" ")
-                    # Find out if we need to give the user the option to continue
-                    if len(build_list):
-                        prompt = "Continue building the remaining "
-                        prompt = prompt + "1 kext? (y/n):  " if len(build_list) == 1 else prompt + "{} kexts? (y/n):  ".format(len(build_list))
-                        m = self.grab(prompt)
-                        if m.lower() == "y":
-                            break
-                        if m.lower() == "n":
-                            return
-                        continue
-                    # No other kexts to build
-                    self.grab("No other kexts in queue - press [enter] to return to the menu...")
-                    return
-            if not len(build_list):
-                self.head(self.er_color+"WARNING")
-                print(" ")
-                print("Nothing to build - you must select at least one plugin!")
-                time.sleep(3)
-                return
-            ind      = 0
-            success  = []
-            new_hash = []
-            fail     = []
-            # Take time
-            start_time = time.time()
-            total_kexts = len(build_list)
-            self.head("Building 1 kext") if len(build_list) == 1 else self.head("Building {} kexts".format(len(build_list)))
-            while len(build_list):
-                plug = build_list.pop(0)
-                ind += 1
-                try:
-                    out = self.kb.build(plug, ind, total_kexts, plug["xcode_opts"], plug["sdk_over"])
-                except Exception as e:
-                    print(e)
-                    out = ["", "An error occurred!", 1]
-                success_string = ""
-                if out[0] in [ None, True ]:
-                    # Format our output
-                    if out[0] == None:
-                        success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color
-                    elif out == True:
-                        success_string += "    " + self.hi_color + plug["Name"] + " v" + out[1] + self.rt_color + " - " + self.er_color + "Errored, use with caution" + self.rt_color
-                    if plug["inc_sdk_on_fail"]:
-                        success_string += " - {}{} SDK{}".format(self.ch_color, plug["sdk_over"].lower().replace("macosx", "").replace(".sdk", ""), self.rt_color)
-                    if plug["xcode_def_on_fail"]:
-                        success_string += " - {}Xcode and SDK defaults{}".format(self.ch_color, self.rt_color)
-                    success.append(success_string)
-                    # Organize the latest hash info
-                    try:
-                        hash_url = "http" + plug["URL"].lower().split("http")[1].split(" ")[0]
-                        hash_val = self.k.get_hash(hash_url)
-                        if hash_val:
-                            new_hash.append({ "name" : plug["Name"], "url" : hash_url, "last_built" : hash_val })
-                    except:
-                        pass
-                else:
-                    self.cprint(self.er_color + out[1])
-                    if self.increment_sdk:
-                        if plug["sdk_over"]:
-                            new_sdk = self._increment_sdk(plug["sdk_over"])
-                            if new_sdk:
-                                self.cprint("\n{}Retrying {} with {} SDK.  Appended to end of list.\n".format(self.ch_color, plug["Name"], new_sdk['version']))
-                                plug["sdk_over"] = "macosx" + new_sdk['version']
-                                plug["inc_sdk_on_fail"] = True
-                                build_list.append(plug)
-                                # Back up the index
-                                ind -= 1
-                                continue
-                    if self.default_on_fail:
-                        if plug["sdk_over"] or plug["xcode_opts"]:
-                            self.cprint("\n{}Retrying {} with Xcode and SDK defaults.  Appended to end of list.\n".format(self.ch_color, plug["Name"]))
-                            plug["sdk_over"]   = None
-                            plug["xcode_opts"] = None
-                            plug["xcode_def_on_fail"] = True
-                            # Reset sdk increment
-                            plug["inc_sdk_on_fail"] = False
-                            build_list.append(plug)
-                            # Back up the index
-                            ind -=1
-                            continue
-                    fail.append("    " + plug["Name"])
-            
-            # Flush the hashes
-            b_kexts = self.hashes.get("built_kexts", [])
-            overlap = [x["url"] for x in b_kexts for y in new_hash if x["url"].lower() == y["url"].lower()]
-            # Add non-overlapping vars
-            for b in b_kexts:
-                if b["url"].lower() in overlap:
-                    continue
-                new_hash.append(b)
-            # Udate changes in json data and flush
-            self.hashes["built_kexts"] = new_hash
-            # Save to file
-            json.dump(self.hashes, open("hashes.json", "w"), indent=2)
-
-            # Clean up temp
-            print("Cleaning up...")
-            self.kb._del_temp()
-            # Take time
-            total_time = time.time() - start_time
-            # Resize the window if need be
-            h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
-            h = h if h > 24 else 24
-            self.resize(80,h)
-            self.head("{} of {} Succeeded".format(len(success), total_kexts))
-            print(" ")
-            if len(success):
-                self.cprint("{}Succeeded:{}\n\n{}".format(self.hi_color, self.rt_color, "\n".join(success)))
-                # Only attempt if we reveal
-                if self.reveal:
-                    try:
-                        # Attempt to locate and open the kexts directory
-                        os.chdir(os.path.dirname(os.path.realpath(__file__)))
-                        os.chdir("../Kexts")
-                        subprocess.Popen("open \"" + os.getcwd() + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    except:
-                        pass
-            else:
-                self.cprint("{}Succeeded:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.er_color))
-            if len(fail):
-                self.cprint("\n{}Failed:{}\n\n{}{}".format(self.hi_color, self.rt_color, self.er_color, "\n".join(fail)))
-            else:
-                self.cprint("\n{}Failed:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.gd_color))
-            print(" ")
-            s = "second" if total_time == 1 else "seconds"
-            print("Build took {}.\n".format(self.get_time(total_time)))
-            self.grab("Press [enter] to return to the main menu...")
+            self.build()
             return
-                
         elif menu[:1].lower() == "a":
             # Select all
             for plug in self.plugs:
@@ -1488,11 +1496,53 @@ class Updater:
                 self.plugs[m]["Picked"] = True
         return
 
-# Create our main class, and loop - catching exceptions
-up = Updater()
-while True:
-    try:
-        up.main()
-    except Exception as e:
-        print(e)
-        time.sleep(5)
+
+if __name__ == '__main__':
+    # Setup the cli args
+    parser = argparse.ArgumentParser(prog="Run.command", description="Lilu And Friends - a Kext Builder by CorpNewt")
+    parser.add_argument("-p", "--profile", help="sets the PROFILE to use - takes a name as an argument - must be setup in the gui.  Any other settings can override those passed by the profile")
+    parser.add_argument("-k", "--kexts", help="a comma delimited list of kexts to build")
+    parser.add_argument("-s", "--sdk", help="sets the SDK override to use (macosx##.## or ##.## format)")
+    parser.add_argument("-x", "--xcodeopts", help="sets the xcode build options to use")
+    parser.add_argument("-i", "--increment", help="increments the SDK on a failed build", action="store_true")
+    parser.add_argument("-d", "--defaults", help="sets xcode defaults on failed build", action="store_true")
+    parser.add_argument("-r", "--avoid-reveal", help="avoid revealing the Kexts folder on build completion", action="store_true")
+
+    args = parser.parse_args()
+
+    # Create our main class, and loop - catching exceptions
+    up = Updater()
+    
+    if len(sys.argv) == 1:
+        # No extra args - let's open the interactive mode
+        while True:
+            try:
+                up.main()
+            except Exception as e:
+                print(e)
+                time.sleep(5)
+
+    # At this point - we have at least one arg - that means we're running
+    # in non-interactive mode
+    if args.profile:
+        up._select_profile(args.profile)
+    if args.kexts:
+        # Iterate the kexts and select only those included (and found)
+        pluglist = [x.lower() for x in args.kexts.split(",")]
+        for plug in up.plugs:
+            if plug["Name"].lower() in pluglist:
+                plug["Picked"] = True
+            else:
+                plug["Picked"] = False
+    if args.sdk:
+        up.sdk_over = args.sdk
+    if args.xcodeopts:
+        up.xcode_opts = args.xcodeopts
+    if args.increment:
+        up.increment_sdk = True
+    if args.defaults:
+        up.default_on_fail = True
+    if args.avoid_reveal:
+        up.reveal = False
+    # Try to build!
+    up.build(True)
