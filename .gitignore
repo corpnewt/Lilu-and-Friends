@@ -6,6 +6,12 @@ __pycache__/
 # Ignore output folder
 Kexts
 
+# Ignore extras
+colorsettings.json
+hashes.json
+iasl
+profiles.json
+
 # C extensions
 *.so
 
