@@ -158,10 +158,19 @@ class Updater:
             self.head("Downloading iasl")
             print("")
             temp = tempfile.mkdtemp()
-            #try:
-            self._download_and_extract(temp,self.iasl_url)
-            #except:
-            #    print("An error occurred :(")
+            try:
+                self._download_and_extract(temp,self.iasl_url)
+            except:
+                print("An error occurred :(")
+                print("")
+                print("You can download the iasl binary from here:")
+                print("")
+                print(self.iasl_url)
+                print("")
+                print("Extract that zip, then place iasl in the Scripts folder in the")
+                print("Lilu and Friends folder.")
+                print("")
+                self.grab("Press [enter] to continue...")
             shutil.rmtree(temp, ignore_errors=True)
         if os.path.exists(target):
             return target
@@ -361,26 +370,6 @@ class Updater:
                 # Got a higher version, set it
                 highest_sdk = sdk
         return highest_sdk
-
-    def _get_string(self, url):
-        response = urlopen(url)
-        CHUNK = 16 * 1024
-        bytes_so_far = 0
-        total_size = int(response.headers['Content-Length'])
-        chunk_so_far = "".encode("utf-8")
-        while True:
-            chunk = response.read(CHUNK)
-            bytes_so_far += len(chunk)
-            #self._progress_hook(response, bytes_so_far, total_size)
-            if not chunk:
-                break
-            chunk_so_far += chunk
-        return chunk_so_far.decode("utf-8")
-
-    def _progress_hook(self, response, bytes_so_far, total_size):
-        percent = float(bytes_so_far) / total_size
-        percent = round(percent*100, 2)
-        sys.stdout.write("Downloaded {:,} of {:,} bytes ({:.2f}%)\r".format(bytes_so_far, total_size, percent))
 
     def _get_output(self, comm):
         try:
@@ -856,7 +845,7 @@ class Updater:
         self.head("Checking for Updates")
         print(" ")
         try:
-            newjson = self._get_string(self.version_url)
+            newjson = self.d.get_string(self.version_url, False)
         except:
             # Not valid json data
             self.cprint(self.er_color+"Error checking for updates (network issue)")
