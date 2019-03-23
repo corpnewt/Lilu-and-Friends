@@ -658,6 +658,77 @@
       ],
       "Desc": "PS2 driver for desktops/laptops"
     },
+     {
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
+      "Build Opts": [
+        "-sdk",
+        "macosx"
+      ],
+      "FixXib": true,
+      "Name": "VoodooPS2Controller-Acidanthera",
+      "Zip": [
+        "../Release/"
+      ],
+      "Skip Targets": [
+        "VoodooPS2Daemon"
+      ],
+      "URL": "git clone https://github.com/acidanthera/VoodooPS2",
+      "Post-Build": [
+        {
+          "path": "mkdir",
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Source"
+          ],
+          "name": "Create Source Folder"
+        },
+        {
+          "path": "mkdir",
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Compiled"
+          ],
+          "name": "Create Compiled Folder"
+        },
+        {
+          "path": "ex",
+          "args": [
+            "-sc",
+            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.",
+            "-cx",
+            "./Build/Release/SSDT/Info.txt"
+          ],
+          "name": "Create Info.txt"
+        },
+        {
+          "path": "mv",
+          "args": [
+            "*.aml",
+            "Build/Release/SSDT/Compiled"
+          ],
+          "name": "Move .aml Files to Compiled Folder"
+        },
+        {
+          "path": "mv",
+          "args": [
+            "*.dsl",
+            "Build/Release/SSDT/Source"
+          ],
+          "name": "Move .dsl Files to Source Folder"
+        }
+      ],
+      "Folder": "VoodooPS2",
+      "Pre-Build": [
+        {
+          "path": "[[scripts]]/iasl",
+          "args": [
+            "*.dsl"
+          ],
+          "name": "Compile SSDTs"
+        }
+      ],
+      "Desc": "PS2 driver for desktops/laptops (Acidanthera)"
+    },
     {
       "Build Opts": [
         "-sdk",
