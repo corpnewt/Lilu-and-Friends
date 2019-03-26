@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.75", 
-  "Changes": "Add Acidanthera's fork of VoodooPS2Controller.", 
+  "Version": "0.0.76", 
+  "Changes": "Add option to install SDKs from phracker's github.", 
   "Plugins": [
     {
       "Build Opts": [
