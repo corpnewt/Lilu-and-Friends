@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.76", 
-  "Changes": "Add option to install SDKs from phracker's github.", 
+  "Version": "0.0.77", 
+  "Changes": "Allow sdk download/override when changing profiles.", 
   "Plugins": [
     {
       "Build Opts": [
