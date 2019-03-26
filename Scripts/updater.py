@@ -161,8 +161,9 @@ class Updater:
         print("")
         try:
             sdk = self.d.get_string(self.sdk_url)
-            print("")
         except:
+            sdk = None
+        if sdk == None:
             print("An error occurred :(")
             print("")
             print("You can manually download the SDKs from here:")
@@ -171,6 +172,7 @@ class Updater:
             print("")
             self.grab("Press [enter] to continue...")
             return
+        print("")
         # Got something - let's iterate
         for x in sdk.split("\n"):
             if not ".sdk.tar.xz" in x.lower() or not "a href" in x.lower():
