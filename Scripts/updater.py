@@ -99,7 +99,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 29
+        self.hpad = 30
         self.wpad = 8
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -150,6 +150,36 @@ class Updater:
         # Make sure we have iasl
         self.iasl_url = "https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip"
         self.iasl = self.check_iasl()
+
+        # Setup the SDK url
+        self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
+        self.remote_sdk_list = []
+
+    def check_remote_sdk(self):
+        self.remote_sdk_list = []
+        self.head("Gathering Remote SDK List")
+        print("")
+        try:
+            sdk = self.d.get_string(self.sdk_url)
+            print("")
+        except:
+            print("An error occurred :(")
+            print("")
+            print("You can manually download the SDKs from here:")
+            print("")
+            print(self.sdk_url)
+            print("")
+            self.grab("Press [enter] to continue...")
+            return
+        # Got something - let's iterate
+        for x in sdk.split("\n"):
+            if not ".sdk.tar.xz" in x.lower() or not "a href" in x.lower():
+                continue
+            try:
+                self.remote_sdk_list.append("https://github.com" + x.split('<a href="')[1].split('"')[0])
+            except:
+                pass
+        return self.remote_sdk_list
 
     def check_iasl(self):
         target = os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
@@ -1353,6 +1383,115 @@ class Updater:
             self.grab("Press [enter] to return to the main menu...")
         return
 
+    def download_and_install_sdk(self, url):
+        # Create a temp dir, download the file to it, extract the sdk,
+        # then copy to the Xcode dir with admin privs
+        self.head("Getting {} SDK".format(os.path.basename(url.replace(".sdk.tar.xz",""))))
+        print("")
+        temp = tempfile.mkdtemp()
+        file_name = os.path.basename(url)
+        sdk_name  = file_name.replace(".tar.xz","")
+        file_path = os.path.join(temp,file_name)
+        print("Downloading {}".format(file_name))
+        try:
+            self.d.stream_to_file(url, file_path)
+            print("")
+        except:
+            pass
+        if not os.path.exists(file_path):
+            print("Failed to download :(")
+            print("")
+            self.grab("Press [enter] to return to the Install SDK menu...")
+            shutil.rmtree(temp)
+            return
+        # Save our prior cwd and move to the temp folder
+        cwd = os.getcwd()
+        os.chdir(temp)
+        # Extract the sdk
+        print("Extracting {}".format(file_name))
+        out = self.r.run({"args":["tar","-xf",file_name]})
+        if out[2] != 0:
+            # Error occurred
+            print("An error occurred during extraction...")
+            print(out[1])
+            print("")
+            self.grab("Press [enter] to return to the Install SDK menu...")
+            os.chdir(cwd)
+            shutil.rmtree(temp)
+            return
+        # Remove the file
+        print("Removing temp archive...")
+        os.remove(file_path)
+        # Extracted - let's make sure we can find the sdk
+        if not os.path.exists(sdk_name) and os.path.isdir(sdk_name):
+            print("{} not found after extraction...".format(sdk_name))
+            print("")
+            self.grab("Press [enter] to return to the Install SDK menu...")
+            os.chdir(cwd)
+            shutil.rmtree(temp)
+            return
+        os.chdir(cwd)
+        # Found the extracted SDK - let's copy it over!
+        print("Copying {} to {}...".format(sdk_name, self.sdk_path))
+        out = self.r.run({"args":["rsync","-a","--append",os.path.join(temp,sdk_name),self.sdk_path],"sudo":True,"stream":True})
+        if out[2] != 0:
+            # Error occurred
+            print("An error occurred while copying...")
+            print(out[1])
+            print("")
+            self.grab("Press [enter] to return to the Install SDK menu...")
+            shutil.rmtree(temp)
+            return
+        print("Cleaning up...")
+        shutil.rmtree(temp)
+        print("Re-detecting installed SDKs...")
+        self.sdk_list = self._get_sdk_list()
+        print("Done.")
+        print("")
+
+    def install_sdk(self):
+        self.resize(80,24)
+        if self.remote_sdk_list == []:
+            self.remote_sdk_list = self.check_remote_sdk()
+        if self.remote_sdk_list == []:
+            # Couldn't get the list
+            return
+        self.head("Install SDKs")
+        print("")
+        print("Installed SDKs:")
+        print("")
+        print("\n".join([" - " + x["version"] for x in self.sdk_list]))
+        print("")
+        print("M. Main Menu")
+        print("Q. Quit")
+
+        h = 11+len(self.sdk_list)
+        h = h if h > 24 else 24
+        self.resize(80,h)
+
+        add = self.grab("Please type the version number (eg. 10.10) of the SDK to install:  ")
+        if not len(add):
+            self.install_sdk()
+            return
+        if add.lower() == "m":
+            return
+        if add.lower() == "q":
+            self.custom_quit()
+        for x in self.remote_sdk_list:
+            # Get the name alone
+            name = os.path.basename(x).replace(".sdk.tar.xz","").replace("MacOSX","")
+            if name == add:
+                # Found it!
+                self.download_and_install_sdk(x)
+                self.install_sdk()
+                return
+        self.head("SDK Error")
+        print("")
+        print("{} not found!".format(add))
+        print("")
+        self.grab("Press [enter] to return to the Install SDK menu....")
+        self.install_sdk()
+
     def main(self):
         if not self.checked_updates:
             self.check_update()
@@ -1405,6 +1544,7 @@ class Updater:
         print("N. Select None")
         print("X. Xcodebuild Options")
         print("S. Update Xcode Min SDK")
+        print("K. Install SDKs")
         print("P. Profiles")
         print("I. Increment SDK on Fail")
         print("F. Toggle Defaults on Failure")
@@ -1445,6 +1585,8 @@ class Updater:
             self.reveal ^= True
         elif menu.lower() == "s":
             self.custom_min_sdk()
+        elif menu.lower() == "k":
+            self.install_sdk()
         elif menu.lower() == "u":
             self.update_menu()
         elif menu.lower() == "b":
