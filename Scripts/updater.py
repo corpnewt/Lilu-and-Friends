@@ -642,8 +642,23 @@ class Updater:
             sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
             self.head(self.er_color+"SDK Error"+self.rt_color+" Selecting: {}".format(profile_name))
             print(" ")
-            print("Missing the {} SDK!  SDK override removed!".format(sdk_vers))
+            print("Missing the {} SDK!".format(sdk_vers))
             print(" ")
+            while True:
+                ask = self.grab("Install now? (y/n):  ").lower()
+                if ask == "n":
+                    break
+                elif ask == "y":
+                    url = self.get_url_for_sdk_vers(sdk_vers)
+                    if url:
+                        test = self.download_and_install_sdk(url)
+                        if test == True:
+                            # Check if the sdk installed correctly
+                            self._select_profile(profile_name)
+                            return
+                    else:
+                        print("{} not available in remote SDK list...".format(sdk_vers))
+                    break
             self.sdk_over = None
             self.selected_profile = None
             time.sleep(5)
@@ -651,8 +666,25 @@ class Updater:
             sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
             self.head(self.er_color+"SDK Error"+self.rt_color+" Selecting: {}".format(profile_name))
             print(" ")
-            print("{} is below Xcode's minimum!  SDK override removed!".format(sdk_vers))
+            print("{} is below Xcode's minimum!".format(sdk_vers))
             print(" ")
+            while True:
+                ask = self.grab("Set minimum to {} now? (y/n):  ".format(sdk_vers)).lower()
+                if ask == "n":
+                    break
+                elif ask == "y":
+                    t = tempfile.mkdtemp()
+                    error = False
+                    try:
+                        self.apply_min_sdk(sdk_vers, t)
+                    except:
+                        print("Something went wrong!")
+                        error = True
+                    shutil.rmtree(t)
+                    if not error:
+                        self._select_profile(profile_name)
+                        return
+                    break
             self.sdk_over = None
             self.selected_profile = None
             time.sleep(5)
@@ -836,25 +868,55 @@ class Updater:
                 self.head("Missing SDK!")
                 print(" ")
                 self.cprint(self.er_color+"You don't currently have a {} sdk.".format(menu))
-                print("You can visit the following site to download more sdks:\n")
-                print("https://github.com/phracker/MacOSX-SDKs")
                 print(" ")
-                self.grab("Press [enter] to continue...")
-                self.sdk_override()
-                return
+                while True:
+                    ask = self.grab("Install now? (y/n):  ").lower()
+                    if ask == "n":
+                        self.sdk_override()
+                        return
+                    elif ask == "y":
+                        name = menu.replace("macosx","")
+                        url = self.get_url_for_sdk_vers(name)
+                        if url:
+                            test = self.download_and_install_sdk(url)
+                            if test == True:
+                                # Check if the sdk installed correctly
+                                break
+                        else:
+                            print("{} not available in remote SDK list...".format(name))
+                            print("")
+                            self.grab("Press [enter] to continue...")
+                        self.sdk_override()
+                        return
 
             # We have it - let's make sure Xcode will use it
             if not self._can_use_sdk(menu):
                 self.head("SDK Below Minimum!")
                 print(" ")
                 self.cprint(self.er_color+"Xcode is currently set to allow sdks of {} or higher.".format(self._get_sdk_min_version()))
-                print("You can edit the MinimumSDKVersion property in the Info.plist located at:\n")
-                print(self.sdk_version_plist)
-                print("\nto update this setting.")
-                print(" ")
-                self.grab("Press [enter] to continue...")
-                self.sdk_override()
-                return
+                print("")
+                name = menu.replace("macosx","")
+                while True:
+                    ask = self.grab("Set minimum to {} now? (y/n):  ".format(name)).lower()
+                    if ask == "n":
+                        self.sdk_override()
+                        return
+                    elif ask == "y":
+                        t = tempfile.mkdtemp()
+                        error = False
+                        try:
+                            self.apply_min_sdk(name, t)
+                        except Exception as e:
+                            print("Something went wrong!")
+                            print(str(e))
+                            print("")
+                            error = True
+                        shutil.rmtree(t)
+                        if error:
+                            self.grab("Press [enter] to continue...")
+                            self.sdk_override()
+                            return
+                        break
             
             if not self.sdk_over == menu:
                 # Profile change!
@@ -1448,6 +1510,21 @@ class Updater:
         self.sdk_list = self._get_sdk_list()
         print("Done.")
         print("")
+        return True
+
+    def get_url_for_sdk_vers(self, vers):
+        if self.remote_sdk_list == []:
+            self.remote_sdk_list = self.check_remote_sdk()
+        if self.remote_sdk_list == []:
+            # Couldn't get the list
+            return None
+        for x in self.remote_sdk_list:
+            # Get the name alone
+            name = os.path.basename(x).replace(".sdk.tar.xz","").replace("MacOSX","")
+            if name == vers:
+                # Found it!
+                return x
+        return None
 
     def install_sdk(self):
         self.resize(80,24)
@@ -1477,14 +1554,11 @@ class Updater:
             return
         if add.lower() == "q":
             self.custom_quit()
-        for x in self.remote_sdk_list:
-            # Get the name alone
-            name = os.path.basename(x).replace(".sdk.tar.xz","").replace("MacOSX","")
-            if name == add:
-                # Found it!
-                self.download_and_install_sdk(x)
-                self.install_sdk()
-                return
+        url = self.get_url_for_sdk_vers(add)
+        if url:
+            self.download_and_install_sdk(url)
+            self.install_sdk()
+            return
         self.head("SDK Error")
         print("")
         print("{} not found!".format(add))
