@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.77", 
-  "Changes": "Allow sdk download/override when changing profiles.", 
+  "Version": "0.0.78", 
+  "Changes": "Fix misnamed VoodooPS2Controller.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -46,6 +46,7 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
+      "Desc": "dynamic audio patching", 
       "Name": "AppleALC", 
       "Pre-Build": [
         {
@@ -58,8 +59,7 @@
           ], 
           "name": "Compile ResourceConverter Prerequisite"
         }
-      ], 
-      "Desc": "dynamic audio patching"
+      ]
     }, 
     {
       "Name": "AppleBacklightFixup", 
@@ -466,6 +466,7 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)", 
       "Name": "VirtualSMC", 
       "Pre-Build": [
         {
@@ -476,8 +477,7 @@
             "FORCE_INSTALL": "1"
           }
         }
-      ], 
-      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
+      ]
     }, 
     {
       "Build Opts": [
@@ -601,77 +601,6 @@
       "Skip Targets": [
         "VoodooPS2Daemon"
       ], 
-      "URL": "git clone https://github.com/acidanthera/VoodooPS2", 
-      "Post-Build": [
-        {
-          "path": "mkdir", 
-          "args": [
-            "-p", 
-            "Build/Release/SSDT/Source"
-          ], 
-          "name": "Create Source Folder"
-        }, 
-        {
-          "path": "mkdir", 
-          "args": [
-            "-p", 
-            "Build/Release/SSDT/Compiled"
-          ], 
-          "name": "Create Compiled Folder"
-        }, 
-        {
-          "path": "ex", 
-          "args": [
-            "-sc", 
-            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.", 
-            "-cx", 
-            "./Build/Release/SSDT/Info.txt"
-          ], 
-          "name": "Create Info.txt"
-        }, 
-        {
-          "path": "mv", 
-          "args": [
-            "*.aml", 
-            "Build/Release/SSDT/Compiled"
-          ], 
-          "name": "Move .aml Files to Compiled Folder"
-        }, 
-        {
-          "path": "mv", 
-          "args": [
-            "*.dsl", 
-            "Build/Release/SSDT/Source"
-          ], 
-          "name": "Move .dsl Files to Source Folder"
-        }
-      ], 
-      "Folder": "VoodooPS2", 
-      "Pre-Build": [
-        {
-          "path": "[[scripts]]/iasl", 
-          "args": [
-            "*.dsl"
-          ], 
-          "name": "Compile SSDTs"
-        }
-      ], 
-      "Desc": "PS2 driver for desktops/laptops"
-    }, 
-    {
-      "Build Opts": [
-        "-sdk", 
-        "macosx"
-      ], 
-      "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
-      "FixXib": true, 
-      "Name": "VoodooPS2Controller (Acidanthera)", 
-      "Zip": [
-        "../Release/"
-      ], 
-      "Skip Targets": [
-        "VoodooPS2Daemon"
-      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Post-Build": [
         {
@@ -718,6 +647,77 @@
         }
       ], 
       "Folder": "OS-X-Voodoo-PS2-Controller", 
+      "Pre-Build": [
+        {
+          "path": "[[scripts]]/iasl", 
+          "args": [
+            "*.dsl"
+          ], 
+          "name": "Compile SSDTs"
+        }
+      ], 
+      "Desc": "PS2 driver for desktops/laptops"
+    }, 
+    {
+      "Build Opts": [
+        "-sdk", 
+        "macosx"
+      ], 
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
+      "FixXib": true, 
+      "Name": "VoodooPS2Controller (Acidanthera)", 
+      "Zip": [
+        "../Release/"
+      ], 
+      "Skip Targets": [
+        "VoodooPS2Daemon"
+      ], 
+      "URL": "git clone https://github.com/acidanthera/VoodooPS2", 
+      "Post-Build": [
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p", 
+            "Build/Release/SSDT/Source"
+          ], 
+          "name": "Create Source Folder"
+        }, 
+        {
+          "path": "mkdir", 
+          "args": [
+            "-p", 
+            "Build/Release/SSDT/Compiled"
+          ], 
+          "name": "Create Compiled Folder"
+        }, 
+        {
+          "path": "ex", 
+          "args": [
+            "-sc", 
+            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.", 
+            "-cx", 
+            "./Build/Release/SSDT/Info.txt"
+          ], 
+          "name": "Create Info.txt"
+        }, 
+        {
+          "path": "mv", 
+          "args": [
+            "*.aml", 
+            "Build/Release/SSDT/Compiled"
+          ], 
+          "name": "Move .aml Files to Compiled Folder"
+        }, 
+        {
+          "path": "mv", 
+          "args": [
+            "*.dsl", 
+            "Build/Release/SSDT/Source"
+          ], 
+          "name": "Move .dsl Files to Source Folder"
+        }
+      ], 
+      "Folder": "VoodooPS2", 
       "Pre-Build": [
         {
           "path": "[[scripts]]/iasl", 
