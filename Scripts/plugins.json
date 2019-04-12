@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.78", 
-  "Changes": "Fix misnamed VoodooPS2Controller.", 
+  "Version": "0.0.79", 
+  "Changes": "Update for VirtualSMC build changes.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -467,17 +467,7 @@
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/VirtualSMC", 
       "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)", 
-      "Name": "VirtualSMC", 
-      "Pre-Build": [
-        {
-          "lang": "bash", 
-          "path": "./VirtualSmcPkg/macbuild.tool", 
-          "name": "Run macbuild.tool", 
-          "env": {
-            "FORCE_INSTALL": "1"
-          }
-        }
-      ]
+      "Name": "VirtualSMC"
     }, 
     {
       "Build Opts": [
@@ -539,16 +529,6 @@
       ], 
       "Lilu": true, 
       "Folder": "VirtualSMC", 
-      "Pre-Build": [
-        {
-          "lang": "bash", 
-          "path": "./VirtualSmcPkg/macbuild.tool", 
-          "name": "Run macbuild.tool", 
-          "env": {
-            "FORCE_INSTALL": "1"
-          }
-        }
-      ], 
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
     }, 
     {
