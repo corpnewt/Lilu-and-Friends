@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 46 kexts:
+Currently Builds 48 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -50,6 +50,7 @@ Currently Builds 46 kexts:
 * HWSensors (RehabMan)
 * HibernationFixup
 * IntelBacklight
+* IntelMausi (Acidanthera)
 * IntelMausiEthernet
 * IntelMausiEthernet (RehabMan)
 * Lilu
@@ -66,5 +67,6 @@ Currently Builds 46 kexts:
 * VoodooHDA
 * VoodooI2C
 * VoodooPS2Controller
+* VoodooPS2Controller (Acidanthera)
 * VoodooTSCSync
 * WhateverGreen
