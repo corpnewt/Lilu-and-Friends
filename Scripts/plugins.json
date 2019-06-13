@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.80",
-  "Changes": "Add Acidanthera's IntelMausi.kext.",
+  "Version": "0.0.81",
+  "Changes": "Fix BT4LEContinuityFixup scheme name.",
   "Plugins": [
     {
       "Build Opts": [
@@ -112,9 +112,8 @@
     },
     {
       "Lilu": true,
-      "URL": "git clone https://github.com/acidanthera/BT4LEContiunityFixup bt4lecontiunityfixup-code",
-      "Folder": "bt4lecontiunityfixup-code",
-      "Name": "BT4LEContiunityFixup",
+      "URL": "git clone https://github.com/acidanthera/BT4LEContinuityFixup",
+      "Name": "BT4LEContinuityFixup",
       "Desc": "Provides Handoff, Instant Hotspot, and New Airdrop patches for IOBluetoothFamily."
     },
     {
