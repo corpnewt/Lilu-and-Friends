@@ -231,7 +231,8 @@ class Updater:
     def migrate_profiles(self):
         # Helper method to migrate some profile info
         migrate = [
-            {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup","IntelGraphicsDVMTFixup"],"replace":["WhateverGreen"]}
+            {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup","IntelGraphicsDVMTFixup"],"replace":["WhateverGreen"]},
+            {"find":["BT4LEContiunityFixup"],"replace":["BT4LEContinuityFixup"]}
         ]
         changes = False
         for m in migrate:
