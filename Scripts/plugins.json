@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.81",
-  "Changes": "Fix BT4LEContinuityFixup scheme name.",
+  "Version": "0.0.82",
+  "Changes": "Add Headkaze's BrcmPatchRAM repo with Catalina fixes.",
   "Plugins": [
     {
       "Build Opts": [
@@ -129,6 +129,34 @@
         "BrcmNonPatchRAM"
       ],
       "URL": "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM",
+      "Folder": "OS-X-BrcmPatchRAM",
+      "Pre-Build": [
+        {
+          "path": "xcodebuild",
+          "args": [
+            "-sdk",
+            "macosx",
+            "-target",
+            "Prebuild"
+          ],
+          "name": "Compile Prebuild Prerequisite"
+        }
+      ],
+      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices"
+    },
+    {
+      "Info": "BrcmPatchRam2.kext/Contents/Info.plist",
+      "Build Opts": [
+        "-sdk",
+        "macosx"
+      ],
+      "Name": "BrcmPatchRAM (Headkaze)",
+      "Zip": "../Release",
+      "Skip Targets": [
+        "BrcmPatchRAM",
+        "BrcmNonPatchRAM"
+      ],
+      "URL": "git clone https://github.com/headkaze/OS-X-BrcmPatchRAM",
       "Folder": "OS-X-BrcmPatchRAM",
       "Pre-Build": [
         {
