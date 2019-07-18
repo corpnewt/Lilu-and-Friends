@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.82",
-  "Changes": "Add Headkaze's BrcmPatchRAM repo with Catalina fixes.",
+  "Version": "0.0.83", 
+  "Changes": "Add aabdellah's NightShiftUnlocker repo with Mojave fixes.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -440,6 +440,15 @@
       "Name": "NightShiftUnlocker",
       "Desc": "unlocks night shift on unsupported SMBIOS"
     },
+    {
+      "Info": "NightShiftUnlocker.kext/Contents/Info.plist", 
+      "Name": "NightShiftUnlocker (aabdellah)", 
+      "Zip": "./NightShiftUnlocker.kext", 
+      "URL": "git clone https://github.com/aabdellah/NightShiftUnlocker", 
+      "Lilu": true, 
+      "Folder": "NightShiftUnlocker", 
+      "Desc": "unlocks night shift on unsupported SMBIOS"
+    }, 
     {
       "Lilu": true,
       "URL": "git clone https://github.com/al3xtjames/NoTouchID",
