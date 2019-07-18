@@ -95,6 +95,9 @@ class KextBuilder:
     def _get_bin(self, bin):
         return self.r.run({"args":["which", bin]})[0].split("\n")[0].split("\r")[0]
 
+    def _debug(self, string):
+        return string.replace("Release 10.6","Debug").replace("Release","Debug").replace("release","debug").replace("RELEASE","DEBUG")
+
     def build(self, plug, curr = None, total = None, ops = None, sdk = None):
         # Builds a kext
         # Gather info
@@ -103,12 +106,32 @@ class KextBuilder:
         needs_lilu = plug.get("Lilu", False)
         folder     = plug.get("Folder", plug["Name"])
         skip_phase = plug.get("Remove Phases", [])
-        prebuild     = plug.get("Pre-Build", [])
+        prebuild   = plug.get("Pre-Build", [])
         postbuild  = plug.get("Post-Build", [])
         skip_dsym  = plug.get("Skip dSYM", True)
         required   = plug.get("Required",[])
         skip_targ  = plug.get("Skip Targets",[])
         fix_xib    = plug.get("FixXib", False)
+        build_opts = plug.get("Build Opts", [])
+        build_dir  = plug.get("Build Dir", "./Build/Release")
+        ignore_err = plug.get("Ignore Errors", False)
+        p_info     = plug.get("Info", name + ".kext/Contents/Info.plist")
+        zip_dir    = plug.get("Zip", name+".kext")
+        debug      = plug.get("Debug", False) # Change to false later
+
+        if debug:
+            # we need to prep some stuff for debug builds
+            for p in prebuild:
+                p["args"] = [self._debug(x) for x in p["args"]]
+            for p in postbuild:
+                p["args"] = [self._debug(x) for x in p["args"]]
+            build_opts = [self._debug(x) for x in build_opts]
+            build_dir = self._debug(build_dir)
+            if isinstance(zip_dir,list):
+                zip_dir = [self._debug(x) for x in zip_dir]
+            else:
+                zip_dir = self._debug(zip_dir)
+            name = name+" (Debug)"
 
         return_val = None
 
@@ -316,17 +339,23 @@ class KextBuilder:
                 else:
                     print("     - {} skipped".format(line))
 
-        print("    Building release version...")
+        print("    Building {} version...".format("debug" if debug else "release"))
         xcode_args = [ self.xcodebuild ]
         if ops:
             print("    Using \"{}\"...".format(ops))
             xcode_args.extend(ops.split())
         else:
-            xcode_args.extend(plug.get("Build Opts", []))
+            xcode_args.extend(build_opts)
         # Add the targets if we have skips
         xcode_args.extend(target_specs)
         # Make sure it builds in the local directory - but only if using -scheme
         xcode_args.append("BUILD_DIR=" + os.path.join(os.getcwd(), "build/"))
+        if debug:
+            # Ensure we're building the Debug version
+            if not "-configuration" in xcode_args:
+                xcode_args.extend(["-configuration","Debug"])
+            else:
+                xcode_args = [self._debug(x) for x in xcode_args]
         if sdk:
             ind = -1
             for s in xcode_args:
@@ -342,7 +371,7 @@ class KextBuilder:
         output = self.r.run({"args":xcode_args, "stream" : self.debug})
 
         if not output[2] == 0:
-            if plug.get("Ignore Errors", False):
+            if ignore_err:
                 print("    Build had errors - attempting to continue past the following:\n\n{}".format(output[1]))
                 return_val = True
             else:
@@ -409,12 +438,14 @@ class KextBuilder:
                     return output
                 print(output[1])
 
-        os.chdir(plug.get("Build Dir", "./Build/Release"))
-        info_plist = plistlib.readPlist(plug.get("Info", name + ".kext/Contents/Info.plist"))
+        if debug and not os.path.exists(build_dir):
+            # Even though we're debugging - try the release as well
+            build_dir = plug.get("Build Dir", "./Build/Release")
+        os.chdir(build_dir)
+        info_plist = plistlib.readPlist(p_info)
         version = info_plist["CFBundleVersion"]
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
-        zip_dir = plug.get("Zip", name+".kext")
         if type(zip_dir) is str:
             if not os.path.exists(zip_dir):
                 return ["", "{} missing!".format(zip_dir), 1]
@@ -434,7 +465,8 @@ class KextBuilder:
                 zip_args.extend(a)
             else:
                 zip_args.append(a)
-        if skip_dsym:
+        if skip_dsym and not debug:
+            # Keep dSYM files for debugging
             zip_args.extend(["-x", "*.dSYM*"])
         output = self.r.run({"args":zip_args, "stream" : self.debug})
 

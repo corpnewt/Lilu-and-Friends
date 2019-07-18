@@ -99,7 +99,7 @@ class Updater:
 
         self.h = 0
         self.w = 0
-        self.hpad = 30
+        self.hpad = 32
         self.wpad = 8
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -122,6 +122,7 @@ class Updater:
         self.default_on_fail = False
         self.increment_sdk = False
         self.reveal = True
+        self.kext_debug = False
 
         if os.path.exists("hashes.json"):
             self.hashes = json.load(open("hashes.json"))
@@ -640,6 +641,7 @@ class Updater:
         self.xcode_opts = selected.get("Xcode", None)
         self.selected_profile = selected.get("Name", None)
         self.sdk_over = selected.get("SDK", None)
+        self.kext_debug = selected.get("Debug", False)
         # Revert SDK changes if there's an issue
         if self.sdk_over and not self._have_sdk(self.sdk_over):
             sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
@@ -719,6 +721,7 @@ class Updater:
         info += "Defaults on Failure:\n\n{}{}{}\n\n".format(self.ch_color, self.default_on_fail, self.rt_color)
         info += "Reveal Kexts Folder On Success:\n\n{}{}{}\n\n".format(self.ch_color, self.reveal, self.rt_color)
         info += "Increment SDK on Fail:\n\n{}{}{}\n\n".format(self.ch_color, self.increment_sdk, self.rt_color)
+        info += "Build Debug Kexts:\n\n{}{}{}\n\n".format(self.ch_color, self.kext_debug, self.rt_color)
         info += "If a profile is named \"{}Default{}\" it will be loaded automatically\n\n".format(self.hi_color, self.rt_color)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         # Calculate quick height
@@ -751,6 +754,7 @@ class Updater:
                 option["DefOnFail"] = self.default_on_fail
                 option["IncrementSDK"] = self.increment_sdk
                 option["Reveal"] = self.reveal
+                option["Debug"] = self.kext_debug
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
                 self.selected_profile = option["Name"]
@@ -1270,12 +1274,13 @@ class Updater:
         sdk_missing  = []
         sdk_too_high = []
         for plug in self.plugs:
-            if "Picked" in plug and plug["Picked"] == True:
+            if plug.get("Picked",False):
                 # Initialize overrides
                 plug["xcode_opts"] = self.xcode_opts
                 plug["sdk_over"]   = self.sdk_over
                 plug["xcode_def_on_fail"] = False
                 plug["inc_sdk_on_fail"] = False
+                plug["Debug"] = self.kext_debug
                 # Verify we can actually add it
                 if not plug["sdk_over"]:
                     # No override - so we're checking for each kext individually
@@ -1420,10 +1425,13 @@ class Updater:
         total_time = time.time() - start_time
         # Resize the window if need be
         h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
+        h = h+2 if self.kext_debug else h
         h = h if h > 24 else 24
         self.resize(80,h)
         self.head("{} of {} Succeeded".format(len(success), total_kexts))
         print(" ")
+        if self.kext_debug:
+            self.cprint(" - {}Debug Kexts{} -\n".format(self.ch_color,self.rt_color))
         if len(success):
             self.cprint("{}Succeeded:{}\n\n{}".format(self.hi_color, self.rt_color, "\n".join(success)))
             # Only attempt if we reveal
@@ -1609,27 +1617,29 @@ class Updater:
         self.cprint("Defaults on Failure:   {}{}".format(self.ch_color, self.default_on_fail))
         self.cprint("Xcode Min SDK:         {}{}".format(self.ch_color, self._get_sdk_min_version()))
         self.cprint("Reveal Kexts Folder:   {}{}".format(self.ch_color, self.reveal))
+        self.cprint("Build Debug Kexts:     {}{}".format(self.ch_color, self.kext_debug))
         if self.kb.debug:
             self.cprint("Debug:                 {}{}".format(self.ch_color, self.kb.debug))
         else:
             print("Debug:                 {}".format(self.kb.debug))
 
         print(" ")
-        print("B. Build Selected")
+        print("B.  Build Selected")
         print(" ")
-        print("A. Select All")
-        print("N. Select None")
-        print("X. Xcodebuild Options")
-        print("S. Update Xcode Min SDK")
-        print("K. Install SDKs")
-        print("P. Profiles")
-        print("I. Increment SDK on Fail")
-        print("F. Toggle Defaults on Failure")
-        print("R. Toggle Reveal Kexts Folder")
-        print("D. Toggle Debugging")
-        print("C. Color Picker")
-        print("U. Update Menu")
-        print("Q. Quit")
+        print("A.  Select All")
+        print("N.  Select None")
+        print("X.  Xcodebuild Options")
+        print("S.  Update Xcode Min SDK")
+        print("K.  Install SDKs")
+        print("P.  Profiles")
+        print("I.  Increment SDK on Fail")
+        print("F.  Toggle Defaults on Failure")
+        print("R.  Toggle Reveal Kexts Folder")
+        print("D.  Toggle Debugging")
+        print("TD. Toggle Building Debug Kexts")
+        print("C.  Color Picker")
+        print("U.  Update Menu")
+        print("Q.  Quit")
         print(" ")
         menu = self.grab("Please make a selection:  ")
 
@@ -1656,6 +1666,10 @@ class Updater:
             self.color_picker()
         elif menu.lower() == "d":
             self.kb.debug ^= True
+        elif menu.lower() == "td":
+            # Profile change!
+            self.selected_profile = None
+            self.kext_debug ^= True
         elif menu.lower() == "r":
             # Profile change!
             self.selected_profile = None

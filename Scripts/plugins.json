@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.83", 
-  "Changes": "Add aabdellah's NightShiftUnlocker repo with Mojave fixes.", 
+  "Version": "0.0.84", 
+  "Changes": "Add debug kext building and remove some broken targets from Acidanthera's VoodooPS2Controller.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -700,7 +700,9 @@
         "../Release/"
       ],
       "Skip Targets": [
-        "VoodooPS2Daemon"
+        "VoodooPS2Daemon",
+        "VoodooPS2synapticsPane",
+        "synapticsconfigload"
       ],
       "URL": "git clone https://github.com/acidanthera/VoodooPS2",
       "Post-Build": [
