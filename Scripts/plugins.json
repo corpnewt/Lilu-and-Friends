@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.84", 
-  "Changes": "Add debug kext building and remove some broken targets from Acidanthera's VoodooPS2Controller.", 
+  "Version": "0.0.85", 
+  "Changes": "Move to Acidanthera's port of BrcmPatchRAM from Headkaze's and fix some UI quirks.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -150,14 +150,14 @@
         "-sdk",
         "macosx"
       ],
-      "Name": "BrcmPatchRAM (Headkaze)",
+      "Name": "BrcmPatchRAM (Acidanthera)",
       "Zip": "../Release",
       "Skip Targets": [
         "BrcmPatchRAM",
         "BrcmNonPatchRAM"
       ],
-      "URL": "git clone https://github.com/headkaze/OS-X-BrcmPatchRAM",
-      "Folder": "OS-X-BrcmPatchRAM",
+      "URL": "git clone https://github.com/acidanthera/BrcmPatchRAM",
+      "Folder": "BrcmPatchRAM",
       "Pre-Build": [
         {
           "path": "xcodebuild",
