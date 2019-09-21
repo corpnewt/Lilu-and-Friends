@@ -11,22 +11,7 @@ for file in os.listdir(os.getcwd()):
     os.rename(os.path.join(os.getcwd(), file), os.path.join(os.getcwd(), file.lower()))
 
 # Continue importing
-import time
-import json
-import kextbuilder
-import tempfile
-import subprocess
-import shutil
-import base64
-import plistlib
-import random
-import re
-import datetime
-import run
-import kextupdater
-import downloader
-import zipfile
-import argparse
+import time, json, kextbuilder, tempfile, subprocess, shutil, base64, plistlib, random, re, datetime, run, kextupdater, downloader, zipfile, argparse, math
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -608,8 +593,8 @@ class Updater:
             self.profile()
             return
         elif menu[:1].lower() == "s":
-            self.save_profile()
-            self.profile()
+            if self.save_profile() is not None:
+                self.profile()
             return
         # Get numeric value
         try:
@@ -701,6 +686,7 @@ class Updater:
         self.resize(80,24)
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         self.head("Save to Profile")
+        pad = 39
         print(" ")
         kextlist = []
         for option in self.plugs:
@@ -710,6 +696,7 @@ class Updater:
             info = "Selected Kexts ({}):\n\n{}{}{}\n\n".format(len(kextlist), self.hi_color, "{}, {}".format(self.rt_color, self.hi_color).join(kextlist), self.rt_color)
         else:
             info = "Selected Kexts (0):\n\n{}None{}\n\n".format(self.er_color, self.rt_color)
+            pad += 1
         if self.xcode_opts == None:
             info += "Xcodebuild Options:\n\nDefault\n\n"
         else:
@@ -725,9 +712,7 @@ class Updater:
         info += "If a profile is named \"{}Default{}\" it will be loaded automatically\n\n".format(self.hi_color, self.rt_color)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         # Calculate quick height
-        h = (len(", ".join(kextlist))/80)+35
-        if int(h) < h:
-            h = h+1
+        h = int(math.ceil((len(", ".join(kextlist))/80)+pad))
         self.resize(80,int(h))
         self.cprint(info)
         menu = self.grab("Please type a name for your profile:  ")
@@ -737,12 +722,12 @@ class Updater:
             return
         
         if menu.lower() == "p":
-            return
+            return True
         elif menu.lower() == "q":
             self.custom_quit()
         elif menu.lower() == "m":
             self.main()
-            return
+            return None
 
         # We have a name
         for option in self.profiles:
