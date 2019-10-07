@@ -1,5 +1,4 @@
-import sys
-import os
+import sys, os
 
 # Fix case differences
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -1707,10 +1706,10 @@ class Updater:
 if __name__ == '__main__':
     # Setup the cli args
     parser = argparse.ArgumentParser(prog="Run.command", description="Lilu And Friends - a Kext Builder by CorpNewt")
-    parser.add_argument("-p", "--profile", help="sets the PROFILE to use - takes a name as an argument - must be setup in the gui.  Any other settings can override those passed by the profile")
-    parser.add_argument("-k", "--kexts", help="a comma delimited list of kexts to build")
+    parser.add_argument("-p", "--profile", help="sets the PROFILE to use - takes a name as an argument - must be setup in the gui.  Any other settings can override those passed by the profile", nargs="+")
+    parser.add_argument("-k", "--kexts", help="a comma delimited list of kexts to build", nargs="+")
     parser.add_argument("-s", "--sdk", help="sets the SDK override to use (macosx##.## or ##.## format)")
-    parser.add_argument("-x", "--xcodeopts", help="sets the xcode build options to use")
+    parser.add_argument("-x", "--xcodeopts", help="sets the xcode build options to use", nargs="+")
     parser.add_argument("-i", "--increment", help="increments the SDK on a failed build", action="store_true")
     parser.add_argument("-d", "--defaults", help="sets xcode defaults on failed build", action="store_true")
     parser.add_argument("-r", "--avoid-reveal", help="avoid revealing the Kexts folder on build completion", action="store_true")
@@ -1732,10 +1731,11 @@ if __name__ == '__main__':
     # At this point - we have at least one arg - that means we're running
     # in non-interactive mode
     if args.profile:
-        up._select_profile(args.profile)
+        prof = " ".join(args.profile)
+        up._select_profile(prof)
     if args.kexts:
         # Iterate the kexts and select only those included (and found)
-        pluglist = [x.lower() for x in args.kexts.split(",")]
+        pluglist = [x.lower() for x in " ".join(args.kexts).split(",")]
         for plug in up.plugs:
             if plug["Name"].lower() in pluglist:
                 plug["Picked"] = True
@@ -1744,6 +1744,7 @@ if __name__ == '__main__':
     if args.sdk:
         up.sdk_over = args.sdk
     if args.xcodeopts:
+        xcodeopts = " ".join(args.xcodeopts)
         up.xcode_opts = args.xcodeopts
     if args.increment:
         up.increment_sdk = True
