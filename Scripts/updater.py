@@ -316,7 +316,7 @@ class Updater:
             sdk_list = os.listdir(sdk_path)
             for sdk in sdk_list:
                 # Organize them by name and version
-                if sdk.lower() == "macosx.sdk":
+                if sdk.lower() == "macosx.sdk" or not "macos" in sdk.lower(): # Only allow macOS SDKs
                     # The default - so we're not sure what version
                     continue
                 # Add some info
