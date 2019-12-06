@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.85", 
-  "Changes": "Move to Acidanthera's port of BrcmPatchRAM from Headkaze's and fix some UI quirks.", 
+  "Version": "0.0.86", 
+  "Changes": "Fix failed build for Acidanthera's VoodooPS2.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -704,7 +704,7 @@
         "VoodooPS2synapticsPane",
         "synapticsconfigload"
       ],
-      "URL": "git clone https://github.com/acidanthera/VoodooPS2",
+      "URL": "git clone https://github.com/acidanthera/VoodooPS2 --recursive",
       "Post-Build": [
         {
           "path": "mkdir",
@@ -751,6 +751,14 @@
       ],
       "Folder": "VoodooPS2",
       "Pre-Build": [
+        {
+          "path": "mv",
+          "args": [
+            "./Docs/ACPI/*",
+            "./"
+          ],
+          "name": "Relocate ACPI files"
+        },
         {
           "path": "[[scripts]]/iasl",
           "args": [
