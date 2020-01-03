@@ -785,6 +785,12 @@
       "URL": "git clone https://github.com/acidanthera/WhateverGreen",
       "Name": "WhateverGreen",
       "Desc": "provides patches for AMD/Nvidia/Intel GPUs"
+    },
+    {
+      "Lilu": true,
+      "URL": "git clone https://github.com/acidanthera/NVMeFix.git",
+      "Name": "NVMeFix",
+      "Desc": "provides patches for NVME Power management support - APST"
     }
   ]
 }
