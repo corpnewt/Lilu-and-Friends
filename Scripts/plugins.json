@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.87", 
-  "Changes": "Added NVMeFix.", 
+  "Version": "0.0.88", 
+  "Changes": "Account for VirtualSMC (All tools) no longer containing VirtualSmc.efi.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -540,14 +540,6 @@
           "path": "mkdir",
           "args": [
             "-p",
-            "./build/Release/VirtualSMC/Drivers"
-          ],
-          "name": "Create Drivers Folder"
-        },
-        {
-          "path": "mkdir",
-          "args": [
-            "-p",
             "./build/Release/VirtualSMC/Tools"
           ],
           "name": "Create Tools Folder"
@@ -559,14 +551,6 @@
             "./build/Release/VirtualSMC/Kexts/"
           ],
           "name": "Move Kexts"
-        },
-        {
-          "path": "mv",
-          "args": [
-            "./build/Release/package/Drivers/*",
-            "./build/Release/VirtualSMC/Drivers/"
-          ],
-          "name": "Move Drivers"
         },
         {
           "path": "mv",
