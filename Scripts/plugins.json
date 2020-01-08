@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.86", 
-  "Changes": "Fix failed build for Acidanthera's VoodooPS2.", 
+  "Version": "0.0.87", 
+  "Changes": "Added NVMeFix.", 
   "Plugins": [
     {
       "Build Opts": [
