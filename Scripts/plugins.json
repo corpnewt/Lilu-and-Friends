@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.88", 
-  "Changes": "Account for VirtualSMC (All tools) no longer containing VirtualSmc.efi.", 
+  "Version": "0.0.88",
+  "Changes": "Account for VirtualSMC (All tools) no longer containing VirtualSmc.efi.",
   "Plugins": [
     {
       "Build Opts": [
@@ -436,19 +436,25 @@
     },
     {
       "Lilu": true,
+      "URL": "git clone https://github.com/acidanthera/NVMeFix.git",
+      "Name": "NVMeFix",
+      "Desc": "provides patches for NVME Power management support - APST"
+    },
+    {
+      "Lilu": true,
       "URL": "git clone https://github.com/Austere-J/NightShiftUnlocker",
       "Name": "NightShiftUnlocker",
       "Desc": "unlocks night shift on unsupported SMBIOS"
     },
     {
-      "Info": "NightShiftUnlocker.kext/Contents/Info.plist", 
-      "Name": "NightShiftUnlocker (aabdellah)", 
-      "Zip": "./NightShiftUnlocker.kext", 
-      "URL": "git clone https://github.com/aabdellah/NightShiftUnlocker", 
-      "Lilu": true, 
-      "Folder": "NightShiftUnlocker", 
+      "Info": "NightShiftUnlocker.kext/Contents/Info.plist",
+      "Name": "NightShiftUnlocker (aabdellah)",
+      "Zip": "./NightShiftUnlocker.kext",
+      "URL": "git clone https://github.com/aabdellah/NightShiftUnlocker",
+      "Lilu": true,
+      "Folder": "NightShiftUnlocker",
       "Desc": "unlocks night shift on unsupported SMBIOS"
-    }, 
+    },
     {
       "Lilu": true,
       "URL": "git clone https://github.com/al3xtjames/NoTouchID",
@@ -769,12 +775,6 @@
       "URL": "git clone https://github.com/acidanthera/WhateverGreen",
       "Name": "WhateverGreen",
       "Desc": "provides patches for AMD/Nvidia/Intel GPUs"
-    },
-    {
-      "Lilu": true,
-      "URL": "git clone https://github.com/acidanthera/NVMeFix.git",
-      "Name": "NVMeFix",
-      "Desc": "provides patches for NVME Power management support - APST"
     }
   ]
 }
