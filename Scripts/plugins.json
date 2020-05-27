@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.89", 
-  "Changes": "Add VoodooInput from acidanthera.", 
+  "Version": "0.0.90", 
+  "Changes": "Skip VoodooPS2synapticsPane and synapticsconfigload targets in RehabMan's VoodooPS2Controller.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -624,7 +624,9 @@
         "../Release/"
       ], 
       "Skip Targets": [
-        "VoodooPS2Daemon"
+        "VoodooPS2Daemon",
+        "VoodooPS2synapticsPane",
+        "synapticsconfigload"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
       "Post-Build": [
