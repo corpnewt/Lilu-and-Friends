@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.90", 
-  "Changes": "Skip VoodooPS2synapticsPane and synapticsconfigload targets in RehabMan's VoodooPS2Controller.", 
+  "Version": "0.0.91", 
+  "Changes": "Add Sniki's USBInjectAll and Mieze's LucyRTL8125Ethernet.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -46,6 +46,7 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
+      "Desc": "dynamic audio patching", 
       "Pre-Build": [
         {
           "path": "xcodebuild", 
@@ -58,8 +59,7 @@
           "name": "Compile ResourceConverter Prerequisite"
         }
       ], 
-      "Name": "AppleALC", 
-      "Desc": "dynamic audio patching"
+      "Name": "AppleALC"
     }, 
     {
       "Name": "AppleBacklightFixup", 
@@ -435,6 +435,11 @@
       "Desc": "Lilu helper for those who keep kexts in /L/E and /S/L/E"
     }, 
     {
+      "URL": "git clone https://github.com/Mieze/LucyRTL8125Ethernet", 
+      "Name": "LucyRTL8125Ethernet", 
+      "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers"
+    }, 
+    {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/NVMeFix.git", 
       "Name": "NVMeFix", 
@@ -506,6 +511,31 @@
         "*.kext"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-USB-Inject-All", 
+      "Post-Build": [
+        {
+          "path": "mv", 
+          "args": [
+            "*.kext", 
+            "Build/Release/"
+          ], 
+          "name": "Move Injector Kexts to Release Folder"
+        }
+      ], 
+      "Folder": "OS-X-USB-Inject-All", 
+      "Desc": "injects all USB ports"
+    }, 
+    {
+      "Build Opts": [
+        "-sdk", 
+        "macosx", 
+        "-alltargets"
+      ], 
+      "Info": "USBInjectAll.kext/Contents/Info.plist", 
+      "Name": "USBInjectAll (Sniki)", 
+      "Zip": [
+        "*.kext"
+      ], 
+      "URL": "git clone https://github.com/Sniki/OS-X-USB-Inject-All", 
       "Post-Build": [
         {
           "path": "mv", 
@@ -624,8 +654,8 @@
         "../Release/"
       ], 
       "Skip Targets": [
-        "VoodooPS2Daemon",
-        "VoodooPS2synapticsPane",
+        "VoodooPS2Daemon", 
+        "VoodooPS2synapticsPane", 
         "synapticsconfigload"
       ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller", 
