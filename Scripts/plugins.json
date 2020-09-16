@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.91", 
-  "Changes": "Add Sniki's USBInjectAll and Mieze's LucyRTL8125Ethernet.", 
+  "Version": "0.0.92", 
+  "Changes": "Fix for Acidanthera's VoodooPS2Controller requiring Lilu.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -722,6 +722,7 @@
       ], 
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
       "FixXib": true, 
+      "Lilu": true, 
       "Name": "VoodooPS2Controller (Acidanthera)", 
       "Zip": [
         "../Release/"
