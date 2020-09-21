@@ -80,16 +80,34 @@ class KextBuilder:
         if not os.path.exists(self.temp + "/Lilu"):
             # Only download if we need to
             print("    Downloading Lilu...")
-            output = self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})
-            if not output[2] == 0:
-                return None
+            if not self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})[2] == 0: return None
+            # Also get the MacKernelSDK and copy it into our Lilu folder
+            mac_kernel_sdk = self._get_sdk()
+            if mac_kernel_sdk == None: return None
+            if not self.r.run({"args":["rsync", "-ahP", mac_kernel_sdk, "./Lilu"], "stream" : self.debug})[2] == 0: return None
+        cwd = os.getcwd()
         os.chdir("Lilu")
         print("    Building debug version...")
-        output = self.r.run({"args":[self.xcodebuild, "-configuration", "Debug"], "stream" : self.debug})
-        if not output[2] == 0:
+        if not self.r.run({"args":[self.xcodebuild, "-configuration", "Debug"], "stream" : self.debug})[2] == 0:
+            os.chdir(cwd)
             return None
+        os.chdir(cwd)
         if os.path.exists(self.temp + "/Lilu/build/Debug/Lilu.kext"):
             return self.temp + "/Lilu/build/Debug/Lilu.kext"
+        return None
+
+    def _get_sdk(self):
+        if os.path.exists(self.temp + "/MacKernelSDK"):
+            return self.temp + "/MacKernelSDK"
+        print("    Downloading MacKernelSDK...")
+        cwd = os.getcwd()
+        os.chdir(self.temp)
+        if not self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/MacKernelSDK"], "stream" : self.debug})[2] == 0:
+            os.chdir(cwd)
+            return None
+        os.chdir(cwd)
+        if os.path.exists(self.temp + "/MacKernelSDK"):
+            return self.temp + "/MacKernelSDK"
         return None
 
     def _get_bin(self, bin):
@@ -104,6 +122,7 @@ class KextBuilder:
         name       = plug["Name"]
         url        = plug["URL"]
         needs_lilu = plug.get("Lilu", False)
+        needs_sdk  = plug.get("MacKernelSDK", False)
         folder     = plug.get("Folder", plug["Name"])
         skip_phase = plug.get("Remove Phases", [])
         prebuild   = plug.get("Pre-Build", [])
@@ -156,6 +175,7 @@ class KextBuilder:
         os.chdir(self.temp)
         if needs_lilu:
             l = self._get_lilu()
+            if l == None: return ("","Failed to get Lilu!",1)
         # From here - do all things relative
         if total:
             print("Building {} ({:,} of {:,})".format(name, curr, total))
@@ -169,6 +189,9 @@ class KextBuilder:
             if not output[2] == 0:
                 return output
         os.chdir(folder)
+        if (needs_lilu or needs_sdk):
+            mac_kernel_sdk = self._get_sdk()
+            if mac_kernel_sdk == None: return ("","Failed to get MacKernelSDK!",1)
         if len(skip_phase):
             print("    Removing Build Phases...")
         currtask = 0
@@ -310,8 +333,13 @@ class KextBuilder:
                 print(output[1])
                 
         if needs_lilu:
-            # Copy in our beta kext
-            output = self.r.run({"args":["cp", "-R", l, "."], "stream" : self.debug})
+            # Copy in our debug kext
+            output = self.r.run({"args":["rsync", "-ahP", l, "."], "stream" : self.debug})
+            if not output[2] == 0:
+                return output
+        if needs_lilu or needs_sdk:
+            # Copy in the sdk
+            output = self.r.run({"args":["rsync", "-ahP", mac_kernel_sdk, "."], "stream" : self.debug})
             if not output[2] == 0:
                 return output
 
