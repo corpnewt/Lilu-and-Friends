@@ -10,7 +10,7 @@ for file in os.listdir(os.getcwd()):
     os.rename(os.path.join(os.getcwd(), file), os.path.join(os.getcwd(), file.lower()))
 
 # Continue importing
-import time, json, kextbuilder, tempfile, subprocess, shutil, base64, plistlib, random, re, datetime, run, kextupdater, downloader, zipfile, argparse, math
+import time, json, kextbuilder, tempfile, subprocess, shutil, base64, plist, random, re, datetime, run, kextupdater, downloader, zipfile, argparse, math
 
 # Python-aware urllib stuff
 if sys.version_info >= (3, 0):
@@ -260,12 +260,8 @@ class Updater:
             print("{} doesn't exist!".format(path))
             return None
         try:
-            if sys.version_info >= (3, 0):
-                with open(path, 'rb') as p:
-                    d = plistlib.load(p)
-            else:
-                p_string = self._get_output(["plutil", "-convert", "json", "-o", "-", "--", path ])[0]
-                d = json.loads(p_string)
+            with open(path,"rb") as f:
+                d = plist.load(f)
         except Exception as e:
             print(str(e))
             return None
@@ -275,7 +271,6 @@ class Updater:
         sdk_min = None
         if os.path.exists(self.sdk_version_plist):
             try:
-                # sdk_plist = plistlib.readPlist(self.sdk_version_plist)
                 sdk_plist = self._get_plist_dict(self.sdk_version_plist)
                 sdk_min = sdk_plist["MinimumSDKVersion"]
             except:
@@ -506,12 +501,12 @@ class Updater:
             print("Have write permissions already...")
             # Can write to it normally
             print("Loading Info.plist...")
-            # sdk_plist = plistlib.readPlist(self.sdk_version_plist)
             sdk_plist = self._get_plist_dict(self.sdk_version_plist)
             print("Updating MinimumSDKVersion...")
             sdk_plist["MinimumSDKVersion"] = version
             print("Flushing changes...")
-            plistlib.writePlist(sdk_plist, self.sdk_version_plist)
+            with open(self.sdk_version_plist,"wb") as f:
+                plist.dump(sdk_plist,f)
             print("Done!")
             time.sleep(3)
             return
@@ -519,12 +514,12 @@ class Updater:
         # Need to use a temp folder and then sudo it back
         self.r.run({"args":["cp", self.sdk_version_plist, temp], "stream" : True})
         print("Loading Info.plist...")
-        # sdk_plist = plistlib.readPlist(os.path.join(temp, "Info.plist"))
         sdk_plist = self._get_plist_dict(os.path.join(temp, "Info.plist"))
         print("Updating MinimumSDKVersion...")
         sdk_plist["MinimumSDKVersion"] = version
         print("Writing Info.plist...")
-        plistlib.writePlist(sdk_plist, os.path.join(temp, "Info.plist"))
+        with open(os.path.join(temp,"Info.plist"),"wb") as f:
+            plist.dump(sdk_plist,f)
         print("Copying back to {}...".format(self.sdk_version_plist))
         # Copy back over
         self.r.run({"args":["cp", os.path.join(temp, "Info.plist"), self.sdk_version_plist], "stream": True, "sudo" : True})

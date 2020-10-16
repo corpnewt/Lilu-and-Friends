@@ -1,4 +1,4 @@
-import os, time, json, sys, re, plistlib
+import os, time, json, sys, re, plist
 sys.path.append(os.path.abspath(os.path.dirname(os.path.realpath(__file__))))
 import run, reveal
 
@@ -41,7 +41,8 @@ class KextUpdater:
             ],
             "RunAtLoad" : True
         }
-        plistlib.writePlist(p, self.install_path)
+        with open(self.install_path,"wb") as f:
+            plist.dump(p,f)
         self.load()
 
     def uninstall(self):

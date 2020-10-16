@@ -1,5 +1,5 @@
 import subprocess
-import plistlib
+import plist
 import os
 import tempfile
 import shutil
@@ -470,7 +470,8 @@ class KextBuilder:
             # Even though we're debugging - try the release as well
             build_dir = plug.get("Build Dir", "./Build/Release")
         os.chdir(build_dir)
-        info_plist = plistlib.readPlist(p_info)
+        with open(p_info,"rb") as f:
+            info_plist = plist.load(f)
         version = info_plist["CFBundleVersion"]
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
