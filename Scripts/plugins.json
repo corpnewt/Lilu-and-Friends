@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.93", 
-  "Changes": "Add support for MacKernelSDK.", 
+  "Version": "0.0.94", 
+  "Changes": "Strip a number of dead or broken projects, add NighShiftEnabler, other misc fixes.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -32,12 +32,6 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/black-dragon74/ATH9KFixup", 
-      "Name": "ATH9KFixup", 
-      "Desc": "for AR946X (AR9462 & AR9463) AR9485 AR9565"
-    }, 
-    {
-      "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AirportBrcmFixup airportbrcmfixup-code", 
       "Folder": "airportbrcmfixup-code", 
       "Name": "AirportBrcmFixup", 
@@ -46,7 +40,7 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
-      "Desc": "dynamic audio patching", 
+      "Name": "AppleALC", 
       "Pre-Build": [
         {
           "path": "xcodebuild", 
@@ -59,28 +53,7 @@
           "name": "Compile ResourceConverter Prerequisite"
         }
       ], 
-      "Name": "AppleALC"
-    }, 
-    {
-      "Name": "AppleBacklightFixup", 
-      "Zip": [
-        "AppleBacklightFixup.kext", 
-        "../../SSDT-PNLF.dsl", 
-        "../../SSDT-PNLF.aml"
-      ], 
-      "URL": "git clone https://github.com/RehabMan/AppleBacklightFixup", 
-      "Lilu": true, 
-      "Folder": "AppleBacklightFixup", 
-      "Pre-Build": [
-        {
-          "path": "[[scripts]]/iasl", 
-          "args": [
-            "SSDT-PNLF.dsl"
-          ], 
-          "name": "Compile SSDT-PNLF.dsl"
-        }
-      ], 
-      "Desc": "Lilu plugin for enabling support for backlight using RehabMan's patches"
+      "Desc": "dynamic audio patching"
     }, 
     {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
@@ -94,12 +67,6 @@
       "Desc": "for Killer and Atheros LAN"
     }, 
     {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/coderobe/AzulPatcher4600", 
-      "Name": "AzulPatcher4600", 
-      "Desc": "for Haswell HD4600 mobile iGPUs"
-    }, 
-    {
       "Build Opts": [
         "-sdk", 
         "macosx", 
@@ -111,53 +78,21 @@
       "Desc": "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
     }, 
     {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/acidanthera/BT4LEContinuityFixup", 
-      "Name": "BT4LEContinuityFixup", 
-      "Desc": "Provides Handoff, Instant Hotspot, and New Airdrop patches for IOBluetoothFamily."
-    }, 
-    {
       "Info": "BrcmPatchRam2.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
         "macosx"
       ], 
-      "Name": "BrcmPatchRAM", 
-      "Zip": "../Release", 
-      "Skip Targets": [
-        "BrcmPatchRAM", 
-        "BrcmNonPatchRAM"
-      ], 
-      "URL": "git clone https://github.com/RehabMan/OS-X-BrcmPatchRAM", 
-      "Folder": "OS-X-BrcmPatchRAM", 
-      "Pre-Build": [
-        {
-          "path": "xcodebuild", 
-          "args": [
-            "-sdk", 
-            "macosx", 
-            "-target", 
-            "Prebuild"
-          ], 
-          "name": "Compile Prebuild Prerequisite"
-        }
-      ], 
-      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices"
-    }, 
-    {
-      "Info": "BrcmPatchRam2.kext/Contents/Info.plist", 
-      "Build Opts": [
-        "-sdk", 
-        "macosx"
-      ], 
-      "MacKernelSDK": true,
       "Name": "BrcmPatchRAM (Acidanthera)", 
-      "Zip": "../Release", 
+      "Zip": [
+        "*.kext"
+      ], 
       "Skip Targets": [
         "BrcmPatchRAM", 
         "BrcmNonPatchRAM"
       ], 
       "URL": "git clone https://github.com/acidanthera/BrcmPatchRAM", 
+      "MacKernelSDK": true, 
       "Folder": "BrcmPatchRAM", 
       "Pre-Build": [
         {
@@ -191,41 +126,18 @@
       "Desc": "aids in non-functioning audio after sleep"
     }, 
     {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/Goldfish64/DiskArbitrationFixup", 
-      "Name": "DiskArbitrationFixup", 
-      "Desc": "disables the unreadable disk message at boot"
-    }, 
-    {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/syscl/EnableLidWake", 
-      "Name": "EnableLidWake", 
-      "Desc": "enable lid wake for Intel Graphics Card on macOS"
-    }, 
-    {
       "Build Opts": [
         "-sdk", 
         "macosx", 
         "-alltargets"
       ], 
       "Name": "FakePCIID", 
-      "Zip": "../Release", 
+      "Zip": [
+        "*.kext"
+      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-Fake-PCI-ID", 
       "Folder": "OS-X-Fake-PCI-ID", 
       "Desc": "spoofs IOPCIDevices to allow drivers to load"
-    }, 
-    {
-      "Build Opts": [
-        "-sdk", 
-        "macosx", 
-        "-target", 
-        "FakeSMC"
-      ], 
-      "Build Dir": "./Build/Release 10.6", 
-      "Name": "FakeSMC", 
-      "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
-      "Folder": "hwsensors-hwsensors3-code3", 
-      "Desc": "only FakeSMC from the HWSensors3 repo"
     }, 
     {
       "Info": "FakeSMC.kext/Contents/Info.plist", 
@@ -299,23 +211,6 @@
       "Info": "FakeSMC.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
-        "macosx"
-      ], 
-      "Build Dir": "./Build/Release 10.6", 
-      "Name": "HWSensors (FakeSMC + Plugins)", 
-      "Zip": "../Release 10.6", 
-      "Skip Targets": [
-        "IT87x", 
-        "SMIMonitor"
-      ], 
-      "URL": "git svn clone https://svn.code.sf.net/p/hwsensors/hwsensors3/code3/trunk hwsensors-hwsensors3-code3", 
-      "Folder": "hwsensors-hwsensors3-code3", 
-      "Desc": "contains FakeSMC + HWSensors plugins"
-    }, 
-    {
-      "Info": "FakeSMC.kext/Contents/Info.plist", 
-      "Build Opts": [
-        "-sdk", 
         "macosx", 
         "-workspace", 
         "HWSensors.xcworkspace", 
@@ -364,7 +259,9 @@
         "Build Kexts"
       ], 
       "Name": "HWSensors (RehabMan)", 
-      "Zip": "../Release", 
+      "Zip": [
+        "*.kext"
+      ], 
       "URL": "git clone https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
       "Folder": "OS-X-FakeSMC-kozlek", 
       "Desc": "RehabMan's FakeSMC + Sensors"
@@ -394,10 +291,10 @@
         "-configuration", 
         "Release"
       ], 
-      "MacKernelSDK": true,
       "Name": "IntelMausi (Acidanthera)", 
       "Zip": "./IntelMausi.kext", 
       "URL": "git clone https://github.com/acidanthera/IntelMausi", 
+      "MacKernelSDK": true, 
       "Folder": "IntelMausi", 
       "Desc": "Acidanthera's IntelMausiEthernet"
     }, 
@@ -407,38 +304,16 @@
       "Desc": "for most Intel LAN"
     }, 
     {
-      "Info": "IntelMausiEthernet.kext/Contents/Info.plist", 
-      "Build Opts": [
-        "-sdk", 
-        "macosx", 
-        "-configuration", 
-        "Release"
-      ], 
-      "Name": "IntelMausiEthernet (RehabMan)", 
-      "Zip": "./IntelMausiEthernet.kext", 
-      "URL": "git clone https://github.com/RehabMan/OS-X-Intel-Network", 
-      "Folder": "OS-X-Intel-Network", 
-      "Desc": "Rehabman's IntelMausiEthernet"
-    }, 
-    {
       "URL": "git clone https://github.com/acidanthera/Lilu", 
+      "MacKernelSDK": true, 
       "Name": "Lilu", 
-      "MacKernelSDK": true,
       "Desc": "for arbitrary kext, library, and program patching"
     }, 
     {
-      "Build Opts": [
-        "-sdk", 
-        "macosx", 
-        "-arch", 
-        "x86_64"
-      ], 
-      "URL": "git clone https://github.com/PMheart/LiluFriend", 
-      "Name": "LiluFriend", 
-      "Desc": "Lilu helper for those who keep kexts in /L/E and /S/L/E"
-    }, 
-    {
       "URL": "git clone https://github.com/Mieze/LucyRTL8125Ethernet", 
+      "Build Opts": [
+        "CODE_SIGN_IDENTITY="
+      ], 
       "Name": "LucyRTL8125Ethernet", 
       "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers"
     }, 
@@ -450,30 +325,15 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone https://github.com/Austere-J/NightShiftUnlocker", 
-      "Name": "NightShiftUnlocker", 
-      "Desc": "unlocks night shift on unsupported SMBIOS"
-    }, 
-    {
-      "Info": "NightShiftUnlocker.kext/Contents/Info.plist", 
-      "Name": "NightShiftUnlocker (aabdellah)", 
-      "Zip": "./NightShiftUnlocker.kext", 
-      "URL": "git clone https://github.com/aabdellah/NightShiftUnlocker", 
-      "Lilu": true, 
-      "Folder": "NightShiftUnlocker", 
-      "Desc": "unlocks night shift on unsupported SMBIOS"
+      "URL": "git clone https://github.com/cdf/NightShiftEnabler", 
+      "Name": "NightShiftEnabler", 
+      "Desc": "enables night shift on unsupported SMBIOS"
     }, 
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/al3xtjames/NoTouchID", 
       "Name": "NoTouchID", 
       "Desc": "Lilu plugin for disabling Touch ID checks"
-    }, 
-    {
-      "Lilu": true, 
-      "URL": "git clone https://github.com/vulgo/NoVPAJpeg", 
-      "Name": "NoVPAJpeg", 
-      "Desc": "disables the hardware JPEG decoding feature of the AppleVPA framework"
     }, 
     {
       "URL": "git clone https://github.com/corpnewt/NullCPUPowerManagement", 
@@ -492,12 +352,6 @@
       "Desc": "for RTL810X LAN"
     }, 
     {
-      "Build Opts": [
-        "-scheme", 
-        "RealtekRTL8111-V2", 
-        "-configuration", 
-        "Release"
-      ], 
       "URL": "git clone https://github.com/Mieze/RTL8111_driver_for_OS_X", 
       "Folder": "RTL8111_driver_for_OS_X", 
       "Name": "RealtekRTL8111", 
@@ -544,7 +398,7 @@
           "path": "mv", 
           "args": [
             "*.kext", 
-            "Build/Release/"
+            "./Build/Products/Release/"
           ], 
           "name": "Move Injector Kexts to Release Folder"
         }
@@ -605,12 +459,6 @@
       "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
     }, 
     {
-      "URL": "git svn clone https://svn.code.sf.net/p/voodoohda/code/ voodoohda-code", 
-      "Folder": "voodoohda-code/branches/zdev", 
-      "Name": "VoodooHDA", 
-      "Desc": "open source audio driver for devices compliant with the Intel HDA spec"
-    }, 
-    {
       "Build Opts": [
         "-workspace", 
         "VoodooI2C.xcworkspace", 
@@ -636,13 +484,16 @@
         }
       ], 
       "Name": "VoodooI2C", 
-      "Zip": "../Release", 
+      "Zip": [
+        "*.kext"
+      ], 
       "URL": "git clone --recursive -j8 https://github.com/alexandred/VoodooI2C", 
       "Ignore Errors": true, 
       "Desc": "Intel Lynxpoint I2C controller and device driver for OS X"
     }, 
     {
       "URL": "git clone https://github.com/acidanthera/VoodooInput", 
+      "MacKernelSDK": true, 
       "Name": "VoodooInput", 
       "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation"
     }, 
@@ -654,7 +505,7 @@
       "FixXib": true, 
       "Name": "VoodooPS2Controller", 
       "Zip": [
-        "../Release/"
+        "*.kext"
       ], 
       "Skip Targets": [
         "VoodooPS2Daemon", 
@@ -725,10 +576,9 @@
       ], 
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
       "FixXib": true, 
-      "Lilu": true, 
       "Name": "VoodooPS2Controller (Acidanthera)", 
       "Zip": [
-        "../Release/"
+        "*.kext"
       ], 
       "Skip Targets": [
         "VoodooPS2Daemon", 
@@ -780,6 +630,7 @@
           "name": "Move .dsl Files to Source Folder"
         }
       ], 
+      "Lilu": true, 
       "Folder": "VoodooPS2", 
       "Pre-Build": [
         {
@@ -799,17 +650,6 @@
         }
       ], 
       "Desc": "PS2 driver for desktops/laptops"
-    }, 
-    {
-      "Build Opts": [
-        "-sdk", 
-        "macosx", 
-        "-arch", 
-        "x86_64"
-      ], 
-      "URL": "svn co -r HEAD http://forge.voodooprojects.org/svn/voodootscsync", 
-      "Name": "VoodooTSCSync", 
-      "Desc": "change IOCPUNumber to your core count - 1 in Info.plist!"
     }, 
     {
       "Lilu": true, 
