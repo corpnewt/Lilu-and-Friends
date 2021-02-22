@@ -20,32 +20,23 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 50 kexts:
+Currently Builds 39 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
 * ALXEthernet
-* ATH9KFixup
 * AirportBrcmFixup
 * AppleALC
-* AppleBacklightFixup
 * AtherosE2200Ethernet
-* AzulPatcher4600
 * BCM5722D
-* BT4LEContinuityFixup
-* BrcmPatchRAM
-* BrcmPatchRAM (Headkaze)
+* BrcmPatchRAM (Acidanthera)
 * CPUFriend
 * CodecCommander
-* DiskArbitrationFixup
-* EnableLidWake
 * FakePCIID
-* FakeSMC
 * FakeSMC (Kozlek)
 * FakeSMC (Legacy)
 * FakeSMC (RehabMan)
 * GenericUSBXHCI
-* HWSensors (FakeSMC + Plugins)
 * HWSensors (Kozlek)
 * HWSensors (Legacy)
 * HWSensors (RehabMan)
@@ -53,22 +44,20 @@ Currently Builds 50 kexts:
 * IntelBacklight
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
-* IntelMausiEthernet (RehabMan)
 * Lilu
-* LiluFriend
-* NightShiftUnlocker
-* NightShiftUnlocker (aabdellah)
+* LucyRTL8125Ethernet
+* NVMeFix
+* NightShiftEnabler
 * NoTouchID
-* NoVPAJpeg
 * NullCPUPowerManagement
 * RealtekRTL8100
 * RealtekRTL8111
 * USBInjectAll
+* USBInjectAll (Sniki)
 * VirtualSMC
 * VirtualSMC (All Tools)
-* VoodooHDA
 * VoodooI2C
+* VoodooInput
 * VoodooPS2Controller
 * VoodooPS2Controller (Acidanthera)
-* VoodooTSCSync
 * WhateverGreen
