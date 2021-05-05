@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.94", 
-  "Changes": "Strip a number of dead or broken projects, add NighShiftEnabler, other misc fixes.", 
+  "Version": "0.0.95", 
+  "Changes": "Add ECEnabler, BrightnessKeys, DebugEnhancer, RestrictEvents, and RTCMemoryFixup.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -40,6 +40,7 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
+      "Desc": "dynamic audio patching", 
       "Name": "AppleALC", 
       "Pre-Build": [
         {
@@ -52,8 +53,7 @@
           ], 
           "name": "Compile ResourceConverter Prerequisite"
         }
-      ], 
-      "Desc": "dynamic audio patching"
+      ]
     }, 
     {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
@@ -110,6 +110,12 @@
     }, 
     {
       "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/BrightnessKeys", 
+      "Name": "BrightnessKeys", 
+      "Desc": "Automatic handling of brightness keys based on ACPI Specification"
+    }, 
+    {
+      "Lilu": true, 
       "URL": "git clone https://github.com/PMheart/CPUFriend", 
       "Name": "CPUFriend", 
       "Desc": "for dynamic power management data injection"
@@ -124,6 +130,18 @@
       "Folder": "EAPD-Codec-Commander", 
       "Name": "CodecCommander", 
       "Desc": "aids in non-functioning audio after sleep"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/DebugEnhancer", 
+      "Name": "DebugEnhancer", 
+      "Desc": "A Lilu plugin intended to enable debug output in the macOS kernel"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/1Revenger1/ECEnabler", 
+      "Name": "ECEnabler", 
+      "Desc": "allows reading EC fields > 1 byte, reducing battery status ACPI"
     }, 
     {
       "Build Opts": [
@@ -347,6 +365,12 @@
       "Desc": "disables power management on unsupported CPUs"
     }, 
     {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/RTCMemoryFixup", 
+      "Name": "RTCMemoryFixup", 
+      "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory"
+    }, 
+    {
       "URL": "git clone https://github.com/Mieze/RealtekRTL8100", 
       "Name": "RealtekRTL8100", 
       "Desc": "for RTL810X LAN"
@@ -356,6 +380,12 @@
       "Folder": "RTL8111_driver_for_OS_X", 
       "Name": "RealtekRTL8111", 
       "Desc": "for RTL8111/8168 LAN"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone https://github.com/acidanthera/RestrictEvents", 
+      "Name": "RestrictEvents", 
+      "Desc": "Lilu plugin for blocking unwanted processes causing compatibility issues"
     }, 
     {
       "Build Opts": [
