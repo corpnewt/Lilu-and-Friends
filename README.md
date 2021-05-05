@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 39 kexts:
+Currently Builds 44 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -30,8 +30,11 @@ Currently Builds 39 kexts:
 * AtherosE2200Ethernet
 * BCM5722D
 * BrcmPatchRAM (Acidanthera)
+* BrightnessKeys
 * CPUFriend
 * CodecCommander
+* DebugEnhancer
+* ECEnabler
 * FakePCIID
 * FakeSMC (Kozlek)
 * FakeSMC (Legacy)
@@ -50,8 +53,10 @@ Currently Builds 39 kexts:
 * NightShiftEnabler
 * NoTouchID
 * NullCPUPowerManagement
+* RTCMemoryFixup
 * RealtekRTL8100
 * RealtekRTL8111
+* RestrictEvents
 * USBInjectAll
 * USBInjectAll (Sniki)
 * VirtualSMC
