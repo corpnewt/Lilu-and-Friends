@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.95", 
-  "Changes": "Add ECEnabler, BrightnessKeys, DebugEnhancer, RestrictEvents, and RTCMemoryFixup.", 
+  "Version": "0.0.96", 
+  "Changes": "Add VoodooRMI.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -40,8 +40,6 @@
     {
       "Lilu": true, 
       "URL": "git clone https://github.com/acidanthera/AppleALC", 
-      "Desc": "dynamic audio patching", 
-      "Name": "AppleALC", 
       "Pre-Build": [
         {
           "path": "xcodebuild", 
@@ -53,7 +51,9 @@
           ], 
           "name": "Compile ResourceConverter Prerequisite"
         }
-      ]
+      ], 
+      "Name": "AppleALC", 
+      "Desc": "dynamic audio patching"
     }, 
     {
       "URL": "git clone https://github.com/Mieze/AtherosE2200Ethernet", 
@@ -680,6 +680,12 @@
         }
       ], 
       "Desc": "PS2 driver for desktops/laptops"
+    }, 
+    {
+      "URL": "git clone https://github.com/VoodooSMBus/VoodooRMI --recurse-submodules", 
+      "MacKernelSDK": true, 
+      "Name": "VoodooRMI", 
+      "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux"
     }, 
     {
       "Lilu": true, 
