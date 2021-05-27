@@ -12,9 +12,9 @@ class KextBuilder:
 
     def __init__(self):
         self.r = run.Run()
-        self.git = self._get_git()
-        self.xcodebuild = self._get_xcodebuild()
-        self.zip = self._get_zip()
+        self.git = self._get_bin("git")
+        self.xcodebuild = self._get_bin("xcodebuild")
+        self.zip = self._get_bin("zip")
         self.temp = None
         self.debug = False
         self.fix_xib = "1060"
@@ -35,26 +35,8 @@ class KextBuilder:
         self.temp = tempfile.mkdtemp()
         return os.path.exists(self.temp)
 
-    def _get_xcodebuild(self):
-        # Returns the path to the xcodebuild binary
-        return self.r.run({"args":["which", "xcodebuild"]})[0].split("\n")[0].split("\r")[0]
-
-    def _get_git(self):
-        # Returns the path to the git binary
-        return self.r.run({"args":["which", "git"]})[0].split("\n")[0].split("\r")[0]
-    
-    def _get_zip(self):
-        # Returns the path to the zip binary
-        return self.r.run({"args":["which", "zip"]})[0].split("\n")[0].split("\r")[0]
-
-    def _get_lilu_debug(self):
-        # Downloads and compiles the latest lilu - then returns the path to it
-        if not self._get_temp():
-            return None
-        os.chdir(self.temp)
-        output = self.self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})
-        if not output[2]:
-            exit(1)
+    def _get_bin(self, bin_name):
+        return self.r.run({"args":["which", bin_name]})[0].split("\n")[0].split("\r")[0]
 
     # Header drawing method
     def head(self, text = "Lilu Updater", width = 55):
@@ -65,13 +47,6 @@ class KextBuilder:
         print(middle)
         print("#"*width)
 
-    def _clean_up(self, output):
-        print(output[1])
-        if not self._del_temp():
-            print("Temp not deleted!")
-            print(self.temp)
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
-
     def _get_lilu(self):
         if os.path.exists(self.temp + "/Lilu/build/Debug/Lilu.kext"):
             return self.temp + "/Lilu/build/Debug/Lilu.kext"
@@ -80,7 +55,7 @@ class KextBuilder:
         if not os.path.exists(self.temp + "/Lilu"):
             # Only download if we need to
             print("    Downloading Lilu...")
-            if not self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})[2] == 0: return None
+            if not self.r.run({"args":[self.git, "clone", "--depth", "1", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})[2] == 0: return None
             # Also get the MacKernelSDK and copy it into our Lilu folder
             mac_kernel_sdk = self._get_sdk()
             if mac_kernel_sdk == None: return None
@@ -102,16 +77,13 @@ class KextBuilder:
         print("    Downloading MacKernelSDK...")
         cwd = os.getcwd()
         os.chdir(self.temp)
-        if not self.r.run({"args":[self.git, "clone", "https://github.com/acidanthera/MacKernelSDK"], "stream" : self.debug})[2] == 0:
+        if not self.r.run({"args":[self.git, "clone", "--depth", "1", "https://github.com/acidanthera/MacKernelSDK"], "stream" : self.debug})[2] == 0:
             os.chdir(cwd)
             return None
         os.chdir(cwd)
         if os.path.exists(self.temp + "/MacKernelSDK"):
             return self.temp + "/MacKernelSDK"
         return None
-
-    def _get_bin(self, bin):
-        return self.r.run({"args":["which", bin]})[0].split("\n")[0].split("\r")[0]
 
     def _debug(self, string):
         return string.replace("Release 10.6","Debug").replace("Release","Debug").replace("release","debug").replace("RELEASE","DEBUG")
@@ -510,6 +482,7 @@ class KextBuilder:
         if not os.path.exists(kexts_path):
             os.mkdir(kexts_path)
         shutil.copy(zip_path, kexts_path)
+        os.remove(zip_path)
         # Reset shell position
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Return None on success
