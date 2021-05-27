@@ -20,12 +20,17 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 45 kexts:
+Currently Builds 51 kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
 * ALXEthernet
 * AirportBrcmFixup
+* Airportitlwm (10.13 High Sierra)
+* Airportitlwm (10.14 Mojave)
+* Airportitlwm (10.15 Catalina)
+* Airportitlwm (11 Big Sur)
+* Airportitlwm (all versions)
 * AppleALC
 * AtherosE2200Ethernet
 * BCM5722D
@@ -47,6 +52,7 @@ Currently Builds 45 kexts:
 * IntelBacklight
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
+* Itlwm
 * Lilu
 * LucyRTL8125Ethernet
 * NVMeFix
