@@ -1457,7 +1457,7 @@ class Updater:
             shutil.rmtree(temp)
             return
         # Save our prior cwd and move to the temp folder
-        cwd = os.getcwd()
+        cwd = os.path.dirname(os.path.realpath(__file__))
         os.chdir(temp)
         # Extract the sdk
         print("Extracting {}".format(file_name))
