@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.97", 
-  "Changes": "Add itlwm and Airportitlwm, use --depth 1 when cloning, fix SDK install issue.", 
+  "Version": "0.0.98", 
+  "Changes": "Update BrcmPatchRAM (Acidanthera) for BlueToolFixup.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -167,7 +167,7 @@
         "BrcmNonPatchRAM"
       ], 
       "URL": "git clone --depth 1 https://github.com/acidanthera/BrcmPatchRAM", 
-      "MacKernelSDK": true, 
+      "Lilu": true, 
       "Folder": "BrcmPatchRAM", 
       "Pre-Build": [
         {
