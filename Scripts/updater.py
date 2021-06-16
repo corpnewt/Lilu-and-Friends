@@ -35,7 +35,7 @@ class Updater:
         else:
             self.colorsettings = {}
         # Get them
-        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight", ""))
+        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight_dark", "") if self.get_dark() else self.colors_dict.get("highlight", ""))
         self.er_color = self.colorsettings.get("error", self.colors_dict.get("error", ""))
         self.ch_color = self.colorsettings.get("changed", self.colors_dict.get("changed", ""))
         self.gd_color = self.colorsettings.get("success", self.colors_dict.get("success", ""))
@@ -139,6 +139,17 @@ class Updater:
         # Setup the SDK url
         self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
         self.remote_sdk_list = []
+
+    def get_dark(self):
+        # Get the macOS version - and see if dark mode is a thing
+        p = subprocess.Popen(["sw_vers","-productVersion"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        c = p.communicate()
+        p_vers = c[0].decode("utf-8", "ignore").strip().lower()
+        if p_vers < "10.14.0": return False # Default to light on anything prior to Mojave
+        # At this point - we have an OS that supports dark mode, let's check our value
+        p = subprocess.Popen(["defaults","read","-g","AppleInterfaceStyle"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        c = p.communicate()
+        return c[0].decode("utf-8", "ignore").strip().lower() == "dark"
 
     def check_remote_sdk(self):
         self.remote_sdk_list = []
