@@ -90,5 +90,6 @@
   "success": "<gb>",
   "changed": "<cb>",
   "highlight": "<bkb>",
+  "highlight_dark": "<wb>",
   "reset": "<rt>"
 }
