@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.98", 
-  "Changes": "Update BrcmPatchRAM (Acidanthera) for BlueToolFixup.", 
+  "Version": "0.0.99", 
+  "Changes": "Improve color defaults - add dark mode detection with a default highlight color of white-bold.", 
   "Plugins": [
     {
       "Build Opts": [
