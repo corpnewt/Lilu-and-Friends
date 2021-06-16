@@ -34,12 +34,9 @@ class Updater:
             self.colorsettings = json.load(open("colorsettings.json"))
         else:
             self.colorsettings = {}
-        # Get them
-        self.hi_color = self.colorsettings.get("highlight", self.colors_dict.get("highlight_dark", "") if self.get_dark() else self.colors_dict.get("highlight", ""))
-        self.er_color = self.colorsettings.get("error", self.colors_dict.get("error", ""))
-        self.ch_color = self.colorsettings.get("changed", self.colors_dict.get("changed", ""))
-        self.gd_color = self.colorsettings.get("success", self.colors_dict.get("success", ""))
-        self.rt_color = self.colorsettings.get("reset", self.colors_dict.get("reset", ""))
+        # Set failsafes - then attempt to set via reset_colors()
+        self.hi_color = self.er_color = self.ch_color = self.gd_color = self.rt_color = ""
+        self.reset_colors()
         
         self.r = run.Run()
         self.k = kextupdater.KextUpdater()
@@ -139,6 +136,17 @@ class Updater:
         # Setup the SDK url
         self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
         self.remote_sdk_list = []
+
+    def reset_colors(self):
+        self.hi_color = self.colorsettings.get("highlight", self.default_color("highlight"))
+        self.er_color = self.colorsettings.get("error", self.default_color("error"))
+        self.ch_color = self.colorsettings.get("changed", self.default_color("changed"))
+        self.gd_color = self.colorsettings.get("success", self.default_color("success"))
+        self.rt_color = self.colorsettings.get("reset", self.default_color("reset"))
+
+    def default_color(self, color_name = "highlight"):
+        if color_name.lower() == "highlight": return self.colors_dict.get("highlight_dark", "") if self.get_dark() else self.colors_dict.get("highlight", "")
+        else: return self.colors_dict.get(color_name.lower(),"")
 
     def get_dark(self):
         # Get the macOS version - and see if dark mode is a thing
@@ -1081,7 +1089,7 @@ class Updater:
             self.cprint("{}. {}{}".format(i+1, c[i]["find"], c[i]["name"]))
         self.resize(80, 24 if 24 > len(c)+12 else len(c)+12)
         print(" ")
-        print(" ")
+        print("D. Default")
         print("C. Color Picker")
         print("M. Main Menu")
         print("Q. Quit")
@@ -1098,18 +1106,24 @@ class Updater:
             self.custom_quit()
         elif menu[:1].lower() == "c":
             return
-        try:
-            menu = int(menu)
-        except:
-            self.color_picker()
-            return
-        menu -= 1
-        if menu < 0 or menu >= len(c):
-            self.pick_color()
-            return
-        # Have a valid thing now
-        var = c[menu]["find"]
-        self.colorsettings[name.lower()] = var
+        elif menu[:1].lower() == "d":
+            var = self.default_color(name)
+        else:
+            try:
+                menu = int(menu)
+            except:
+                self.color_picker()
+                return
+            menu -= 1
+            if menu < 0 or menu >= len(c):
+                self.pick_color()
+                return
+            # Have a valid thing now
+            var = c[menu]["find"]
+        if var == self.default_color(name):
+            self.colorsettings.pop(name.lower(),None)
+        else:
+            self.colorsettings[name.lower()] = var
         if name.lower() == "highlight":
             self.hi_color = var
         elif name.lower() == "error":
@@ -1118,11 +1132,6 @@ class Updater:
             self.ch_color = var
         elif name.lower() == "success":
             self.gd_color = var
-        # Flush color changes
-        self.colorsettings["highlight"] = self.hi_color
-        self.colorsettings["error"]     = self.er_color
-        self.colorsettings["changed"]   = self.ch_color
-        self.colorsettings["success"]   = self.gd_color
         # Save to json
         json.dump(self.colorsettings, open("colorsettings.json", "w"), indent=2)
 
@@ -1151,11 +1160,11 @@ class Updater:
         elif menu[:1].lower() == "q":
             self.custom_quit()
         elif menu[:1].lower() == "d":
-            self.hi_color = self.colorsettings["highlight"] = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<bkb>"), "")
-            self.er_color = self.colorsettings["error"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<rb>"), "")
-            self.ch_color = self.colorsettings["changed"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<cb>"), "")
-            self.gd_color = self.colorsettings["success"]  = next((x["find"] for x in self.colors_dict["colors"] if x["find"] == "<gb>"), "")
-            json.dump(self.colorsettings, open("colorsettings.json", "w"), indent=2)
+            self.colorsettings = {}
+            if os.path.exists("colorsettings.json"):
+                try: os.remove("colorsettings.json")
+                except: pass
+            self.reset_colors()
         try:
             menu = int(menu)
         except:
