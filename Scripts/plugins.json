@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.100", 
-  "Changes": "Fix VoodooI2C.", 
+  "Version": "0.0.101", 
+  "Changes": "Zip IntelSnowMausi in IntelMausi repo. Add IntelBluetoothFirmware. Zip AppleALCU in AppleALC repo and remove unneeded pre-build task.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -115,19 +115,10 @@
     {
       "Lilu": true, 
       "URL": "git clone --depth 1 https://github.com/acidanthera/AppleALC", 
-      "Pre-Build": [
-        {
-          "path": "xcodebuild", 
-          "args": [
-            "-sdk", 
-            "macosx", 
-            "-target", 
-            "ResourceConverter"
-          ], 
-          "name": "Compile ResourceConverter Prerequisite"
-        }
-      ], 
       "Name": "AppleALC", 
+      "Zip": [
+        "*.kext"
+      ], 
       "Desc": "dynamic audio patching"
     }, 
     {
@@ -385,7 +376,9 @@
         "Release"
       ], 
       "Name": "IntelMausi (Acidanthera)", 
-      "Zip": "./IntelMausi.kext", 
+      "Zip": [
+        "*.kext"
+      ], 
       "URL": "git clone --depth 1 https://github.com/acidanthera/IntelMausi", 
       "MacKernelSDK": true, 
       "Folder": "IntelMausi", 
@@ -407,6 +400,15 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Desc": "Intel Wi-Fi kext"
+    }, 
+    {
+      "Build Opts": [
+        "-alltargets" 
+      ], 
+      "Name": "IntelBluetoothFirmware", 
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware", 
+      "MacKernelSDK": true, 
+      "Desc": "Intel Bluetooth kext"
     }, 
     {
       "URL": "git clone --depth 1 https://github.com/acidanthera/Lilu", 
