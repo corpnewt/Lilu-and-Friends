@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.99", 
-  "Changes": "Improve color defaults - add dark mode detection with a default highlight color of white-bold.", 
+  "Version": "0.0.100", 
+  "Changes": "Fix VoodooI2C.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -115,8 +115,6 @@
     {
       "Lilu": true, 
       "URL": "git clone --depth 1 https://github.com/acidanthera/AppleALC", 
-      "Desc": "dynamic audio patching", 
-      "Name": "AppleALC", 
       "Pre-Build": [
         {
           "path": "xcodebuild", 
@@ -128,7 +126,9 @@
           ], 
           "name": "Compile ResourceConverter Prerequisite"
         }
-      ]
+      ], 
+      "Name": "AppleALC", 
+      "Desc": "dynamic audio patching"
     }, 
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/AtherosE2200Ethernet", 
@@ -605,6 +605,33 @@
         "*.kext"
       ], 
       "URL": "git clone --depth 1 --recursive -j8 https://github.com/alexandred/VoodooI2C", 
+      "MacKernelSDK": true, 
+      "Pre-Build": [
+        {
+          "path": "/usr/bin/curl", 
+          "args": [
+            "https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh", 
+            "-o", 
+            "bootstrap.sh"
+          ], 
+          "name": "Gather VoodooInput bootstrap.sh"
+        }, 
+        {
+          "path": "/bin/bash", 
+          "args": [
+            "bootstrap.sh"
+          ], 
+          "name": "Execute VoodooInput bootstrap.sh"
+        }, 
+        {
+          "path": "/bin/mv", 
+          "args": [
+            "VoodooInput", 
+            "Dependencies"
+          ], 
+          "name": "Moving VoodooInput to Dependencies"
+        }
+      ], 
       "Ignore Errors": true, 
       "Desc": "Intel Lynxpoint I2C controller and device driver for OS X"
     }, 
