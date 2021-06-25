@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 51 kexts:
+Currently Builds 52 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -53,6 +53,7 @@ Currently Builds 51 kexts:
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
 * Itlwm
+* IntelBluetoothFirmware
 * Lilu
 * LucyRTL8125Ethernet
 * NVMeFix
