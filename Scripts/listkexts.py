@@ -11,7 +11,7 @@ if not os.path.exists(j):
 # Load the json
 j_data = json.load(open(j, "r"))
 # Build a list of kexts - starting with *
-kext_list = "1 kext\n\n" if len(j_data["Plugins"]) == 1 else "{} kexts\n\n".format(len(j_data["Plugins"]))
+kext_list = "Currently Builds {:,} Kext{}:\n\n".format(len(j_data["Plugins"]),"" if len(j_data["Plugins"])==1 else "s")
 for k in j_data["Plugins"]:
     kext_list += "* {}\n".format(k["Name"])
 print(kext_list)
