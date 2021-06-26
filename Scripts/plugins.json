@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.101", 
-  "Changes": "Zip IntelSnowMausi in IntelMausi repo. Add IntelBluetoothFirmware. Zip AppleALCU in AppleALC repo and remove unneeded pre-build task.", 
+  "Version": "0.0.102", 
+  "Changes": "Zip IntelBluetoothInjector in IntelBluetoothFirmware repo and order kexts alphabetically. Improve list formatting.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -368,6 +368,18 @@
       "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4"
     }, 
     {
+      "Build Opts": [
+        "-alltargets"
+      ], 
+      "Name": "IntelBluetoothFirmware", 
+      "Zip": [
+        "*.kext"
+      ], 
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware", 
+      "MacKernelSDK": true, 
+      "Desc": "Intel Bluetooth kext"
+    }, 
+    {
       "Info": "IntelMausi.kext/Contents/Info.plist", 
       "Build Opts": [
         "-sdk", 
@@ -400,15 +412,6 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Desc": "Intel Wi-Fi kext"
-    }, 
-    {
-      "Build Opts": [
-        "-alltargets" 
-      ], 
-      "Name": "IntelBluetoothFirmware", 
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware", 
-      "MacKernelSDK": true, 
-      "Desc": "Intel Bluetooth kext"
     }, 
     {
       "URL": "git clone --depth 1 https://github.com/acidanthera/Lilu", 
