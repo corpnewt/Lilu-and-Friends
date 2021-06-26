@@ -564,7 +564,7 @@ class Updater:
                 extra += " - {}DoF{}".format(self.ch_color, self.rt_color) if option.get("DefOnFail", False) else ""
                 extra += " - {}iSDK{}".format(self.ch_color, self.rt_color) if option.get("IncrementSDK", False) else ""
                 extra += " - {}Reveal{}".format(self.ch_color, self.rt_color) if option.get("Reveal", True) else ""
-                en = "{} {}. {}{}{} - {}".format(pick, ind, self.hi_color, option.get("Name", None), self.rt_color, extra)
+                en = "{} {}. {}{}{} - {}".format(pick, str(ind).rjust(2," "), self.hi_color, option.get("Name", None), self.rt_color, extra)
                 #if len(self.cprint(en, strip_colors=True)) + self.wpad > self.w:
                 testw = len(self.cprint(en, strip_colors=True)) + self.wpad
                 self.w = testw if testw > 80 else 80
@@ -1593,9 +1593,9 @@ class Updater:
             else:
                 pick = "[ ]"
             if option.get("Desc", None):
-                en = "{} {}. {}{}{} - {}".format(pick, ind, self.hi_color, option["Name"], self.rt_color, option["Desc"])
+                en = "{} {}. {}{}{} - {}".format(pick, str(ind).rjust(2," "), self.hi_color, option["Name"], self.rt_color, option["Desc"])
             else:
-                en = "{} {}. {}{}{}".format(pick, ind, self.hi_color, option["Name"], self.rt_color)
+                en = "{} {}. {}{}{}".format(pick, str(ind).rjust(2," "), self.hi_color, option["Name"], self.rt_color)
             if len(self.cprint(en, strip_colors=True)) + self.wpad > self.w:
                 self.w = len(self.cprint(en, strip_colors=True)) + self.wpad
             self.cprint(en)
