@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.102", 
-  "Changes": "Zip IntelBluetoothInjector in IntelBluetoothFirmware repo and order kexts alphabetically. Improve list formatting.", 
+  "Version": "0.0.103", 
+  "Changes": "Remove weird AirportBrcmFixup folder naming and add FeatureUnlock.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -32,8 +32,7 @@
     }, 
     {
       "Lilu": true, 
-      "URL": "git clone --depth 1 https://github.com/acidanthera/AirportBrcmFixup airportbrcmfixup-code", 
-      "Folder": "airportbrcmfixup-code", 
+      "URL": "git clone --depth 1 https://github.com/acidanthera/AirportBrcmFixup", 
       "Name": "AirportBrcmFixup", 
       "Desc": "for non-native Airport Broadcom Wi-Fi cards"
     }, 
@@ -278,6 +277,12 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek", 
       "Folder": "OS-X-FakeSMC-kozlek", 
       "Desc": "only RehabMan's FakeSMC"
+    }, 
+    {
+      "Lilu": true, 
+      "URL": "git clone --depth 1 https://github.com/acidanthera/FeatureUnlock", 
+      "Name": "FeatureUnlock", 
+      "Desc": "for enabling Sidecar, NightShift, AirPlay to Mac and Universal Control"
     }, 
     {
       "Build Opts": [
