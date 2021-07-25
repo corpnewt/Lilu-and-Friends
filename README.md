@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 52 Kexts:
+Currently Builds 53 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -44,16 +44,17 @@ Currently Builds 52 Kexts:
 * FakeSMC (Kozlek)
 * FakeSMC (Legacy)
 * FakeSMC (RehabMan)
+* FeatureUnlock
 * GenericUSBXHCI
 * HWSensors (Kozlek)
 * HWSensors (Legacy)
 * HWSensors (RehabMan)
 * HibernationFixup
 * IntelBacklight
+* IntelBluetoothFirmware
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
 * Itlwm
-* IntelBluetoothFirmware
 * Lilu
 * LucyRTL8125Ethernet
 * NVMeFix
