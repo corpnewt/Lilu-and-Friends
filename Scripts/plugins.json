@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.103", 
-  "Changes": "Remove weird AirportBrcmFixup folder naming and add FeatureUnlock.", 
+  "Version": "0.0.104", 
+  "Changes": "Add Airportitlwm Monterey entry.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -49,7 +49,7 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Folder": "itlwm", 
-      "Desc": "native Intel Wi-Fi kext"
+      "Desc": "native Intel Wi-Fi kext for 10.13.x"
     }, 
     {
       "Info": "Mojave/Airportitlwm.kext/Contents/Info.plist", 
@@ -64,7 +64,7 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Folder": "itlwm", 
-      "Desc": "native Intel Wi-Fi kext"
+      "Desc": "native Intel Wi-Fi kext for 10.14.x"
     }, 
     {
       "Info": "Catalina/Airportitlwm.kext/Contents/Info.plist", 
@@ -79,7 +79,7 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Folder": "itlwm", 
-      "Desc": "native Intel Wi-Fi kext"
+      "Desc": "native Intel Wi-Fi kext for 10.15.x"
     }, 
     {
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist", 
@@ -94,7 +94,22 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
       "MacKernelSDK": true, 
       "Folder": "itlwm", 
-      "Desc": "native Intel Wi-Fi kext"
+      "Desc": "native Intel Wi-Fi kext for 11.x"
+    }, 
+    {
+      "Info": "Monterey/Airportitlwm.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-target", 
+        "AirportItlwm-Monterey"
+      ], 
+      "Name": "Airportitlwm (12 Monterey)", 
+      "Zip": [
+        "Monterey/*"
+      ], 
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm", 
+      "MacKernelSDK": true, 
+      "Folder": "itlwm", 
+      "Desc": "native Intel Wi-Fi kext for 12.x"
     }, 
     {
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist", 
