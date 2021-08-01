@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 54 Kexts:
+Currently Builds 57 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -46,6 +46,7 @@ Currently Builds 54 Kexts:
 * FakeSMC (Legacy)
 * FakeSMC (RehabMan)
 * FeatureUnlock
+* GenericCardReaderFriend
 * GenericUSBXHCI
 * HWSensors (Kozlek)
 * HWSensors (Legacy)
@@ -63,6 +64,8 @@ Currently Builds 54 Kexts:
 * NoTouchID
 * NullCPUPowerManagement
 * RTCMemoryFixup
+* RealtekCardReader
+* RealtekCardReaderFriend
 * RealtekRTL8100
 * RealtekRTL8111
 * RestrictEvents
