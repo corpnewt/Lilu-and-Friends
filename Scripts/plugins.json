@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.105", 
-  "Changes": "Add RealtekCardReader, RealtekCardReaderFriend, and GenericCardReaderFriend from 0xFireWolf.", 
+  "Version": "0.0.106", 
+  "Changes": "Add AlpsHID from blankmac.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -125,6 +125,16 @@
       "MacKernelSDK": true, 
       "Folder": "itlwm", 
       "Desc": "native Intel Wi-Fi kext"
+    }, 
+    {
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID", 
+      "Build Opts": [
+        "-arch", 
+        "x86_64"
+      ], 
+      "MacKernelSDK": true, 
+      "Name": "AlpsHID", 
+      "Desc": "VoodooI2C satellite for Alps touchpad and trackpoint"
     }, 
     {
       "Lilu": true, 
