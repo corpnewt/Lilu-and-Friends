@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 57 Kexts:
+Currently Builds 58 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -32,6 +32,7 @@ Currently Builds 57 Kexts:
 * Airportitlwm (11 Big Sur)
 * Airportitlwm (12 Monterey)
 * Airportitlwm (all versions)
+* AlpsHID
 * AppleALC
 * AtherosE2200Ethernet
 * BCM5722D
