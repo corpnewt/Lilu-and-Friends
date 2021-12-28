@@ -764,7 +764,9 @@ class Updater:
             "Xcode" : self.xcode_opts, 
             "SDK" : self.sdk_over, 
             "DefOnFail" : self.default_on_fail, 
-            "IncrementSDK" : self. increment_sdk
+            "IncrementSDK" : self.increment_sdk,
+            "Reveal" : self.reveal,
+            "Debug" : self.kext_debug
             }
         self.profiles.append(new_pro)
         # Save to file
