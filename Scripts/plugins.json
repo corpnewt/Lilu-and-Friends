@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.107", 
-  "Changes": "Add second AlpsHID entry with 150ms QuietTimeAfterTyping delay.", 
+  "Version": "0.0.108", 
+  "Changes": "Save reveal and kext debug options when creating a new profile.", 
   "Plugins": [
     {
       "Build Opts": [
