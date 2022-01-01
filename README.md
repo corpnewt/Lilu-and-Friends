@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 58 Kexts:
+Currently Builds 60 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -33,6 +33,7 @@ Currently Builds 58 Kexts:
 * Airportitlwm (12 Monterey)
 * Airportitlwm (all versions)
 * AlpsHID
+* AlpsHID (150ms delay)
 * AppleALC
 * AtherosE2200Ethernet
 * BCM5722D
@@ -76,6 +77,7 @@ Currently Builds 58 Kexts:
 * VirtualSMC (All Tools)
 * VoodooI2C
 * VoodooInput
+* VoodooPS2-ALPS
 * VoodooPS2Controller
 * VoodooPS2Controller (Acidanthera)
 * VoodooRMI
