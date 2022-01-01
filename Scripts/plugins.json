@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.108", 
-  "Changes": "Save reveal and kext debug options when creating a new profile.", 
+  "Version": "0.0.109", 
+  "Changes": "Add VoodooPS2-ALPS.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -719,6 +719,34 @@
       "MacKernelSDK": true, 
       "Name": "VoodooInput", 
       "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation"
+    }, 
+    {
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
+      "Name": "VoodooPS2-ALPS", 
+      "Zip": [
+        "*.kext"
+      ], 
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/SkyrilHD/VoodooPS2-ALPS", 
+      "MacKernelSDK": true, 
+      "Pre-Build": [
+        {
+          "path": "/usr/bin/curl", 
+          "args": [
+            "https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh", 
+            "-o", 
+            "bootstrap.sh"
+          ], 
+          "name": "Gather VoodooInput bootstrap.sh"
+        }, 
+        {
+          "path": "/bin/bash", 
+          "args": [
+            "bootstrap.sh"
+          ], 
+          "name": "Execute VoodooInput bootstrap.sh"
+        }
+      ], 
+      "Desc": "VoodooPS2 made for ALPS touchpads"
     }, 
     {
       "Build Opts": [
