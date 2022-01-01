@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 60 Kexts:
+Currently Builds 61 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -78,6 +78,7 @@ Currently Builds 60 Kexts:
 * VoodooI2C
 * VoodooInput
 * VoodooPS2-ALPS
+* VoodooPS2-ALPS (VoodooInput)
 * VoodooPS2Controller
 * VoodooPS2Controller (Acidanthera)
 * VoodooRMI
