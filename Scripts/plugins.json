@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.109", 
-  "Changes": "Add VoodooPS2-ALPS.", 
+  "Version": "0.0.110", 
+  "Changes": "Add VoodooPS2-ALPS from 1Revenger1 and clarify differences.", 
   "Plugins": [
     {
       "Build Opts": [
@@ -722,7 +722,20 @@
     }, 
     {
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
+      "Build Opts": [
+        "-arch", 
+        "x86_64"
+      ], 
       "Name": "VoodooPS2-ALPS", 
+      "Zip": [
+        "*.kext"
+      ], 
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/1Revenger1/VoodooPS2-Alps", 
+      "Desc": "VoodooPS2 made for ALPS touchpads"
+    }, 
+    {
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist", 
+      "Name": "VoodooPS2-ALPS (VoodooInput)", 
       "Zip": [
         "*.kext"
       ], 
@@ -746,7 +759,7 @@
           "name": "Execute VoodooInput bootstrap.sh"
         }
       ], 
-      "Desc": "VoodooPS2 made for ALPS touchpads"
+      "Desc": "VoodooPS2 leveraging VoodooInput made for ALPS v7-8 touchpads"
     }, 
     {
       "Build Opts": [
