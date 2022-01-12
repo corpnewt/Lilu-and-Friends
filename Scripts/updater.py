@@ -1625,7 +1625,7 @@ class Updater:
             print("Debug:                 {}".format(self.kb.debug))
 
         print(" ")
-        print("B.  Build Selected")
+        print("B.  Build Selected ({:,})".format(len([x for x in self.plugs if x.get("Picked")])))
         print(" ")
         print("A.  Select All")
         print("N.  Select None")
