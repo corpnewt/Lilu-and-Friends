@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.110", 
-  "Changes": "Add VoodooPS2-ALPS from 1Revenger1 and clarify differences.", 
+  "Version": "0.0.111", 
+  "Changes": "Show number of kexts selected in main menu.", 
   "Plugins": [
     {
       "Build Opts": [
