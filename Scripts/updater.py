@@ -40,7 +40,7 @@ class Updater:
         
         self.r = run.Run()
         self.k = kextupdater.KextUpdater()
-        self.d = downloader.Downloader()
+        self.dl = downloader.Downloader()
 
         # Order the colors quick
         if len(self.colors):
@@ -130,8 +130,22 @@ class Updater:
         self.migrate_profiles()
 
         # Make sure we have iasl
-        self.iasl_url = "https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip"
+        self.iasl_url = "https://raw.githubusercontent.com/acidanthera/MaciASL/master/Dist/iasl-stable"
         self.iasl = self.check_iasl()
+
+        if not self.iasl:
+            self.head("Locating iasl")
+            print("")
+            print("An error occurred :(")
+            print("")
+            print("You can download the iasl-stable binary from here:")
+            print("")
+            print(self.iasl_url)
+            print("")
+            print("Then place iasl-stable in the Scripts folder within the")
+            print("Lilu and Friends folder.")
+            print("")
+            self.grab("Press [enter] to continue...")
 
         # Setup the SDK url
         self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
@@ -164,7 +178,7 @@ class Updater:
         self.head("Gathering Remote SDK List")
         print("")
         try:
-            sdk = self.d.get_string(self.sdk_url)
+            sdk = self.dl.get_string(self.sdk_url)
         except:
             sdk = None
         if sdk == None:
@@ -187,50 +201,48 @@ class Updater:
                 pass
         return self.remote_sdk_list
 
-    def check_iasl(self):
-        target = os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
-        if not os.path.exists(target):
-            # Need to download
-            self.head("Downloading iasl")
-            print("")
-            temp = tempfile.mkdtemp()
-            try:
-                self._download_and_extract(temp,self.iasl_url)
-            except:
-                print("An error occurred :(")
-                print("")
-                print("You can download the iasl binary from here:")
-                print("")
-                print(self.iasl_url)
-                print("")
-                print("Extract that zip, then place iasl in the Scripts folder in the")
-                print("Lilu and Friends folder.")
-                print("")
-                self.grab("Press [enter] to continue...")
-            shutil.rmtree(temp, ignore_errors=True)
-        if os.path.exists(target):
+    def check_iasl(self,try_downloading=True):
+        targets = (
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-dev"),
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-stable"),
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-legacy"),
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
+        )
+        target = next((t for t in targets if os.path.exists(t)),None)
+        if target or not try_downloading:
+            # Either found it - or we didn't, and have already tried downloading
             return target
-        return None
+        # Need to download
+        temp = tempfile.mkdtemp()
+        try:
+            self._download_and_extract(temp,self.iasl_url)
+        except Exception as e:
+            print("An error occurred :(\n - {}".format(e))
+        shutil.rmtree(temp, ignore_errors=True)
+        # Check again after downloading
+        return self.check_iasl(try_downloading=False)
 
     def _download_and_extract(self, temp, url):
         ztemp = tempfile.mkdtemp(dir=temp)
         zfile = os.path.basename(url)
-        print("Downloading {}...".format(os.path.basename(url)))
-        self.d.stream_to_file(url, os.path.join(ztemp,zfile), False)
-        print(" - Extracting...")
-        btemp = tempfile.mkdtemp(dir=temp)
-        # Extract with built-in tools \o/
-        with zipfile.ZipFile(os.path.join(ztemp,zfile)) as z:
-            z.extractall(os.path.join(temp,btemp))
-        script_dir = os.path.dirname(os.path.realpath(__file__))
-        for x in os.listdir(os.path.join(temp,btemp)):
-            if "iasl" in x.lower():
+        print("Downloading {}".format(os.path.basename(url)))
+        self.dl.stream_to_file(url, os.path.join(ztemp,zfile), False)
+        search_dir = ztemp
+        if zfile.lower().endswith(".zip"):
+            print(" - Extracting")
+            search_dir = tempfile.mkdtemp(dir=temp)
+            # Extract with built-in tools \o/
+            with zipfile.ZipFile(os.path.join(ztemp,zfile)) as z:
+                z.extractall(search_dir)
+        script_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+        for x in os.listdir(search_dir):
+            if x.lower().startswith(("iasl","acpidump")):
                 # Found one
                 print(" - Found {}".format(x))
-                print("   - Chmod +x...")
-                self.r.run({"args":["chmod","+x",os.path.join(btemp,x)]})
-                print("   - Copying to {} directory...".format(os.path.basename(script_dir)))
-                shutil.copy(os.path.join(btemp,x), os.path.join(script_dir,x))
+                print("   - Chmod +x")
+                self.r.run({"args":["chmod","+x",os.path.join(search_dir,x)]})
+                print("   - Copying to {} directory".format(os.path.basename(script_dir)))
+                shutil.copy(os.path.join(search_dir,x), os.path.join(script_dir,x))
 
     def migrate_profiles(self):
         # Helper method to migrate some profile info
@@ -944,7 +956,7 @@ class Updater:
         self.head("Checking for Updates")
         print(" ")
         try:
-            newjson = self.d.get_string(self.version_url, False)
+            newjson = self.dl.get_string(self.version_url, False)
         except:
             # Not valid json data
             self.cprint(self.er_color+"Error checking for updates (network issue)")
@@ -1468,7 +1480,7 @@ class Updater:
         file_path = os.path.join(temp,file_name)
         print("Downloading {}".format(file_name))
         try:
-            self.d.stream_to_file(url, file_path)
+            self.dl.stream_to_file(url, file_path)
             print("")
         except:
             pass
