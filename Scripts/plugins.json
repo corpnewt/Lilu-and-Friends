@@ -975,6 +975,17 @@
             "-i",
             "",
             "-e",
+            "s|modForceCompleteModeset.supported = modForceCompleteModeset.legacy = true;|modForceCompleteModeset.supported = (kbl == 1) ? modForceCompleteModeset.enabled = true : modForceCompleteModeset.legacy = true; modRPSControlPatch.available = (kbl == 1) ? true : modRPSControlPatch.available; modForceWakeWorkaround.enabled = (kbl == 1) ? true : modForceWakeWorkaround.enabled;|",
+            "./WhateverGreen/kern_igfx.cpp"
+          ],
+          "name": "Add missing KBL settings"
+        },
+        {
+          "path": "/usr/bin/sed",
+          "args": [
+            "-i",
+            "",
+            "-e",
             "/};/! s|case CPUInfo::CpuGeneration::KabyLake:|}; case CPUInfo::CpuGeneration::KabyLake:|",
             "./WhateverGreen/kern_igfx.cpp"
           ],
