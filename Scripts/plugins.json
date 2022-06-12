@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.112",
-  "Changes": "Add gross, hacked version of WEG to allow faking SKL as KBL via boot-arg.",
+  "Version": "0.0.113",
+  "Changes": "Allow multiple path options in pre/post-build tasks - force RehabMan's iasl for VoodooPS2 SSDTs - other fixes.",
   "Plugins": [
     {
       "Build Opts": [
@@ -769,7 +769,8 @@
       "FixXib": true,
       "Name": "VoodooPS2Controller",
       "Zip": [
-        "*.kext"
+        "*.kext",
+        "SSDT"
       ],
       "Skip Targets": [
         "VoodooPS2Daemon",
@@ -810,7 +811,9 @@
             "*.aml",
             "Build/Release/SSDT/Compiled"
           ],
-          "name": "Move .aml Files to Compiled Folder"
+          "name": "Move .aml Files to Compiled Folder",
+          "bail": false,
+          "no_print": true
         },
         {
           "path": "mv",
@@ -818,17 +821,26 @@
             "*.dsl",
             "Build/Release/SSDT/Source"
           ],
-          "name": "Move .dsl Files to Source Folder"
+          "name": "Move .dsl Files to Source Folder",
+          "bail": false,
+          "no_print": true
         }
       ],
       "Folder": "OS-X-Voodoo-PS2-Controller",
       "Pre-Build": [
         {
-          "path": "[[scripts]]/iasl",
+          "path": [
+            "[[scripts]]/iasl",
+            "[[scripts]]/iasl-stable",
+            "[[scripts]]/iasl-dev",
+            "[[scripts]]/iasl-legacy"
+          ],
           "args": [
             "*.dsl"
           ],
-          "name": "Compile SSDTs"
+          "name": "Compile SSDTs",
+          "bail": false,
+          "no_print": true
         }
       ],
       "Desc": "PS2 driver for desktops/laptops"
@@ -842,13 +854,15 @@
       "FixXib": true,
       "Name": "VoodooPS2Controller (Acidanthera)",
       "Zip": [
-        "*.kext"
+        "*.kext",
+        "SSDT"
       ],
       "Skip Targets": [
         "VoodooPS2Daemon",
         "VoodooPS2synapticsPane",
         "synapticsconfigload"
       ],
+      "MacKernelSDK": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooPS2 --recursive",
       "Post-Build": [
         {
@@ -883,7 +897,9 @@
             "*.aml",
             "Build/Release/SSDT/Compiled"
           ],
-          "name": "Move .aml Files to Compiled Folder"
+          "name": "Move .aml Files to Compiled Folder",
+          "bail": false,
+          "no_print": true
         },
         {
           "path": "mv",
@@ -891,10 +907,11 @@
             "*.dsl",
             "Build/Release/SSDT/Source"
           ],
-          "name": "Move .dsl Files to Source Folder"
+          "name": "Move .dsl Files to Source Folder",
+          "bail": false,
+          "no_print": true
         }
       ],
-      "Lilu": true,
       "Folder": "VoodooPS2",
       "Pre-Build": [
         {
@@ -906,11 +923,18 @@
           "name": "Relocate ACPI files"
         },
         {
-          "path": "[[scripts]]/iasl",
+          "path": [
+            "[[scripts]]/iasl",
+            "[[scripts]]/iasl-stable",
+            "[[scripts]]/iasl-dev",
+            "[[scripts]]/iasl-legacy"
+          ],
           "args": [
             "*.dsl"
           ],
-          "name": "Compile SSDTs"
+          "name": "Compile SSDTs",
+          "bail": false,
+          "no_print": true
         }
       ],
       "Desc": "PS2 driver for desktops/laptops"

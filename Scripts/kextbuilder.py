@@ -243,6 +243,9 @@ class KextBuilder:
                         print("    --> Failed!")
                         pass
 
+        def path_replace(path): # Helper to replace pathing elements in pre and post-build
+            return path.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp)
+
         if len(prebuild):
             print("    Running Pre-Build Tasks ({})...".format(len(prebuild)))
         currtask = 0
@@ -273,10 +276,21 @@ class KextBuilder:
             sp = os.path.dirname(os.path.realpath(__file__))
             kp = os.path.dirname(sp)
             cp = os.getcwd()
-            args.append(task.get("path","").replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
+            if isinstance(task.get("path"),list) and task["path"]:
+                # We have multiple optional paths - let's find the first hit
+                use_path = path_replace(task["path"][0])
+                for path in task["path"]:
+                    path = path_replace(path)
+                    if os.path.exists(path): # Check if the adjusted path exists and save it
+                        use_path = path
+                        break
+                args.append(use_path)
+                task["path"] = use_path # Replace the original entry with the first match
+            else: # It's not a list
+                args.append(path_replace(task.get("path","")))
             for arg in task.get("args",[]):
                 # Expand any pathing, then glob
-                a = arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp)
+                a = path_replace(arg)
                 if "*" in a:
                     try:
                         # Glob!
@@ -299,10 +313,15 @@ class KextBuilder:
             print("     - Running task {} of {} - {}...".format(currtask, len(prebuild), tname))
             output = self.r.run({"args":args, "stream" : self.debug})
             if not output[2] == 0:
-                output = (output[0], "Pre-Build Task Failed!\n\n{}".format(output[1]), output[2])
+                output = (output[0], "     --> Pre-Build Task Failed!\n\n{}".format(output[1]), output[2])
                 if task.get("bail", True):
                     return output
-                print(output[1])
+                if task.get("no_print"):
+                    print("     --> Pre-Build Taks Failed!")
+                else:
+                    print(output[1])
+                if not task.get("continue_on_fail"):
+                    break
                 
         if needs_lilu:
             # Copy in our debug kext
@@ -407,7 +426,18 @@ class KextBuilder:
             sp = os.path.dirname(os.path.realpath(__file__))
             kp = os.path.dirname(sp)
             cp = os.getcwd()
-            args.append(task.get("path","").replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp))
+            if isinstance(task.get("path"),list) and task["path"]:
+                # We have multiple optional paths - let's find the first hit
+                use_path = path_replace(task["path"][0])
+                for path in task["path"]:
+                    path = path_replace(path)
+                    if os.path.exists(path): # Check if the adjusted path exists and save it
+                        use_path = path
+                        break
+                args.append(use_path)
+                task["path"] = use_path # Replace the original entry with the first match
+            else: # It's not a list
+                args.append(path_replace(task.get("path","")))
             for arg in task.get("args",[]):
                 # Expand any pathing, then glob
                 a = arg.replace("[[scripts]]",sp).replace("[[kexts]]",kp).replace("[[cwd]]",cp)
@@ -433,10 +463,15 @@ class KextBuilder:
             print("     - Running task {} of {} - {}...".format(currtask, len(postbuild), tname))
             output = self.r.run({"args":args, "stream" : self.debug})
             if not output[2] == 0:
-                output = (output[0], "Post-Build Task Failed!\n\n{}".format(output[1]), output[2])
+                output = (output[0], "     --> Post-Build Task Failed!\n\n{}".format(output[1]), output[2])
                 if task.get("bail", True):
                     return output
-                print(output[1])
+                if task.get("no_print"):
+                    print("     --> Post-Build Taks Failed!")
+                else:
+                    print(output[1])
+                if not task.get("continue_on_fail"):
+                    break
 
         if debug and not os.path.exists(build_dir):
             # Even though we're debugging - try the release as well

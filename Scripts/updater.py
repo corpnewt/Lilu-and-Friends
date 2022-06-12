@@ -130,22 +130,25 @@ class Updater:
         self.migrate_profiles()
 
         # Make sure we have iasl
-        self.iasl_url = "https://raw.githubusercontent.com/acidanthera/MaciASL/master/Dist/iasl-stable"
-        self.iasl = self.check_iasl()
-
-        if not self.iasl:
-            self.head("Locating iasl")
-            print("")
-            print("An error occurred :(")
-            print("")
-            print("You can download the iasl-stable binary from here:")
-            print("")
-            print(self.iasl_url)
-            print("")
-            print("Then place iasl-stable in the Scripts folder within the")
-            print("Lilu and Friends folder.")
-            print("")
-            self.grab("Press [enter] to continue...")
+        self.iasl_url = (
+            "https://raw.githubusercontent.com/acidanthera/MaciASL/master/Dist/iasl-stable",
+            "https://bitbucket.org/RehabMan/acpica/downloads/iasl.zip"
+        )
+        for url in self.iasl_url:
+            iasl = self.check_iasl(target=os.path.basename(url).split(".")[0],url=url)
+            if not iasl:
+                self.head("Locating iasl")
+                print("")
+                print("An error occurred :(")
+                print("")
+                print("You can download the {} binary from here:")
+                print("")
+                print(url)
+                print("")
+                print("Then place iasl-stable and iasl in the Scripts folder within the")
+                print("Lilu and Friends folder.")
+                print("")
+                self.grab("Press [enter] to continue...")
 
         # Setup the SDK url
         self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
@@ -201,24 +204,31 @@ class Updater:
                 pass
         return self.remote_sdk_list
 
-    def check_iasl(self,try_downloading=True):
-        targets = (
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-dev"),
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-stable"),
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-legacy"),
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
-        )
-        target = next((t for t in targets if os.path.exists(t)),None)
+    def check_iasl(self,try_downloading=True,target=None,url=None):
+        if target:
+            target = os.path.join(os.path.dirname(os.path.realpath(__file__)), target)
+            if not os.path.exists(target): target = None
+        else:
+            targets = (
+                os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-dev"),
+                os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-stable"),
+                os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl-legacy"),
+                os.path.join(os.path.dirname(os.path.realpath(__file__)), "iasl")
+            )
+            target = next((t for t in targets if os.path.exists(t)),None)
         if target or not try_downloading:
             # Either found it - or we didn't, and have already tried downloading
             return target
         # Need to download
         temp = tempfile.mkdtemp()
         try:
-            self._download_and_extract(temp,self.iasl_url)
+            if url: self._download_and_extract(temp,url)
+            else:
+                for u in self.iasl_url:
+                    self._download_and_extract(temp,u)
         except Exception as e:
             print("An error occurred :(\n - {}".format(e))
-        shutil.rmtree(temp, ignore_errors=True)
+        shutil.rmtree(temp,ignore_errors=True)
         # Check again after downloading
         return self.check_iasl(try_downloading=False)
 
@@ -1434,6 +1444,8 @@ class Updater:
         # Clean up temp
         print("Cleaning up...")
         self.kb._del_temp()
+        # Reset the cwd
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Take time
         total_time = time.time() - start_time
         # Resize the window if need be
@@ -1451,11 +1463,12 @@ class Updater:
             if self.reveal:
                 try:
                     # Attempt to locate and open the kexts directory
-                    os.chdir(os.path.dirname(os.path.realpath(__file__)))
                     os.chdir("../Kexts")
                     subprocess.Popen("open \"" + os.getcwd() + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 except:
                     pass
+                # Reset cwd again
+                os.chdir(os.path.dirname(os.path.realpath(__file__)))
         else:
             self.cprint("{}Succeeded:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.er_color))
         if len(fail):
