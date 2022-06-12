@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.113",
-  "Changes": "Allow multiple path options in pre/post-build tasks - force RehabMan's iasl for VoodooPS2 SSDTs - other fixes.",
+  "Version": "0.0.114",
+  "Changes": "Add AirportItlwm (13 Ventura).",
   "Plugins": [
     {
       "Build Opts": [
@@ -110,6 +110,21 @@
       "MacKernelSDK": true,
       "Folder": "itlwm",
       "Desc": "native Intel Wi-Fi kext for 12.x"
+    },
+    {
+      "Info": "Ventura/Airportitlwm.kext/Contents/Info.plist",
+      "Build Opts": [
+        "-target",
+        "AirportItlwm-Ventura"
+      ],
+      "Name": "Airportitlwm (13 Ventura)",
+      "Zip": [
+        "Ventura/*"
+      ],
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
+      "MacKernelSDK": true,
+      "Folder": "itlwm",
+      "Desc": "native Intel Wi-Fi kext for 13.x"
     },
     {
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
