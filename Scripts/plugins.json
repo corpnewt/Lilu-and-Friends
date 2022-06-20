@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.114",
-  "Changes": "Add AirportItlwm (13 Ventura).",
+  "Version": "0.0.115",
+  "Changes": "Move from the dirty WEG hacks to the skl-as-kbl-13 branch.",
   "Plugins": [
     {
       "Build Opts": [
@@ -968,69 +968,12 @@
     },
     {
       "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/WhateverGreen WhateverGreenSKLasKBL",
+      "URL": "git clone --depth 1 --branch skl-as-kbl-13 https://github.com/acidanthera/WhateverGreen WhateverGreenSKLasKBL",
       "Name": "WhateverGreen (SKL as KBL)",
-      "Desc": "gross hack that allows faking SKL as KBL with igfxsklaskbl=1 boot-arg",
+      "Desc": "experimental branch that allows faking SKL as KBL with -igfxsklaskbl boot-arg",
       "Info": "WhateverGreen.kext/Contents/Info.plist",
       "Zip": "./WhateverGreen.kext",
-      "Folder": "WhateverGreenSKLasKBL",
-      "Pre-Build": [
-        {
-          "path": "/usr/bin/sed",
-          "args": [
-            "-i",
-            "",
-            "-e",
-            "/{/! s|case CPUInfo::CpuGeneration::Skylake:|case CPUInfo::CpuGeneration::Skylake: {|",
-            "./WhateverGreen/kern_igfx.cpp"
-          ],
-          "name": "Patch switch-case opening bracket"
-        },
-        {
-          "path": "/usr/bin/sed",
-          "args": [
-            "-i",
-            "",
-            "-e",
-            "s|currentGraphics = &kextIntelSKL;|int kbl = 0; PE_parse_boot_argn(\"igfxsklaskbl\", \\&kbl, sizeof(kbl)); currentGraphics = (kbl == 1) ? \\&kextIntelKBL : \\&kextIntelSKL;|",
-            "./WhateverGreen/kern_igfx.cpp"
-          ],
-          "name": "Patch in boot-arg check and set currentGraphics"
-        },
-        {
-          "path": "/usr/bin/sed",
-          "args": [
-            "-i",
-            "",
-            "-e",
-            "s|currentFramebuffer = &kextIntelSKLFb;|currentFramebuffer = (kbl == 1) ? \\&kextIntelKBLFb : \\&kextIntelSKLFb;|",
-            "./WhateverGreen/kern_igfx.cpp"
-          ],
-          "name": "Set currentFramebuffer"
-        },
-        {
-          "path": "/usr/bin/sed",
-          "args": [
-            "-i",
-            "",
-            "-e",
-            "s|modForceCompleteModeset.supported = modForceCompleteModeset.legacy = true;|modForceCompleteModeset.supported = (kbl == 1) ? modForceCompleteModeset.enabled = true : modForceCompleteModeset.legacy = true; modRPSControlPatch.available = (kbl == 1) ? true : modRPSControlPatch.available; modForceWakeWorkaround.enabled = (kbl == 1) ? true : modForceWakeWorkaround.enabled;|",
-            "./WhateverGreen/kern_igfx.cpp"
-          ],
-          "name": "Add missing KBL settings"
-        },
-        {
-          "path": "/usr/bin/sed",
-          "args": [
-            "-i",
-            "",
-            "-e",
-            "/};/! s|case CPUInfo::CpuGeneration::KabyLake:|}; case CPUInfo::CpuGeneration::KabyLake:|",
-            "./WhateverGreen/kern_igfx.cpp"
-          ],
-          "name": "Patch switch-case closing bracket"
-        }
-      ]
+      "Folder": "WhateverGreenSKLasKBL"
     }
   ]
 }
