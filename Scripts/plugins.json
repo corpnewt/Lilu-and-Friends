@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.115",
-  "Changes": "Move from the dirty WEG hacks to the skl-as-kbl-13 branch.",
+  "Version": "0.0.116",
+  "Changes": "Remove WhateverGreen skl-as-kbl-13 branch as it's been merged into master.",
   "Plugins": [
     {
       "Build Opts": [
@@ -965,15 +965,6 @@
       "URL": "git clone --depth 1 https://github.com/acidanthera/WhateverGreen",
       "Name": "WhateverGreen",
       "Desc": "provides patches for AMD/Nvidia/Intel GPUs"
-    },
-    {
-      "Lilu": true,
-      "URL": "git clone --depth 1 --branch skl-as-kbl-13 https://github.com/acidanthera/WhateverGreen WhateverGreenSKLasKBL",
-      "Name": "WhateverGreen (SKL as KBL)",
-      "Desc": "experimental branch that allows faking SKL as KBL with -igfxsklaskbl boot-arg",
-      "Info": "WhateverGreen.kext/Contents/Info.plist",
-      "Zip": "./WhateverGreen.kext",
-      "Folder": "WhateverGreenSKLasKBL"
     }
   ]
 }
