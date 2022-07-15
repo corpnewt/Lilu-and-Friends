@@ -20,7 +20,7 @@ else:
 
 class Updater:
 
-    def __init__(self):
+    def __init__(self,first_launch_done=False):
         self.kb = kextbuilder.KextBuilder()
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         # Init our colors before we need to print anything
@@ -73,10 +73,13 @@ class Updater:
         if not out[2] == 0:
             self.head("Xcode First Launch")
             print(" ")
+            if first_launch_done:
+                print("Something went wrong!\n\nPlease run 'sudo xcodebuild -runFirstLaunch' then try again.")
+                os._exit(1)
             self.r.run({"args" : ["xcodebuild", "-runFirstLaunch"], "sudo" : True, "stream" : True})
             print(" ")
-            print("If everything ran correctly please relaunch the script.\n")
-            os._exit(1)
+            print("Restarting script...")
+            os.execv(sys.executable,[sys.executable]+sys.argv+["--first-launch-done"])
 
         self.h = 0
         self.w = 0
@@ -1056,7 +1059,7 @@ class Updater:
         print("Lilu and Friends has been updated!")
         print(" ")
         self.grab("Press [enter] to restart the script...")
-        os.execv(sys.executable, ['python'] + sys.argv)
+        os.execv(sys.executable,[sys.executable]+sys.argv)
 
     def get_time(self, t):
         # A helper function to make a readable string between two times
@@ -1755,13 +1758,14 @@ if __name__ == '__main__':
     parser.add_argument("-i", "--increment", help="increments the SDK on a failed build", action="store_true")
     parser.add_argument("-d", "--defaults", help="sets xcode defaults on failed build", action="store_true")
     parser.add_argument("-r", "--avoid-reveal", help="avoid revealing the Kexts folder on build completion", action="store_true")
+    parser.add_argument("--first-launch-done", help=argparse.SUPPRESS, action="store_true")
 
     args = parser.parse_args()
 
     # Create our main class, and loop - catching exceptions
-    up = Updater()
+    up = Updater(first_launch_done=args.first_launch_done)
     
-    if len(sys.argv) == 1:
+    if args.first_launch_done or len(sys.argv) == 1:
         # No extra args - let's open the interactive mode
         while True:
             try:
