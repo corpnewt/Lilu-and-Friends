@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.116",
-  "Changes": "Remove WhateverGreen skl-as-kbl-13 branch as it's been merged into master.",
+  "Version": "0.0.117",
+  "Changes": "Improve 'Xcode first launch' check and update functions to properly restart the script.",
   "Plugins": [
     {
       "Build Opts": [
