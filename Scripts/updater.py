@@ -1058,7 +1058,7 @@ class Updater:
         print(" ")
         print("Lilu and Friends has been updated!")
         print(" ")
-        self.grab("Press [enter] to restart the script...")
+        print("Restarting script...")
         os.execv(sys.executable,[sys.executable]+sys.argv)
 
     def get_time(self, t):
