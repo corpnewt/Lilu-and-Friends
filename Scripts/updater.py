@@ -1765,7 +1765,7 @@ if __name__ == '__main__':
     # Create our main class, and loop - catching exceptions
     up = Updater(first_launch_done=args.first_launch_done)
     
-    if args.first_launch_done or len(sys.argv) == 1:
+    if len(sys.argv)==1 or (args.first_launch_done and len(sys.argv)==2):
         # No extra args - let's open the interactive mode
         while True:
             try:
