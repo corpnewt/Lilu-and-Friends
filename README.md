@@ -42,6 +42,7 @@ Currently Builds 63 Kexts:
 * BrightnessKeys
 * CPUFriend
 * CodecCommander
+* CpuTscSync
 * DebugEnhancer
 * ECEnabler
 * FakePCIID
@@ -84,4 +85,3 @@ Currently Builds 63 Kexts:
 * VoodooPS2Controller (Acidanthera)
 * VoodooRMI
 * WhateverGreen
-* WhateverGreen (SKL as KBL)
