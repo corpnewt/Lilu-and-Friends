@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.117",
-  "Changes": "Improve 'Xcode first launch' check and update functions to properly restart the script.",
+  "Version": "0.0.118",
+  "Changes": "Add support for CpuTscSync.",
   "Plugins": [
     {
       "Build Opts": [
@@ -261,6 +261,15 @@
       "Folder": "EAPD-Codec-Commander",
       "Name": "CodecCommander",
       "Desc": "aids in non-functioning audio after sleep"
+    },
+    {
+      "Lilu": true,
+      "URL": "git clone --depth 1 https://github.com/acidanthera/CpuTscSync",
+      "Name": "CpuTscSync",
+      "Zip": [
+        "*.kext"
+      ],
+      "Desc": "syncs TSC and disables xcpm_urgency"
     },
     {
       "Lilu": true,
