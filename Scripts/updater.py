@@ -1752,7 +1752,7 @@ if __name__ == '__main__':
     # Setup the cli args
     parser = argparse.ArgumentParser(prog="Run.command", description="Lilu And Friends - a Kext Builder by CorpNewt")
     parser.add_argument("-p", "--profile", help="sets the PROFILE to use - takes a name as an argument - must be setup in the gui.  Any other settings can override those passed by the profile", nargs="+")
-    parser.add_argument("-k", "--kexts", help="a comma delimited list of kexts to build", nargs="+")
+    parser.add_argument("-k", "--kexts", help="a space delimited list of kexts to build - if the kext name has a space, it needs to be wrapped in quotes", nargs="+")
     parser.add_argument("-s", "--sdk", help="sets the SDK override to use (macosx##.## or ##.## format)")
     parser.add_argument("-x", "--xcodeopts", help="sets the xcode build options to use", nargs="+")
     parser.add_argument("-i", "--increment", help="increments the SDK on a failed build", action="store_true")
@@ -1781,7 +1781,7 @@ if __name__ == '__main__':
         up._select_profile(prof)
     if args.kexts:
         # Iterate the kexts and select only those included (and found)
-        pluglist = [x.lower() for x in " ".join(args.kexts).split(",")]
+        pluglist = [x.lower() for x in args.kexts]
         for plug in up.plugs:
             if plug["Name"].lower() in pluglist:
                 plug["Picked"] = True
