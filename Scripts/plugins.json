@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.118",
-  "Changes": "Add support for CpuTscSync.",
+  "Version": "0.0.119",
+  "Changes": "Fix compiling IntelBluetoothFirmware on Ventura with Lilu = True.",
   "Plugins": [
     {
       "Build Opts": [
@@ -458,6 +458,7 @@
         "-alltargets"
       ],
       "Name": "IntelBluetoothFirmware",
+      "Lilu": true,
       "Zip": [
         "*.kext"
       ],
