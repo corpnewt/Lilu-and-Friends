@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.120",
-  "Changes": "Add ability to download compiled releases instead of building.",
+  "Version": "0.0.121",
+  "Changes": "Add download support from legacy bitbucket projects.",
   "Plugins": [
     {
       "Build Opts": [
@@ -11,7 +11,10 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Backlight",
       "Folder": "OS-X-ACPI-Backlight",
       "Name": "ACPIBacklight",
-      "Desc": "uses ACPI methods to control laptop backlight - pre-10.12.4"
+      "Desc": "uses ACPI methods to control laptop backlight - pre-10.12.4",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-acpi-backlight/downloads/"
+      }
     },
     {
       "Build Opts": [
@@ -22,7 +25,10 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Battery-Driver",
       "Folder": "OS-X-ACPI-Battery-Driver",
       "Name": "ACPIBatteryManager",
-      "Desc": "implements an ACPI based battery manager kext"
+      "Desc": "implements an ACPI based battery manager kext",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/Dolnor/OSX-ALXEthernet",
@@ -334,7 +340,10 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/EAPD-Codec-Commander",
       "Folder": "EAPD-Codec-Commander",
       "Name": "CodecCommander",
-      "Desc": "aids in non-functioning audio after sleep"
+      "Desc": "aids in non-functioning audio after sleep",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-eapd-codec-commander/downloads/"
+      }
     },
     {
       "Lilu": true,
@@ -384,7 +393,10 @@
       ],
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Fake-PCI-ID",
       "Folder": "OS-X-Fake-PCI-ID",
-      "Desc": "spoofs IOPCIDevices to allow drivers to load"
+      "Desc": "spoofs IOPCIDevices to allow drivers to load",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-fake-pci-id/downloads/"
+      }
     },
     {
       "Info": "FakeSMC.kext/Contents/Info.plist",
@@ -444,7 +456,10 @@
       "Zip": "./FakeSMC.kext",
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
       "Folder": "OS-X-FakeSMC-kozlek",
-      "Desc": "only RehabMan's FakeSMC"
+      "Desc": "only RehabMan's FakeSMC",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/"
+      }
     },
     {
       "Lilu": true,
@@ -478,7 +493,10 @@
       "Name": "GenericUSBXHCI",
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Generic-USB3",
       "Folder": "OS-X-Generic-USB3",
-      "Desc": "generic, non-Intel USB3 support"
+      "Desc": "generic, non-Intel USB3 support",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-generic-usb3/downloads/"
+      }
     },
     {
       "Info": "FakeSMC.kext/Contents/Info.plist",
@@ -541,7 +559,10 @@
       ],
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
       "Folder": "OS-X-FakeSMC-kozlek",
-      "Desc": "RehabMan's FakeSMC + Sensors"
+      "Desc": "RehabMan's FakeSMC + Sensors",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/"
+      }
     },
     {
       "Lilu": true,
@@ -563,7 +584,10 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Intel-Backlight",
       "Folder": "OS-X-Intel-Backlight",
       "Name": "IntelBacklight",
-      "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4"
+      "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-intel-backlight/downloads/"
+      }
     },
     {
       "Build Opts": [
@@ -774,7 +798,10 @@
         }
       ],
       "Folder": "OS-X-USB-Inject-All",
-      "Desc": "injects all USB ports"
+      "Desc": "injects all USB ports",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/"
+      }
     },
     {
       "Build Opts": [
@@ -1077,7 +1104,10 @@
           "no_print": true
         }
       ],
-      "Desc": "PS2 driver for desktops/laptops"
+      "Desc": "PS2 driver for desktops/laptops",
+      "bitbucket": {
+        "URL": "https://bitbucket.org/RehabMan/os-x-voodoo-ps2-controller/downloads/"
+      }
     },
     {
       "Build Opts": [
