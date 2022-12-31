@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, re
 
 # Fix case differences
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -17,6 +17,8 @@ if sys.version_info >= (3, 0):
     from urllib.request import urlopen
 else:
     from urllib2 import urlopen
+
+BUILD_MODES = ["build","github"] # ,"dortania"]
 
 class Updater:
 
@@ -62,28 +64,57 @@ class Updater:
             print(" ")
             os._exit(1)
 
-        if not os.path.exists("/Applications/Xcode.app") and not os.path.exists("/Applications/Xcode-beta.app"):
+        '''if not os.path.exists("/Applications/Xcode.app") and not os.path.exists("/Applications/Xcode-beta.app"):
             self.head("Xcode Missing!")
             print(" ")
             print("Xcode is not installed in your /Applications folder!\n\nExiting...")
             print(" ")
-            os._exit(1)
+            os._exit(1)'''
 
-        out = self.r.run({"args":["xcodebuild", "-checkFirstLaunchStatus"]})
-        if not out[2] == 0:
-            self.head("Xcode First Launch")
-            print(" ")
-            if first_launch_done:
-                print("Something went wrong!\n\nPlease run 'sudo xcodebuild -runFirstLaunch' then try again.")
-                os._exit(1)
-            self.r.run({"args" : ["xcodebuild", "-runFirstLaunch"], "sudo" : True, "stream" : True})
-            print(" ")
-            print("Restarting script...")
-            os.execv(sys.executable,[sys.executable]+sys.argv+["--first-launch-done"])
-
+        self.download_only = False # Are we *only* able to download?
+        out = self.r.run({"args":["xcode-select","-p"]})
+        if out[2] != 0 or not out[0].strip().endswith(".app/Contents/Developer") or not os.path.exists(out[0].strip()):
+            self.download_only = True
+            self.head("Xcode Missing!")
+            print("")
+            print("xcode-select did not return a valid path to Xcode.app:")
+            if out[2] != 0:
+                print(" - No valid path returned")
+            elif not out[0].strip().endswith(".app/Contents/Developer"):
+                print(" - {} does not point to Xcode".format(out[0].strip()))
+            else:
+                print(" - {} does not exist".format(out[0].strip()))
+            print("")
+            print("To correct this and allow building - please run:")
+            print("sudo xcode-select -s /path/to/Xcode.app")
+            print("")
+            print("Replacing '/path/to/Xcode.app' with your actual Xcode path.")
+            print("")
+            print("Continuing in download-only mode...")
+        else:
+            self.download_only = False
+            out = self.r.run({"args":["xcodebuild", "-checkFirstLaunchStatus"]})
+            if not out[2] == 0:
+                self.head("Xcode First Launch")
+                print(" ")
+                if first_launch_done:
+                    print("Something went wrong!\n\nPlease run 'sudo xcodebuild -runFirstLaunch' then try again.")
+                    print("")
+                    print("Continuing in download-only mode...")
+                    # os._exit(1)
+                    self.download_only = True
+                else:
+                    self.r.run({"args" : ["xcodebuild", "-runFirstLaunch"], "sudo" : True, "stream" : True})
+                    print(" ")
+                    print("Restarting script...")
+                    os.execv(sys.executable,[sys.executable]+sys.argv+["--first-launch-done"])
+        self.build_modes = [x for x in BUILD_MODES]
+        if self.download_only:
+            self.build_modes = self.build_modes[1:] # Remove the local build option
+        self.build_mode = self.build_modes[0] # "build", "github", "dortania"
         self.h = 0
         self.w = 0
-        self.hpad = 32
+        self.hpad = 34
         self.wpad = 8
 
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
@@ -665,6 +696,7 @@ class Updater:
         self.selected_profile = selected.get("Name", None)
         self.sdk_over = selected.get("SDK", None)
         self.kext_debug = selected.get("Debug", False)
+        self.build_mode = selected.get("BuildMode",self.build_modes[0])
         # Revert SDK changes if there's an issue
         if self.sdk_over and not self._have_sdk(self.sdk_over):
             sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
@@ -724,7 +756,7 @@ class Updater:
         self.resize(80,24)
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         self.head("Save to Profile")
-        pad = 39
+        pad = 44
         print(" ")
         kextlist = []
         for option in self.plugs:
@@ -747,6 +779,7 @@ class Updater:
         info += "Reveal Kexts Folder On Success:\n\n{}{}{}\n\n".format(self.ch_color, self.reveal, self.rt_color)
         info += "Increment SDK on Fail:\n\n{}{}{}\n\n".format(self.ch_color, self.increment_sdk, self.rt_color)
         info += "Build Debug Kexts:\n\n{}{}{}\n\n".format(self.ch_color, self.kext_debug, self.rt_color)
+        info += "Build Mode:\n\n{}{}{}\n\n".format(self.ch_color, self.build_mode, self.rt_color)
         info += "If a profile is named \"{}Default{}\" it will be loaded automatically\n\n".format(self.hi_color, self.rt_color)
         info += "P. Profile Menu\nM. Main Menu\nQ. Quit\n"
         # Calculate quick height
@@ -778,6 +811,7 @@ class Updater:
                 option["IncrementSDK"] = self.increment_sdk
                 option["Reveal"] = self.reveal
                 option["Debug"] = self.kext_debug
+                option["BuildMode"] = self.build_mode
                 # Save to file
                 json.dump(self.profiles, open("profiles.json", "w"), indent=2)
                 self.selected_profile = option["Name"]
@@ -1291,7 +1325,130 @@ class Updater:
         json.dump(self.hashes, open("hashes.json", "w"), indent=2)
         self.update_menu()
         return
-        # json.dump(self.hashes, open("hashes.json", "w"), indent=2)
+
+    def parse_dortania_release(self, url):
+        # Placeholder for now
+        pass
+
+    def parse_github_release(self, url):
+        print("    Loading github URL...")
+        try:
+            html = self.dl.get_string(url,progress=False)
+        except:
+            return
+        print("    Gathering asset URLs...")
+        asset_html = None
+        for line in html.split("\n"):
+            if "expanded_assets" in line: # Got an asset line
+                try:
+                    asset_html = self.dl.get_string(line.split('src="')[1].split('"')[0],progress=False)
+                    break # We want the first - as it's the newest
+                except: continue
+        if not asset_html:
+            return
+        # Scrape for download links
+        assets = []
+        for line in asset_html.split("\n"):
+            if '<a href="' in line:
+                try: assets.append("https://github.com"+line.split('<a href="')[1].split('"')[0])
+                except: continue
+        return assets
+
+    def download(self, headless = False):
+        self.resize(80,24)
+        dl_list = [plug for plug in self.plugs if plug.get("Picked")]
+        if not len(dl_list):
+            self.head(self.er_color+"WARNING")
+            print(" ")
+            print("Nothing to download - you must select at least one plugin!")
+            time.sleep(3)
+            return
+        success = []
+        fail    = []
+        start_time = time.time()
+        rate_limit = 0
+        self.head("Downloading {:,} Kext{}".format(len(dl_list),"" if len(dl_list)==1 else "s"))
+        for i,kext in enumerate(dl_list,start=1):
+            print("")
+            print("Downloading {} ({:,} of {:,})".format(kext["Name"],i,len(dl_list)))
+            print("    Checking for {} URL...".format(self.build_mode))
+            build_steps = kext.get(self.build_mode,kext.get("github",{}))
+            if not build_steps:
+                self.cprint("     - {}Not found and no fall back - skipping...".format(self.er_color))
+                fail.append("    " + kext["Name"])
+                continue
+            if build_steps and not self.build_mode in kext:
+                print("     - Not found - falling back to github...")
+            urls = None
+            # Check for github - but give us an option for others
+            if "github.com" in build_steps["URL"].lower():
+                urls = self.parse_github_release(build_steps["URL"])
+            elif "dortania.github.io" in build_steps["URL"].lower():
+                urls = self.parse_dortania_release(build_steps["URL"])
+            if not urls:
+                self.cprint("     - {}None located - skipping...".format(self.er_color))
+                fail.extend(["    "+kext["Name"]])
+                continue
+            try: rel = urls[0].split("/download/")[-1].split("/")[0]
+            except: rel = None
+            print("    Got Version: {}".format(rel or "Unknown Release"))
+            assets = []
+            key_order = ("debug_regex","release_regex","regex") if self.kext_debug else ("release_regex","regex","debug_regex")
+            for key in key_order:
+                regex = build_steps.get(key)
+                if not regex: continue
+                assets = [a for a in urls if re.search(regex,a)]
+                if assets: break # We got something - assume it's right
+            if not assets:
+                # Add them all
+                if any((key in build_steps for key in key_order)):
+                    print("    No URLs matched regex - gathering all...")
+                assets = urls
+            print("    Downloading {:,} Asset{}...".format(len(assets),"" if len(assets)==1 else "s"))
+            failed = False
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            kexts_path = os.path.join(dir_path,"..","Kexts")
+            if not os.path.exists(kexts_path):
+                os.mkdir(kexts_path)
+            for x,asset in enumerate(assets,start=1):
+                print("    - {:,} of {:,} - {}...".format(x,len(assets),os.path.basename(asset)))
+                kext_path = os.path.join(kexts_path,os.path.basename(asset))
+                self.dl.stream_to_file(asset,kext_path,progress=False)
+                if not os.path.exists(kext_path):
+                    self.cprint("     --> {}Failed to download!".format(self.er_color))
+                    failed = True
+                    break
+            if failed:
+                fail.append("    " + kext["Name"])
+                continue
+            # Got it - save it
+            success.append("    " + kext["Name"] + (" v"+rel if rel else ""))
+        total_time = time.time() - start_time
+        # Resize the window if need be
+        h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
+        h = h+2 if self.kext_debug else h
+        h = h if h > 24 else 24
+        self.resize(80,h)
+        self.head("{} of {} Succeeded".format(len(success), len(dl_list)))
+        print(" ")
+        if len(success):
+            self.cprint("{}Succeeded:{}\n\n{}".format(self.hi_color, self.rt_color, "\n".join(success)))
+            # Only attempt if we reveal
+            if self.reveal:
+                # Attempt to locate and open the kexts directory
+                try: subprocess.Popen("open \"" + kexts_path + "\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except: pass
+        else:
+            self.cprint("{}Succeeded:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.er_color))
+        if len(fail):
+            self.cprint("\n{}Failed:{}\n\n{}{}".format(self.hi_color, self.rt_color, self.er_color, "\n".join(fail)))
+        else:
+            self.cprint("\n{}Failed:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.gd_color))
+        print(" ")
+        print("Downloading took {}.\n".format(self.get_time(total_time)))
+        if not headless:
+            self.grab("Press [enter] to return to the main menu...")
+        return
 
     def build(self, headless = False):
         self.resize(80,24)
@@ -1479,7 +1636,6 @@ class Updater:
         else:
             self.cprint("\n{}Failed:{}\n\n    {}None".format(self.hi_color, self.rt_color, self.gd_color))
         print(" ")
-        s = "second" if total_time == 1 else "seconds"
         print("Build took {}.\n".format(self.get_time(total_time)))
         if not headless:
             self.grab("Press [enter] to return to the main menu...")
@@ -1606,6 +1762,39 @@ class Updater:
         self.grab("Press [enter] to return to the Install SDK menu....")
         self.install_sdk()
 
+    def change_build_mode(self):
+        self.resize(80,24)
+        while True:
+            self.head("Change Build Mode")
+            print("")
+            verb = "Download" if self.download_only or self.build_mode != "build" else "Build"
+            mode = "" if verb == "Build" else " from GitHub" if self.build_mode == "github" else " from {} (fall back on GitHub)".format(self.build_mode.capitalize())
+            print("Current Build Mode: {}{}".format(verb,mode))
+            print("")
+            if self.download_only:
+                print(" - Xcode not found, local building disabled!")
+                print("   To correct this, ensure you have Xcode installed, and run the following in")
+                print("   terminal (replacing '/path/to/Xcode.app' with the actual path):")
+                print("")
+                print("   sudo xcode-select -s /path/to/Xcode.app")
+                print("")
+            for i,mode in enumerate(self.build_modes,start=1):
+                print("{}. {}".format(i,"GitHub" if mode == "github" else mode.capitalize()))
+            print("")
+            print("M. Return To Menu")
+            print("Q. Quit")
+            print("")
+            menu = self.grab("Please select an option:  ")
+            if not menu: continue
+            if menu.lower() == "m": return self.build_mode
+            if menu.lower() == "q": self.custom_quit()
+            # Possibly have an index?  Qualify it
+            try:
+                return self.build_modes[int(menu)-1]
+            except:
+                # Didn't work - try again
+                continue
+
     def main(self):
         if not self.checked_updates:
             self.check_update()
@@ -1651,12 +1840,16 @@ class Updater:
             self.cprint("Debug:                 {}{}".format(self.ch_color, self.kb.debug))
         else:
             print("Debug:                 {}".format(self.kb.debug))
+        verb = "Download" if self.download_only or self.build_mode != "build" else "Build"
+        mode = "" if verb == "Build" else " from GitHub" if self.build_mode == "github" else " from {} (fall back on GitHub)".format(self.build_mode.capitalize())
+        print("Build Mode:            {}{}".format(verb,mode))
 
         print(" ")
-        print("B.  Build Selected ({:,})".format(len([x for x in self.plugs if x.get("Picked")])))
+        print("B.  {} Selected ({:,})".format(verb,len([x for x in self.plugs if x.get("Picked")])))
         print(" ")
         print("A.  Select All")
         print("N.  Select None")
+        print("M.  Change Build Mode")
         print("X.  Xcodebuild Options")
         print("S.  Update Xcode Min SDK")
         print("K.  Install SDKs")
@@ -1685,6 +1878,8 @@ class Updater:
             # Profile change!
             self.selected_profile = None
             self.increment_sdk ^= True
+        elif menu.lower() == "m":
+            self.build_mode = self.change_build_mode()
         elif menu.lower() == "x":
             self.xcodeopts()
         elif menu.lower() == self.es:
@@ -1710,7 +1905,10 @@ class Updater:
         elif menu.lower() == "u":
             self.update_menu()
         elif menu.lower() == "b":
-            self.build()
+            if self.download_only or self.build_mode != "build":
+                self.download()
+            else:
+                self.build()
             return
         elif menu[:1].lower() == "a":
             # Select all
@@ -1752,7 +1950,9 @@ if __name__ == '__main__':
     # Setup the cli args
     parser = argparse.ArgumentParser(prog="Run.command", description="Lilu And Friends - a Kext Builder by CorpNewt")
     parser.add_argument("-p", "--profile", help="sets the PROFILE to use - takes a name as an argument - must be setup in the gui.  Any other settings can override those passed by the profile", nargs="+")
-    parser.add_argument("-k", "--kexts", help="a space delimited list of kexts to build - if the kext name has a space, it needs to be wrapped in quotes", nargs="+")
+    parser.add_argument("-m", "--build-mode", help="sets the current build mode.  Xcode must be installed to use build - or it will fallback to github.", choices=BUILD_MODES)
+    parser.add_argument("-k", "--kexts", help="a space delimited list of kexts to build - if the kext name has a space, it must be wrapped in quotes", nargs="+")
+    parser.add_argument("-b", "--debug-kexts", help="download/build the debug versions of kexts where possible", action="store_true")
     parser.add_argument("-s", "--sdk", help="sets the SDK override to use (macosx##.## or ##.## format)")
     parser.add_argument("-x", "--xcodeopts", help="sets the xcode build options to use", nargs="+")
     parser.add_argument("-i", "--increment", help="increments the SDK on a failed build", action="store_true")
@@ -1798,5 +1998,12 @@ if __name__ == '__main__':
         up.default_on_fail = True
     if args.avoid_reveal:
         up.reveal = False
+    if args.debug_kexts:
+        up.kext_debug = True
+    if args.build_mode:
+        up.build_mode = up.build_modes[0] if args.build_mode == "build" and up.download_only else args.build_mode
     # Try to build!
-    up.build(True)
+    if up.build_mode == "build":
+        up.build(True)
+    else:
+        up.download(True)
