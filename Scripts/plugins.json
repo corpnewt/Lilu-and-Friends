@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.119",
-  "Changes": "Fix compiling IntelBluetoothFirmware on Ventura with Lilu = True.",
+  "Version": "0.0.120",
+  "Changes": "Add ability to download compiled releases instead of building.",
   "Plugins": [
     {
       "Build Opts": [
@@ -34,7 +34,12 @@
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/AirportBrcmFixup",
       "Name": "AirportBrcmFixup",
-      "Desc": "for non-native Airport Broadcom Wi-Fi cards"
+      "Desc": "for non-native Airport Broadcom Wi-Fi cards",
+      "github": {
+        "URL": "https://github.com/acidanthera/AirportBrcmFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Info": "High Sierra/Airportitlwm.kext/Contents/Info.plist",
@@ -49,7 +54,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.13.x"
+      "Desc": "native Intel Wi-Fi kext for 10.13.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)high_sierra.*debug",
+        "release_regex": "(?i)high_sierra.*stable"
+      }
     },
     {
       "Info": "Mojave/Airportitlwm.kext/Contents/Info.plist",
@@ -64,7 +74,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.14.x"
+      "Desc": "native Intel Wi-Fi kext for 10.14.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)mojave.*debug",
+        "release_regex": "(?i)mojave.*stable"
+      }
     },
     {
       "Info": "Catalina/Airportitlwm.kext/Contents/Info.plist",
@@ -79,7 +94,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.15.x"
+      "Desc": "native Intel Wi-Fi kext for 10.15.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)catalina.*debug",
+        "release_regex": "(?i)catalina.*stable"
+      }
     },
     {
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
@@ -94,7 +114,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 11.x"
+      "Desc": "native Intel Wi-Fi kext for 11.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)big_sur.*debug",
+        "release_regex": "(?i)big_sur.*stable"
+      }
     },
     {
       "Info": "Monterey/Airportitlwm.kext/Contents/Info.plist",
@@ -109,7 +134,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 12.x"
+      "Desc": "native Intel Wi-Fi kext for 12.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)monterey.*debug",
+        "release_regex": "(?i)monterey.*stable"
+      }
     },
     {
       "Info": "Ventura/Airportitlwm.kext/Contents/Info.plist",
@@ -124,7 +154,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 13.x"
+      "Desc": "native Intel Wi-Fi kext for 13.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)ventura.*debug",
+        "release_regex": "(?i)ventura.*stable"
+      }
     },
     {
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
@@ -139,7 +174,12 @@
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext"
+      "Desc": "native Intel Wi-Fi kext",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)debug",
+        "release_regex": "(?i)stable"
+      }
     },
     {
       "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID",
@@ -149,7 +189,12 @@
       ],
       "MacKernelSDK": true,
       "Name": "AlpsHID",
-      "Desc": "VoodooI2C satellite for Alps touchpad and trackpoint"
+      "Desc": "VoodooI2C satellite for Alps touchpad and trackpoint",
+      "github": {
+        "URL": "https://github.com/blankmac/AlpsHID/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -175,7 +220,12 @@
         }
       ],
       "Folder": "AlpsHID150ms",
-      "Desc": "AlpsHID with the QuietTimeAfterTyping lowered from 500ms to 150ms"
+      "Desc": "AlpsHID with the QuietTimeAfterTyping lowered from 500ms to 150ms",
+      "github": {
+        "URL": "https://github.com/blankmac/AlpsHID/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
@@ -184,7 +234,12 @@
       "Zip": [
         "*.kext"
       ],
-      "Desc": "dynamic audio patching"
+      "Desc": "dynamic audio patching",
+      "github": {
+        "URL": "https://github.com/acidanthera/AppleALC/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/AtherosE2200Ethernet",
@@ -195,7 +250,11 @@
         "Release"
       ],
       "Name": "AtherosE2200Ethernet",
-      "Desc": "for Killer and Atheros LAN"
+      "Desc": "for Killer and Atheros LAN",
+      "github": {
+        "URL": "https://github.com/Mieze/AtherosE2200Ethernet/releases",
+        "regex": "(?i)AtherosE2200Ethernet[^\\/].*\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -237,19 +296,34 @@
           "name": "Compile Prebuild Prerequisite"
         }
       ],
-      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices"
+      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices",
+      "github": {
+        "URL": "https://github.com/acidanthera/BrcmPatchRAM/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/BrightnessKeys",
       "Name": "BrightnessKeys",
-      "Desc": "Automatic handling of brightness keys based on ACPI Specification"
+      "Desc": "Automatic handling of brightness keys based on ACPI Specification",
+      "github": {
+        "URL": "https://github.com/acidanthera/BrightnessKeys/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/PMheart/CPUFriend",
       "Name": "CPUFriend",
-      "Desc": "for dynamic power management data injection"
+      "Desc": "for dynamic power management data injection",
+      "github": {
+        "URL": "https://github.com/PMheart/CPUFriend/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -269,19 +343,34 @@
       "Zip": [
         "*.kext"
       ],
-      "Desc": "syncs TSC and disables xcpm_urgency"
+      "Desc": "syncs TSC and disables xcpm_urgency",
+      "github": {
+        "URL": "https://github.com/acidanthera/CpuTscSync/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/DebugEnhancer",
       "Name": "DebugEnhancer",
-      "Desc": "A Lilu plugin intended to enable debug output in the macOS kernel"
+      "Desc": "A Lilu plugin intended to enable debug output in the macOS kernel",
+      "github": {
+        "URL": "https://github.com/acidanthera/DebugEnhancer/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/1Revenger1/ECEnabler",
       "Name": "ECEnabler",
-      "Desc": "allows reading EC fields > 1 byte, reducing battery status ACPI"
+      "Desc": "allows reading EC fields > 1 byte, reducing battery status ACPI",
+      "github": {
+        "URL": "https://github.com/1Revenger1/ECEnabler/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -312,7 +401,11 @@
       "Zip": "./FakeSMC.kext",
       "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
       "Folder": "HWSensors",
-      "Desc": "only Kozlek's FakeSMC"
+      "Desc": "only Kozlek's FakeSMC",
+      "github": {
+        "URL": "https://github.com/kozlek/HWSensors/releases",
+        "regex": "(?i)HWSensors[^\\/].*\\.zip"
+      }
     },
     {
       "Info": "FakeSMC.kext/Contents/Info.plist",
@@ -357,13 +450,23 @@
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/FeatureUnlock",
       "Name": "FeatureUnlock",
-      "Desc": "for enabling Sidecar, NightShift, AirPlay to Mac and Universal Control"
+      "Desc": "for enabling Sidecar, NightShift, AirPlay to Mac and Universal Control",
+      "github": {
+        "URL": "https://github.com/acidanthera/FeatureUnlock/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/0xFireWolf/GenericCardReaderFriend",
       "Name": "GenericCardReaderFriend",
-      "Desc": "Lilu plugin - makes System Info recognize your builtin USB card reader as native"
+      "Desc": "Lilu plugin - makes System Info recognize your builtin USB card reader as native",
+      "github": {
+        "URL": "https://github.com/0xFireWolf/GenericCardReaderFriend/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -392,7 +495,11 @@
       "Zip": "../Binaries",
       "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
       "Folder": "HWSensors",
-      "Desc": "Kozlek's FakeSMC + Sensors"
+      "Desc": "Kozlek's FakeSMC + Sensors",
+      "github": {
+        "URL": "https://github.com/kozlek/HWSensors/releases",
+        "regex": "(?i)HWSensors[^\\/].*\\.zip"
+      }
     },
     {
       "Info": "FakeSMC.kext/Contents/Info.plist",
@@ -438,9 +545,14 @@
     },
     {
       "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup.git HibernationFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup HibernationFixup",
       "Name": "HibernationFixup",
-      "Desc": "saves IOHibernateRTCVariables in NVRAM"
+      "Desc": "saves IOHibernateRTCVariables in NVRAM",
+      "github": {
+        "URL": "https://github.com/acidanthera/HibernationFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -464,7 +576,11 @@
       ],
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware",
       "MacKernelSDK": true,
-      "Desc": "Intel Bluetooth kext"
+      "Desc": "Intel Bluetooth kext",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/IntelBluetoothFirmware/releases",
+        "regex": "(?i)IntelBluetoothFirmware[^\\/].*\\.zip"
+      }
     },
     {
       "Info": "IntelMausi.kext/Contents/Info.plist",
@@ -481,7 +597,12 @@
       "URL": "git clone --depth 1 https://github.com/acidanthera/IntelMausi",
       "MacKernelSDK": true,
       "Folder": "IntelMausi",
-      "Desc": "Acidanthera's IntelMausiEthernet"
+      "Desc": "Acidanthera's IntelMausiEthernet",
+      "github": {
+        "URL": "https://github.com/acidanthera/IntelMausi/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/IntelMausiEthernet",
@@ -498,13 +619,23 @@
       "Zip": "./itlwm.kext",
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
-      "Desc": "Intel Wi-Fi kext"
+      "Desc": "Intel Wi-Fi kext",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)\\/itlwm[^\\/].*debug",
+        "release_regex": "(?i)\\/itlwm[^\\/].*stable"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/acidanthera/Lilu",
       "MacKernelSDK": true,
       "Name": "Lilu",
-      "Desc": "for arbitrary kext, library, and program patching"
+      "Desc": "for arbitrary kext, library, and program patching",
+      "github": {
+        "URL": "https://github.com/acidanthera/Lilu/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/LucyRTL8125Ethernet",
@@ -512,25 +643,44 @@
         "CODE_SIGN_IDENTITY="
       ],
       "Name": "LucyRTL8125Ethernet",
-      "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers"
+      "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers",
+      "github": {
+        "URL": "https://github.com/Mieze/LucyRTL8125Ethernet/releases",
+        "regex": "(?i)LucyRTL8125Ethernet[^\\/].*\\.zip"
+      }
     },
     {
       "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix.git",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix",
       "Name": "NVMeFix",
-      "Desc": "provides patches for NVME Power management support - APST"
+      "Desc": "provides patches for NVME Power management support - APST",
+      "github": {
+        "URL": "https://github.com/acidanthera/NVMeFix/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/cdf/NightShiftEnabler",
       "Name": "NightShiftEnabler",
-      "Desc": "enables night shift on unsupported SMBIOS"
+      "Desc": "enables night shift on unsupported SMBIOS",
+      "github": {
+        "URL": "https://github.com/cdf/NightShiftEnabler/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/al3xtjames/NoTouchID",
       "Name": "NoTouchID",
-      "Desc": "Lilu plugin for disabling Touch ID checks"
+      "Desc": "Lilu plugin for disabling Touch ID checks",
+      "github": {
+        "URL": "https://github.com/al3xtjames/NoTouchID/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement",
@@ -547,19 +697,34 @@
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/RTCMemoryFixup",
       "Name": "RTCMemoryFixup",
-      "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory"
+      "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
+      "github": {
+        "URL": "https://github.com/acidanthera/RTCMemoryFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReader",
       "Name": "RealtekCardReader",
-      "Desc": "unleash the full potential of your SDXC UHS-I cards"
+      "Desc": "unleash the full potential of your SDXC UHS-I cards",
+      "github": {
+        "URL": "https://github.com/0xFireWolf/RealtekCardReader/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReaderFriend",
       "Name": "RealtekCardReaderFriend",
-      "Desc": "Lilu plugin - makes System Info recognize your Realtek card reader as native"
+      "Desc": "Lilu plugin - makes System Info recognize your Realtek card reader as native",
+      "github": {
+        "URL": "https://github.com/0xFireWolf/RealtekCardReaderFriend/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/RealtekRTL8100",
@@ -570,13 +735,22 @@
       "URL": "git clone --depth 1 https://github.com/Mieze/RTL8111_driver_for_OS_X",
       "Folder": "RTL8111_driver_for_OS_X",
       "Name": "RealtekRTL8111",
-      "Desc": "for RTL8111/8168 LAN"
+      "Desc": "for RTL8111/8168 LAN",
+      "github": {
+        "URL": "https://github.com/Mieze/RTL8111_driver_for_OS_X/releases",
+        "regex": "(?i)RealtekRTL8111[^\\/].*\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/RestrictEvents",
       "Name": "RestrictEvents",
-      "Desc": "Lilu plugin for blocking unwanted processes causing compatibility issues"
+      "Desc": "Lilu plugin for blocking unwanted processes causing compatibility issues",
+      "github": {
+        "URL": "https://github.com/acidanthera/RestrictEvents/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -625,13 +799,23 @@
         }
       ],
       "Folder": "OS-X-USB-Inject-All",
-      "Desc": "injects all USB ports"
+      "Desc": "injects all USB ports",
+      "github": {
+        "URL": "https://github.com/Sniki/OS-X-USB-Inject-All/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/VirtualSMC",
       "Name": "VirtualSMC",
-      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)"
+      "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)",
+      "github": {
+        "URL": "https://github.com/acidanthera/VirtualSMC/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -677,7 +861,12 @@
       ],
       "Lilu": true,
       "Folder": "VirtualSMC",
-      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)"
+      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)",
+      "github": {
+        "URL": "https://github.com/acidanthera/VirtualSMC/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -737,13 +926,23 @@
         }
       ],
       "Ignore Errors": true,
-      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X"
+      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X",
+      "github": {
+        "URL": "https://github.com/alexandred/VoodooI2C/releases",
+        "release_regex": "(?i)(?!.*debug.*)VoodooI2C[^\\/].*\\.zip",
+        "debug_regex": "(?i)debug.*\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooInput",
       "MacKernelSDK": true,
       "Name": "VoodooInput",
-      "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation"
+      "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation",
+      "github": {
+        "URL": "https://github.com/acidanthera/VoodooInput/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
@@ -756,7 +955,12 @@
         "*.kext"
       ],
       "URL": "git clone --depth 1 --recursive -j8 https://github.com/1Revenger1/VoodooPS2-Alps",
-      "Desc": "VoodooPS2 made for ALPS touchpads"
+      "Desc": "VoodooPS2 made for ALPS touchpads",
+      "github": {
+        "URL": "https://github.com/1Revenger1/VoodooPS2-Alps/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
@@ -784,7 +988,12 @@
           "name": "Execute VoodooInput bootstrap.sh"
         }
       ],
-      "Desc": "VoodooPS2 leveraging VoodooInput made for ALPS v7-8 touchpads"
+      "Desc": "VoodooPS2 leveraging VoodooInput made for ALPS v7-8 touchpads",
+      "github": {
+        "URL": "https://github.com/SkyrilHD/VoodooPS2-ALPS/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -962,19 +1171,34 @@
           "no_print": true
         }
       ],
-      "Desc": "PS2 driver for desktops/laptops"
+      "Desc": "PS2 driver for desktops/laptops",
+      "github": {
+        "URL": "https://github.com/acidanthera/VoodooPS2/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/VoodooSMBus/VoodooRMI --recurse-submodules",
       "MacKernelSDK": true,
       "Name": "VoodooRMI",
-      "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux"
+      "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux",
+      "github": {
+        "URL": "https://github.com/VoodooSMBus/VoodooRMI/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/acidanthera/WhateverGreen",
       "Name": "WhateverGreen",
-      "Desc": "provides patches for AMD/Nvidia/Intel GPUs"
+      "Desc": "provides patches for AMD/Nvidia/Intel GPUs",
+      "github": {
+        "URL": "https://github.com/acidanthera/WhateverGreen/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     }
   ]
 }
