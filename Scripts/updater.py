@@ -18,7 +18,7 @@ if sys.version_info >= (3, 0):
 else:
     from urllib2 import urlopen
 
-BUILD_MODES = ["build","github"] # ,"dortania"]
+BUILD_MODES = ["build","github","bitbucket"] # ,"dortania"]
 
 class Updater:
 
@@ -1326,6 +1326,20 @@ class Updater:
         self.update_menu()
         return
 
+    def parse_bitbucket_release(self, url):
+        print("    Loading github URL...")
+        try:
+            html = self.dl.get_string(url,progress=False)
+        except:
+            return
+        with open("bitbucket.html","w") as f:
+            f.write(html)
+        for line in html.split("\n"):
+            if 'href="' in line and "/downloads/" in line and not '<a href="' in line:
+                # We likely have the latest - return it
+                try: return ["https://bitbucket.org"+line.split('href="')[1].split('"')[0]]
+                except: continue
+
     def parse_dortania_release(self, url):
         # Placeholder for now
         pass
@@ -1372,24 +1386,32 @@ class Updater:
             print("")
             print("Downloading {} ({:,} of {:,})".format(kext["Name"],i,len(dl_list)))
             print("    Checking for {} URL...".format(self.build_mode))
-            build_steps = kext.get(self.build_mode,kext.get("github",{}))
+            build_steps = None
+            if self.build_mode in kext:
+                build_steps = kext[self.build_mode]
+            else: # Let's walk the rest of them and try to fall back
+                for b in self.build_modes:
+                    if b in ("build",self.build_mode): continue # Skip building and whatever defaults
+                    if b in kext: # Fall back to b
+                        print("     - Not found - falling back to {}...".format(b))
+                        build_steps = kext[b]
             if not build_steps:
                 self.cprint("     - {}Not found and no fall back - skipping...".format(self.er_color))
                 fail.append("    " + kext["Name"])
                 continue
-            if build_steps and not self.build_mode in kext:
-                print("     - Not found - falling back to github...")
             urls = None
-            # Check for github - but give us an option for others
+            # Parse the repo based on the URL we're using
             if "github.com" in build_steps["URL"].lower():
                 urls = self.parse_github_release(build_steps["URL"])
+            elif "bitbucket.org" in build_steps["URL"].lower():
+                urls = self.parse_bitbucket_release(build_steps["URL"])
             elif "dortania.github.io" in build_steps["URL"].lower():
                 urls = self.parse_dortania_release(build_steps["URL"])
             if not urls:
                 self.cprint("     - {}None located - skipping...".format(self.er_color))
                 fail.extend(["    "+kext["Name"]])
                 continue
-            try: rel = urls[0].split("/download/")[-1].split("/")[0]
+            try: rel = "".join([x for x in urls[0].split("/download/")[-1].split("/")[0] if x in ".0123456789"])
             except: rel = None
             print("    Got Version: {}".format(rel or "Unknown Release"))
             assets = []
