@@ -1332,8 +1332,6 @@ class Updater:
             html = self.dl.get_string(url,progress=False)
         except:
             return
-        with open("bitbucket.html","w") as f:
-            f.write(html)
         for line in html.split("\n"):
             if 'href="' in line and "/downloads/" in line and not '<a href="' in line:
                 # We likely have the latest - return it
