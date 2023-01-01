@@ -72,6 +72,7 @@ class Updater:
             os._exit(1)'''
 
         self.download_only = False # Are we *only* able to download?
+        self.xcode_path = None
         out = self.r.run({"args":["xcode-select","-p"]})
         if out[2] != 0 or not out[0].strip().endswith(".app/Contents/Developer") or not os.path.exists(out[0].strip()):
             self.download_only = True
@@ -93,6 +94,7 @@ class Updater:
             print("Continuing in download-only mode...")
         else:
             self.download_only = False
+            self.xcode_path = out[0].strip()
             out = self.r.run({"args":["xcodebuild", "-checkFirstLaunchStatus"]})
             if not out[2] == 0:
                 self.head("Xcode First Launch")
@@ -120,14 +122,10 @@ class Updater:
         self.ee = base64.b64decode("TG9vayBzYXVzZSEgIEFuIGVhc3RlciBlZ2ch".encode("utf-8")).decode("utf-8")
         self.es = base64.b64decode("c2F1c2U=".encode("utf-8")).decode("utf-8")
 
-        self.sdk_path = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
-        self.sdk_version_plist = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist"
-        
-        # Account for Xcode-beta.app as well as Xcode.app
-        if not os.path.exists(self.sdk_path):
-            self.sdk_path = self.sdk_path.replace("Xcode.app", "Xcode-beta.app")
-        if not os.path.exists(self.sdk_version_plist):
-            self.sdk_version_plist = self.sdk_version_plist.replace("Xcode.app", "Xcode-beta.app")
+        self.sdk_path = self.sdk_version_plist = None
+        if self.xcode_path:
+            self.sdk_path = os.path.join(self.xcode_path,"Platforms","MacOSX.platform","Developer","SDK") # "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
+            self.sdk_version_plist = os.path.join(self.xcode_path,"Platforms","MacOSX.platform","Info.plist") # "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist"
 
         # Try to get our available SDKs
         self.sdk_list = self._get_sdk_list()
@@ -344,7 +342,7 @@ class Updater:
 
     def _get_sdk_min_version(self):
         sdk_min = None
-        if os.path.exists(self.sdk_version_plist):
+        if self.sdk_version_plist and os.path.exists(self.sdk_version_plist):
             try:
                 sdk_plist = self._get_plist_dict(self.sdk_version_plist)
                 sdk_min = sdk_plist["MinimumSDKVersion"]
@@ -382,7 +380,7 @@ class Updater:
         avail_sdk = []
         if not sdk_path:
             sdk_path = self.sdk_path
-        if os.path.exists(sdk_path):
+        if sdk_path and os.path.exists(sdk_path):
             sdk_list = os.listdir(sdk_path)
             for sdk in sdk_list:
                 # Organize them by name and version
@@ -572,6 +570,15 @@ class Updater:
     def apply_min_sdk(self, version, temp):
         self.head("Updating Min SDK to {}".format(version))
         print(" ")
+        if not self.sdk_version_plist:
+            print(" - Xcode not found, local building disabled!")
+            print("   To correct this, ensure you have Xcode installed, and run the following in")
+            print("   terminal (replacing '/path/to/Xcode.app' with the actual path):")
+            print("")
+            print("   sudo xcode-select -s /path/to/Xcode.app")
+            print("")
+            self.grab("Press [enter] to return...")
+            return
         if os.access(self.sdk_version_plist, os.W_OK):
             print("Have write permissions already...")
             # Can write to it normally
@@ -696,7 +703,8 @@ class Updater:
         self.selected_profile = selected.get("Name", None)
         self.sdk_over = selected.get("SDK", None)
         self.kext_debug = selected.get("Debug", False)
-        self.build_mode = selected.get("BuildMode",self.build_modes[0])
+        build_mode = selected.get("BuildMode",self.build_modes[0])
+        self.build_mode = build_mode if build_mode in self.build_modes else self.build_modes[0]
         # Revert SDK changes if there's an issue
         if self.sdk_over and not self._have_sdk(self.sdk_over):
             sdk_vers = self.sdk_over.lower().replace("macosx", "").replace(".sdk", "")
@@ -1666,6 +1674,15 @@ class Updater:
         # then copy to the Xcode dir with admin privs
         self.head("Getting {} SDK".format(os.path.basename(url.replace(".sdk.tar.xz",""))))
         print("")
+        if not self.sdk_path:
+            print(" - Xcode not found, local building disabled!")
+            print("   To correct this, ensure you have Xcode installed, and run the following in")
+            print("   terminal (replacing '/path/to/Xcode.app' with the actual path):")
+            print("")
+            print("   sudo xcode-select -s /path/to/Xcode.app")
+            print("")
+            self.grab("Press [enter] to return...")
+            return
         temp = tempfile.mkdtemp()
         file_name = os.path.basename(url)
         sdk_name  = file_name.replace(".tar.xz","")
@@ -1788,7 +1805,7 @@ class Updater:
             self.head("Change Build Mode")
             print("")
             verb = "Download" if self.download_only or self.build_mode != "build" else "Build"
-            mode = "" if verb == "Build" else " from GitHub" if self.build_mode == "github" else " from {} (fall back on GitHub)".format(self.build_mode.capitalize())
+            mode = "" if verb == "Build" else " prioritizing GitHub" if self.build_mode == "github" else " prioritizing {}".format(self.build_mode.capitalize())
             print("Current Build Mode: {}{}".format(verb,mode))
             print("")
             if self.download_only:
@@ -1861,7 +1878,7 @@ class Updater:
         else:
             print("Debug:                 {}".format(self.kb.debug))
         verb = "Download" if self.download_only or self.build_mode != "build" else "Build"
-        mode = "" if verb == "Build" else " from GitHub" if self.build_mode == "github" else " from {} (fall back on GitHub)".format(self.build_mode.capitalize())
+        mode = "" if verb == "Build" else " prioritizing GitHub" if self.build_mode == "github" else " prioritizing {}".format(self.build_mode.capitalize())
         print("Build Mode:            {}{}".format(verb,mode))
 
         print(" ")
