@@ -1385,7 +1385,7 @@ class Updater:
             print("")
             print("Downloading {} ({:,} of {:,})".format(kext["Name"],i,len(dl_list)))
             print("    Checking for {} URL...".format(self.build_mode))
-            build_steps = None
+            build_steps = rel = None
             fallback = None # Fall back placeholder for later printing
             if self.build_mode in kext:
                 build_steps = kext[self.build_mode]
@@ -1405,7 +1405,9 @@ class Updater:
                         if versions and isinstance(versions[0],dict):
                             # Try to get our download link - and if found, save it in build_steps
                             url = versions[0].get("links",{}).get("debug" if self.kext_debug else "release")
-                            if url: build_steps = {"URL":url}
+                            if url:
+                                build_steps = {"URL":url}
+                                rel = versions[0].get("version")
                     except: pass
                 if not build_steps: # Now we fall back on any other options
                     for b in self.build_modes:
@@ -1419,15 +1421,11 @@ class Updater:
                 self.cprint("     - {}Not found and no fall back - skipping...".format(self.er_color))
                 fail.append("    " + kext["Name"])
                 continue
-            urls = rel = None
+            urls = None
             # Parse the repo based on the URL we're using
             if "github.com/dortania/build-repo/releases" in build_steps["URL"].lower():
                 # This is already the asset we need
                 urls = [build_steps["URL"]]
-                # Try to rip the version from the last path component of the URL
-                # Assume the following format: https://blah/blah/url/path/KextName-version-release.zip
-                try: rel = "".join([x for x in urls[0].split("/")[-1].split("-")[1] if x in ".0123456789"])
-                except: rel = None
             elif "github.com" in build_steps["URL"].lower():
                 urls = self.parse_github_release(build_steps["URL"])
             elif "bitbucket.org" in build_steps["URL"].lower():
