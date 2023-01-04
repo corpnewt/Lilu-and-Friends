@@ -18,7 +18,7 @@ if sys.version_info >= (3, 0):
 else:
     from urllib2 import urlopen
 
-BUILD_MODES = ["build","github","bitbucket"] # ,"dortania"]
+BUILD_MODES = ["build","github","bitbucket","dortania"]
 
 class Updater:
 
@@ -63,13 +63,6 @@ class Updater:
             print("Plugins.json doesn't exist!\n\nExiting...")
             print(" ")
             os._exit(1)
-
-        '''if not os.path.exists("/Applications/Xcode.app") and not os.path.exists("/Applications/Xcode-beta.app"):
-            self.head("Xcode Missing!")
-            print(" ")
-            print("Xcode is not installed in your /Applications folder!\n\nExiting...")
-            print(" ")
-            os._exit(1)'''
 
         self.download_only = False # Are we *only* able to download?
         self.xcode_path = None
@@ -185,6 +178,9 @@ class Updater:
         # Setup the SDK url
         self.sdk_url = "https://github.com/phracker/MacOSX-SDKs/releases"
         self.remote_sdk_list = []
+
+        # Save a reference to Dortania's latest.json URL
+        self.dortania_url = "https://dortania.github.io/build-repo/latest.json"
 
     def reset_colors(self):
         self.hi_color = self.colorsettings.get("highlight", self.default_color("highlight"))
@@ -1346,10 +1342,6 @@ class Updater:
                 try: return ["https://bitbucket.org"+line.split('href="')[1].split('"')[0]]
                 except: continue
 
-    def parse_dortania_release(self, url):
-        # Placeholder for now
-        pass
-
     def parse_github_release(self, url):
         print("    Loading github URL...")
         try:
@@ -1387,38 +1379,66 @@ class Updater:
         fail    = []
         start_time = time.time()
         rate_limit = 0
+        dortania = None # Set it up so we only download the json once per build session
         self.head("Downloading {:,} Kext{}".format(len(dl_list),"" if len(dl_list)==1 else "s"))
         for i,kext in enumerate(dl_list,start=1):
             print("")
             print("Downloading {} ({:,} of {:,})".format(kext["Name"],i,len(dl_list)))
             print("    Checking for {} URL...".format(self.build_mode))
             build_steps = None
+            fallback = None # Fall back placeholder for later printing
             if self.build_mode in kext:
                 build_steps = kext[self.build_mode]
             else: # Let's walk the rest of them and try to fall back
-                for b in self.build_modes:
-                    if b in ("build",self.build_mode): continue # Skip building and whatever defaults
-                    if b in kext: # Fall back to b
-                        print("     - Not found - falling back to {}...".format(b))
-                        build_steps = kext[b]
+                if self.build_mode == "dortania":
+                    if not dortania: # We need to populate the json
+                        print("    Gathering json data...")
+                        try: dortania = json.loads(self.dl.get_string(self.dortania_url,progress=False))
+                        except: pass
+                    # At this point - try to get our repo name from the kext, and try to pull it from
+                    # the dortania json
+                    try:
+                        # Get the repo name from the last component of the original URL
+                        repo_name = kext["URL"].split("/")[-1].split(" ")[0]
+                        # Attempt to get a list of versions provided in the Dortania json
+                        versions = dortania.get(repo_name,{}).get("versions",[])
+                        if versions and isinstance(versions[0],dict):
+                            # Try to get our download link - and if found, save it in build_steps
+                            url = versions[0].get("links",{}).get("debug" if self.kext_debug else "release")
+                            if url: build_steps = {"URL":url}
+                    except: pass
+                if not build_steps: # Now we fall back on any other options
+                    for b in self.build_modes:
+                        # Skip building, dortania, and whatever defaults
+                        if b in ("build","dortania",self.build_mode): continue
+                        if b in kext: # Fall back to b
+                            print("     - Not found - falling back to {}...".format(b.capitalize()))
+                            fallback = b # Set our fallback for later printing
+                            build_steps = kext[b]
             if not build_steps:
                 self.cprint("     - {}Not found and no fall back - skipping...".format(self.er_color))
                 fail.append("    " + kext["Name"])
                 continue
-            urls = None
+            urls = rel = None
             # Parse the repo based on the URL we're using
-            if "github.com" in build_steps["URL"].lower():
+            if "github.com/dortania/build-repo/releases" in build_steps["URL"].lower():
+                # This is already the asset we need
+                urls = [build_steps["URL"]]
+                # Try to rip the version from the last path component of the URL
+                # Assume the following format: https://blah/blah/url/path/KextName-version-release.zip
+                try: rel = "".join([x for x in urls[0].split("/")[-1].split("-")[1] if x in ".0123456789"])
+                except: rel = None
+            elif "github.com" in build_steps["URL"].lower():
                 urls = self.parse_github_release(build_steps["URL"])
             elif "bitbucket.org" in build_steps["URL"].lower():
                 urls = self.parse_bitbucket_release(build_steps["URL"])
-            elif "dortania.github.io" in build_steps["URL"].lower():
-                urls = self.parse_dortania_release(build_steps["URL"])
             if not urls:
                 self.cprint("     - {}None located - skipping...".format(self.er_color))
                 fail.extend(["    "+kext["Name"]])
                 continue
-            try: rel = "".join([x for x in urls[0].split("/download/")[-1].split("/")[0] if x in ".0123456789"])
-            except: rel = None
+            if not rel: # Only try this if we didn't get it before
+                try: rel = "".join([x for x in urls[0].split("/download/")[-1].split("/")[0] if x in ".0123456789"])
+                except: rel = None
             print("    Got Version: {}".format(rel or "Unknown Release"))
             assets = []
             key_order = ("debug_regex","release_regex","regex") if self.kext_debug else ("release_regex","regex","debug_regex")
@@ -1449,8 +1469,12 @@ class Updater:
             if failed:
                 fail.append("    " + kext["Name"])
                 continue
-            # Got it - save it
-            success.append("    " + kext["Name"] + (" v"+rel if rel else ""))
+            # Got it - save it along with any fallback used
+            success.append("    {}{}{}".format(
+                kext["Name"],
+                " v"+rel if rel else "",
+                " - {}From {}{}".format(self.ch_color,fallback.capitalize(),self.rt_color) if fallback else ""
+            ))
         total_time = time.time() - start_time
         # Resize the window if need be
         h = 13 + (1 if not len(success) else len(success)) + (1 if not len(fail) else len(fail))
