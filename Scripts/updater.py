@@ -830,7 +830,7 @@ class Updater:
             "IncrementSDK" : self.increment_sdk,
             "Reveal" : self.reveal,
             "Debug" : self.kext_debug,
-            "BuildMode" = self.build_mode
+            "BuildMode" : self.build_mode
             }
         self.profiles.append(new_pro)
         # Save to file
