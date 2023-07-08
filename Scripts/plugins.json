@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.123",
-  "Changes": "Adjust Airportitlwm regex for github versions.",
+  "Version": "0.0.124",
+  "Changes": "Fix typo, improve sdk scraping.",
   "Plugins": [
     {
       "Build Opts": [
