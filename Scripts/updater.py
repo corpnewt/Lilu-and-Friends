@@ -117,7 +117,7 @@ class Updater:
 
         self.sdk_path = self.sdk_version_plist = None
         if self.xcode_path:
-            self.sdk_path = os.path.join(self.xcode_path,"Platforms","MacOSX.platform","Developer","SDK") # "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
+            self.sdk_path = os.path.join(self.xcode_path,"Platforms","MacOSX.platform","Developer","SDKs") # "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs"
             self.sdk_version_plist = os.path.join(self.xcode_path,"Platforms","MacOSX.platform","Info.plist") # "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Info.plist"
 
         # Try to get our available SDKs
@@ -209,7 +209,7 @@ class Updater:
         self.head("Gathering Remote SDK List")
         print("")
         try:
-            sdk = self.dl.get_string(self.sdk_url)
+            sdk = self.parse_github_release(self.sdk_url)
         except:
             sdk = None
         if sdk == None:
@@ -223,13 +223,7 @@ class Updater:
             return
         print("")
         # Got something - let's iterate
-        for x in sdk.split("\n"):
-            if not ".sdk.tar.xz" in x.lower() or not "a href" in x.lower():
-                continue
-            try:
-                self.remote_sdk_list.append("https://github.com" + x.split('<a href="')[1].split('"')[0])
-            except:
-                pass
+        self.remote_sdk_list = sdk
         return self.remote_sdk_list
 
     def check_iasl(self,try_downloading=True,target=None,url=None):
