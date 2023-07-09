@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.124",
-  "Changes": "Fix typo, improve sdk scraping.",
+  "Version": "0.0.125",
+  "Changes": "Use '-target Package' with VirtualSMC (All Tools) to work around build issues with Xcode 14.3.",
   "Plugins": [
     {
       "Build Opts": [
@@ -846,7 +846,8 @@
     },
     {
       "Build Opts": [
-        "-alltargets"
+        "-target",
+        "Package"
       ],
       "Info": "VirtualSMC.kext/Contents/Info.plist",
       "Name": "VirtualSMC (All Tools)",
