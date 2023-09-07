@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 63 Kexts:
+Currently Builds 64 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -68,6 +68,7 @@ Currently Builds 63 Kexts:
 * NoTouchID
 * NullCPUPowerManagement
 * RTCMemoryFixup
+* RadeonSensor (ChefKissInc)
 * RealtekCardReader
 * RealtekCardReaderFriend
 * RealtekRTL8100
