@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.125",
-  "Changes": "Use '-target Package' with VirtualSMC (All Tools) to work around build issues with Xcode 14.3.",
+  "Version": "0.0.126",
+  "Changes": "Add RadeonSensor (ChefKissInc).",
   "Plugins": [
     {
       "Build Opts": [
@@ -724,6 +724,44 @@
       "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
       "github": {
         "URL": "https://github.com/acidanthera/RTCMemoryFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Lilu": true,
+      "URL": "git clone --depth 1 https://github.com/ChefKissInc/RadeonSensor",
+      "Name": "RadeonSensor (ChefKissInc)",
+      "Info": "RadeonSensor.kext/Contents/Info.plist",
+      "Folder": "RadeonSensor",
+      "Desc": "AMD GPU temperature monitoring on macOS",
+      "Build Opts": [
+        "-alltargets"
+      ],
+      "Zip": [
+        "*.kext",
+        "*.app"
+      ],
+      "Pre-Build": [
+        {
+          "path": "/usr/bin/curl",
+          "args": [
+            "https://gist.githubusercontent.com/VisualEhrmanntraut/bdcee42642ded532d7950397d45123c0/raw/04200ccf5ed244376f03f0d1e7168a725c0654b0/BootstrapVirtualSMC.sh",
+            "-o",
+            "BootstrapVirtualSMC.sh"
+          ],
+          "name": "Gather BootstrapVirtualSMC.sh"
+        },
+        {
+          "path": "/bin/bash",
+          "args": [
+            "BootstrapVirtualSMC.sh"
+          ],
+          "name": "Execute BootstrapVirtualSMC.sh"
+        }
+      ],
+      "github": {
+        "URL": "https://github.com/ChefKissInc/RadeonSensor/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
