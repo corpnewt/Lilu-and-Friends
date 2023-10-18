@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.126",
-  "Changes": "Add RadeonSensor (ChefKissInc).",
+  "Version": "0.0.127",
+  "Changes": "Add Airporitlwm (14 Sonoma).",
   "Plugins": [
     {
       "Build Opts": [
@@ -165,6 +165,26 @@
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(ventura.*debug|debug.*ventura)",
         "release_regex": "(?i)(ventura.*stable|stable.*ventura)"
+      }
+    },
+    {
+      "Info": "Sonoma/Airportitlwm.kext/Contents/Info.plist",
+      "Build Opts": [
+        "-target",
+        "AirportItlwm-Sonoma"
+      ],
+      "Name": "Airportitlwm (14 Sonoma)",
+      "Zip": [
+        "Sonoma/*"
+      ],
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
+      "MacKernelSDK": true,
+      "Folder": "itlwm",
+      "Desc": "native Intel Wi-Fi kext for 13.x",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)(sonoma.*debug|debug.*sonoma)",
+        "release_regex": "(?i)(sonoma.*stable|stable.*sonoma)"
       }
     },
     {
