@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.127",
-  "Changes": "Add Airporitlwm (14 Sonoma).",
+  "Version": "0.0.128",
+  "Changes": "Add NootedRed.",
   "Plugins": [
     {
       "Build Opts": [
@@ -725,6 +725,12 @@
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
+    },
+    {
+      "Lilu": true,
+      "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootedRed",
+      "Name": "NootedRed",
+      "Desc": "Lilu plugin for AMD Vega iGPUs"
     },
     {
       "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement",
