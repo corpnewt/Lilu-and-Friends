@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.128",
-  "Changes": "Add NootedRed.",
+  "Version": "0.0.129",
+  "Changes": "Add NootRX.",
   "Plugins": [
     {
       "Build Opts": [
@@ -725,6 +725,12 @@
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
+    },
+    {
+      "Lilu": true,
+      "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootRX",
+      "Name": "NootRX",
+      "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs"
     },
     {
       "Lilu": true,
