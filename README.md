@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 66 Kexts:
+Currently Builds 67 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -67,6 +67,7 @@ Currently Builds 66 Kexts:
 * NVMeFix
 * NightShiftEnabler
 * NoTouchID
+* NootRX
 * NootedRed
 * NullCPUPowerManagement
 * RTCMemoryFixup
