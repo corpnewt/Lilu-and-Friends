@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.129",
-  "Changes": "Add NootRX.",
+  "Version": "0.0.130",
+  "Changes": "Account for Airportitlwm for Sonoma 14.0 and 14.4.",
   "Plugins": [
     {
       "Build Opts": [
@@ -168,23 +168,43 @@
       }
     },
     {
-      "Info": "Sonoma/Airportitlwm.kext/Contents/Info.plist",
+      "Info": "Sonoma14.0/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
-        "AirportItlwm-Sonoma"
+        "AirportItlwm-Sonoma14.0"
       ],
-      "Name": "Airportitlwm (14 Sonoma)",
+      "Name": "Airportitlwm (14.0 Sonoma)",
       "Zip": [
-        "Sonoma/*"
+        "Sonoma14.0/*"
       ],
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "MacKernelSDK": true,
       "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 13.x",
+      "Desc": "native Intel Wi-Fi kext for 14.0 through 14.3",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
-        "debug_regex": "(?i)(sonoma.*debug|debug.*sonoma)",
-        "release_regex": "(?i)(sonoma.*stable|stable.*sonoma)"
+        "debug_regex": "(?i)(sonoma14.0.*debug|debug.*sonoma14.0)",
+        "release_regex": "(?i)(sonoma14.0.*stable|stable.*sonoma14.0)"
+      }
+    },
+    {
+      "Info": "Sonoma14.4/Airportitlwm.kext/Contents/Info.plist",
+      "Build Opts": [
+        "-target",
+        "AirportItlwm-Sonoma14.4"
+      ],
+      "Name": "Airportitlwm (14.4 Sonoma)",
+      "Zip": [
+        "Sonoma14.4/*"
+      ],
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
+      "MacKernelSDK": true,
+      "Folder": "itlwm",
+      "Desc": "native Intel Wi-Fi kext for 14.4+",
+      "github": {
+        "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
+        "debug_regex": "(?i)(sonoma14.4.*debug|debug.*sonoma14.4)",
+        "release_regex": "(?i)(sonoma14.4.*stable|stable.*sonoma14.4)"
       }
     },
     {
