@@ -280,7 +280,8 @@ class Updater:
         # Helper method to migrate some profile info
         migrate = [
             {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup","IntelGraphicsDVMTFixup"],"replace":["WhateverGreen"]},
-            {"find":["BT4LEContiunityFixup"],"replace":["BT4LEContinuityFixup"]}
+            {"find":["BT4LEContiunityFixup"],"replace":["BT4LEContinuityFixup"]},
+            {"find":["Airportitlwm (14 Sonoma)"],"replace":["Airportitlwm (14.4 Sonoma)"]}
         ]
         changes = False
         for m in migrate:
