@@ -22,6 +22,8 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 Currently Builds 67 Kexts:
 
+Currently Builds 69 Kexts:
+
 * ACPIBacklight
 * ACPIBatteryManager
 * ALXEthernet
@@ -32,7 +34,8 @@ Currently Builds 67 Kexts:
 * Airportitlwm (11 Big Sur)
 * Airportitlwm (12 Monterey)
 * Airportitlwm (13 Ventura)
-* Airportitlwm (14 Sonoma)
+* Airportitlwm (14.0 Sonoma)
+* Airportitlwm (14.4 Sonoma)
 * Airportitlwm (all versions)
 * AlpsHID
 * AlpsHID (150ms delay)
@@ -44,6 +47,7 @@ Currently Builds 67 Kexts:
 * CPUFriend
 * CodecCommander
 * CpuTscSync
+* CpuTscSync (AMD)
 * DebugEnhancer
 * ECEnabler
 * FakePCIID
