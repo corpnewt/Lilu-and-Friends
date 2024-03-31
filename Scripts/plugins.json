@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.130",
-  "Changes": "Account for Airportitlwm for Sonoma 14.0 and 14.4.",
+  "Version": "0.0.131",
+  "Changes": "Add Seey6's fork of CpuTscSync for AMD.",
   "Plugins": [
     {
       "Build Opts": [
@@ -393,6 +393,22 @@
         "*.kext"
       ],
       "Desc": "syncs TSC and disables xcpm_urgency",
+      "github": {
+        "URL": "https://github.com/acidanthera/CpuTscSync/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Lilu": true,
+      "Info": "CpuTscSync.kext/Contents/Info.plist",
+      "Folder": "CpuTscSyncAMD",
+      "URL": "git clone --depth 1 https://github.com/Seey6/CpuTscSync CpuTscSyncAMD",
+      "Name": "CpuTscSync (AMD)",
+      "Zip": [
+        "*.kext"
+      ],
+      "Desc": "AMD compatible build of CpuTscSync from Seey6",
       "github": {
         "URL": "https://github.com/acidanthera/CpuTscSync/releases",
         "debug_regex": "(?i)debug\\.zip",
