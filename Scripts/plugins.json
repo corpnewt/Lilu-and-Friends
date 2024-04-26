@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.131",
-  "Changes": "Add Seey6's fork of CpuTscSync for AMD.",
+  "Version": "0.0.132",
+  "Changes": "Update build options for LucyRTL8125Ethernet.",
   "Plugins": [
     {
       "Build Opts": [
@@ -720,7 +720,8 @@
     {
       "URL": "git clone --depth 1 https://github.com/Mieze/LucyRTL8125Ethernet",
       "Build Opts": [
-        "CODE_SIGN_IDENTITY="
+        "-arch",
+        "x86_64"
       ],
       "Name": "LucyRTL8125Ethernet",
       "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers",
