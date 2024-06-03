@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.132",
-  "Changes": "Update build options for LucyRTL8125Ethernet.",
+  "Version": "0.0.133",
+  "Changes": "Add ForgedInvariant and ChefKissInc GitHub release links.",
   "Plugins": [
     {
       "Build Opts": [
@@ -530,6 +530,17 @@
     },
     {
       "Lilu": true,
+      "URL": "git clone --depth 1 https://github.com/ChefKissInc/ForgedInvariant",
+      "Name": "ForgedInvariant",
+      "Desc": "Lilu plugin for syncing the TSC on AMD & Intel.",
+      "github": {
+        "URL": "https://github.com/ChefKissInc/ForgedInvariant/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/0xFireWolf/GenericCardReaderFriend",
       "Name": "GenericCardReaderFriend",
       "Desc": "Lilu plugin - makes System Info recognize your builtin USB card reader as native",
@@ -767,13 +778,23 @@
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootRX",
       "Name": "NootRX",
-      "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs"
+      "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs",
+      "github": {
+        "URL": "https://github.com/ChefKissInc/NootRX/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootedRed",
       "Name": "NootedRed",
-      "Desc": "Lilu plugin for AMD Vega iGPUs"
+      "Desc": "Lilu plugin for AMD Vega iGPUs",
+      "github": {
+        "URL": "https://github.com/ChefKissInc/NootedRed/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement",
