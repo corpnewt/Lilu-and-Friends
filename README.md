@@ -20,9 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 67 Kexts:
-
-Currently Builds 69 Kexts:
+Currently Builds 70 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -55,6 +53,7 @@ Currently Builds 69 Kexts:
 * FakeSMC (Legacy)
 * FakeSMC (RehabMan)
 * FeatureUnlock
+* ForgedInvariant
 * GenericCardReaderFriend
 * GenericUSBXHCI
 * HWSensors (Kozlek)
