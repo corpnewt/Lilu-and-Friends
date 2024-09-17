@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.133",
-  "Changes": "Add ForgedInvariant and ChefKissInc GitHub release links.",
+  "Version": "0.0.134",
+  "Changes": "Update for ChefKissInc Lilu/MacKernelSDK submodules.",
   "Plugins": [
     {
       "Build Opts": [
@@ -529,8 +529,7 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/ChefKissInc/ForgedInvariant",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/ForgedInvariant",
       "Name": "ForgedInvariant",
       "Desc": "Lilu plugin for syncing the TSC on AMD & Intel.",
       "github": {
@@ -775,8 +774,7 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootRX",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootRX",
       "Name": "NootRX",
       "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs",
       "github": {
@@ -786,8 +784,7 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/ChefKissInc/NootedRed",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootedRed",
       "Name": "NootedRed",
       "Desc": "Lilu plugin for AMD Vega iGPUs",
       "github": {
@@ -819,36 +816,13 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/ChefKissInc/RadeonSensor",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/RadeonSensor",
       "Name": "RadeonSensor (ChefKissInc)",
-      "Info": "RadeonSensor.kext/Contents/Info.plist",
+      "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
       "Folder": "RadeonSensor",
       "Desc": "AMD GPU temperature monitoring on macOS",
-      "Build Opts": [
-        "-alltargets"
-      ],
       "Zip": [
-        "*.kext",
-        "*.app"
-      ],
-      "Pre-Build": [
-        {
-          "path": "/usr/bin/curl",
-          "args": [
-            "https://gist.githubusercontent.com/VisualEhrmanntraut/bdcee42642ded532d7950397d45123c0/raw/04200ccf5ed244376f03f0d1e7168a725c0654b0/BootstrapVirtualSMC.sh",
-            "-o",
-            "BootstrapVirtualSMC.sh"
-          ],
-          "name": "Gather BootstrapVirtualSMC.sh"
-        },
-        {
-          "path": "/bin/bash",
-          "args": [
-            "BootstrapVirtualSMC.sh"
-          ],
-          "name": "Execute BootstrapVirtualSMC.sh"
-        }
+        "*.kext"
       ],
       "github": {
         "URL": "https://github.com/ChefKissInc/RadeonSensor/releases",
