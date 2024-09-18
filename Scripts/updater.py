@@ -152,6 +152,12 @@ class Updater:
         self.checked_updates = False
 
         # Migrate stuff
+        self.migrate = [
+            {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup","IntelGraphicsDVMTFixup"],"replace":["WhateverGreen"]},
+            {"find":["BT4LEContiunityFixup"],"replace":["BT4LEContinuityFixup"]},
+            {"find":["Airportitlwm (14 Sonoma)"],"replace":["Airportitlwm (14.4 Sonoma)"]},
+            {"find":["RadeonSensor (ChefKissInc)"],"replace":["SMCRadeonSensors (ChefKissInc)"]}
+        ]
         self.migrate_profiles()
 
         # Make sure we have iasl
@@ -276,22 +282,38 @@ class Updater:
                 print("   - Copying to {} directory".format(os.path.basename(script_dir)))
                 shutil.copy(os.path.join(search_dir,x), os.path.join(script_dir,x))
 
+    def get_migrated_name(self, kext_name):
+        return next((x["replace"] for x in self.migrate if any(y.lower()==kext_name.lower() for y in x["find"])),None)
+
+    def migrate_kext_names(self, kext_list):
+        # Walk the passed list of kexts, look for any that are being migrated
+        # and ensure the results are present in the self.plugs(["Name"]) list
+        # case-insensitively
+        resolved_kexts = []
+        plug_dict = {}
+        # Build a lower to normal case dict
+        for plug in self.plugs:
+            plug_dict[plug["Name"].lower()] = plug["Name"]
+        # Walk our kext list
+        for kext_name in kext_list:
+            kext_name = kext_name.lower()
+            checks = self.get_migrated_name(kext_name)
+            if checks: # Migrating - add the results
+                resolved_kexts.extend([c for c in checks if not c in resolved_kexts])
+            else: # Not migrating - make sure it's real
+                resolved = plug_dict.get(kext_name)
+                if resolved and not resolved in resolved_kexts:
+                    resolved_kexts.append(resolved)
+        return resolved_kexts
+
     def migrate_profiles(self):
         # Helper method to migrate some profile info
-        migrate = [
-            {"find":["NvidiaGraphicsFixup","IntelGraphicsFixup","Shiki","CoreDisplayFixup","IntelGraphicsDVMTFixup"],"replace":["WhateverGreen"]},
-            {"find":["BT4LEContiunityFixup"],"replace":["BT4LEContinuityFixup"]},
-            {"find":["Airportitlwm (14 Sonoma)"],"replace":["Airportitlwm (14.4 Sonoma)"]}
-        ]
         changes = False
-        for m in migrate:
-            for profile in self.profiles:
-                temp = [ x for x in profile["Kexts"] if x not in m["find"] ]
-                if len(temp) != len(profile["Kexts"]):
-                    # Something changed - add the replace kext(s) if they don't exist
-                    [ temp.append(x) for x in m["replace"] if not x in temp ]
-                    profile["Kexts"] = temp
-                    changes = True
+        for profile in self.profiles:
+            resolved = self.migrate_kext_names(profile["Kexts"])
+            if resolved != profile["Kexts"]:
+                profile["Kexts"] = resolved
+                changes = True
         # Check if anything changed - and apply
         if changes:
             # Save to file
@@ -2036,9 +2058,10 @@ if __name__ == '__main__':
         up._select_profile(prof)
     if args.kexts:
         # Iterate the kexts and select only those included (and found)
-        pluglist = [x.lower() for x in args.kexts]
+        # Allow migration of names
+        pluglist = up.migrate_kext_names(args.kexts)
         for plug in up.plugs:
-            if plug["Name"].lower() in pluglist:
+            if plug["Name"] in pluglist:
                 plug["Picked"] = True
             else:
                 plug["Picked"] = False
