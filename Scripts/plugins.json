@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.134",
-  "Changes": "Update for ChefKissInc Lilu/MacKernelSDK submodules.",
+  "Version": "0.0.135",
+  "Changes": "Migrate RadeonSensor to SMCRadeonSensors, allow migration in cli args.",
   "Plugins": [
     {
       "Build Opts": [
@@ -816,16 +816,16 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/RadeonSensor",
-      "Name": "RadeonSensor (ChefKissInc)",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/SMCRadeonSensors",
+      "Name": "SMCRadeonSensors (ChefKissInc)",
       "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
-      "Folder": "RadeonSensor",
+      "Folder": "SMCRadeonSensors",
       "Desc": "AMD GPU temperature monitoring on macOS",
       "Zip": [
         "*.kext"
       ],
       "github": {
-        "URL": "https://github.com/ChefKissInc/RadeonSensor/releases",
+        "URL": "https://github.com/ChefKissInc/SMCRadeonSensors/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
