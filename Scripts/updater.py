@@ -1477,6 +1477,14 @@ class Updater:
             for x,asset in enumerate(assets,start=1):
                 print("    - {:,} of {:,} - {}...".format(x,len(assets),os.path.basename(asset)))
                 kext_path = os.path.join(kexts_path,os.path.basename(asset))
+                if os.path.exists(kext_path):
+                    try:
+                        # Remove existing files as needed
+                        os.remove(kext_path)
+                    except Exception as e:
+                        self.cprint("     --> {}Failed to remove existing asset!".format(self.er_color))
+                        failed = True
+                        break
                 self.dl.stream_to_file(asset,kext_path,progress=False)
                 if not os.path.exists(kext_path):
                     self.cprint("     --> {}Failed to download!".format(self.er_color))
