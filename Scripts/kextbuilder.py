@@ -58,7 +58,7 @@ class KextBuilder:
             if not self.r.run({"args":[self.git, "clone", "--depth", "1", "https://github.com/acidanthera/Lilu"], "stream" : self.debug})[2] == 0: return None
             # Also get the MacKernelSDK and copy it into our Lilu folder
             mac_kernel_sdk = self._get_sdk()
-            if mac_kernel_sdk == None: return None
+            if mac_kernel_sdk is None: return None
             if not self.r.run({"args":["rsync", "-ahP", mac_kernel_sdk, "./Lilu"], "stream" : self.debug})[2] == 0: return None
         cwd = os.getcwd()
         os.chdir("Lilu")
@@ -113,8 +113,12 @@ class KextBuilder:
         if debug:
             # we need to prep some stuff for debug builds
             for p in prebuild:
+                if p.get("no_debug_replace"):
+                    continue
                 p["args"] = [self._debug(x) for x in p["args"]]
             for p in postbuild:
+                if p.get("no_debug_replace"):
+                    continue
                 p["args"] = [self._debug(x) for x in p["args"]]
             build_opts = [self._debug(x) for x in build_opts]
             build_dir = self._debug(build_dir)
@@ -147,7 +151,7 @@ class KextBuilder:
         os.chdir(self.temp)
         if needs_lilu:
             l = self._get_lilu()
-            if l == None: return ("","Failed to get Lilu!",1)
+            if l is None: return ("","Failed to get Lilu!",1)
         # From here - do all things relative
         if total:
             print("Building {} ({:,} of {:,})".format(name, curr, total))
@@ -163,7 +167,7 @@ class KextBuilder:
         os.chdir(folder)
         if (needs_lilu or needs_sdk):
             mac_kernel_sdk = self._get_sdk()
-            if mac_kernel_sdk == None: return ("","Failed to get MacKernelSDK!",1)
+            if mac_kernel_sdk is None: return ("","Failed to get MacKernelSDK!",1)
         if len(skip_phase):
             print("    Removing Build Phases...")
         currtask = 0
@@ -297,7 +301,7 @@ class KextBuilder:
                         a = glob.glob(a)
                     except:
                         pass
-                if type(a) is list:
+                if isinstance(a,list):
                     args.extend(a)
                 else:
                     args.append(a)
@@ -447,7 +451,7 @@ class KextBuilder:
                         a = glob.glob(a)
                     except:
                         pass
-                if type(a) is list:
+                if isinstance(a,list):
                     args.extend(a)
                 else:
                     args.append(a)
@@ -482,11 +486,11 @@ class KextBuilder:
         version = info_plist["CFBundleVersion"]
         print("Zipping...")
         file_name = name + "-" + version + "-{:%Y-%m-%d %H.%M.%S}.zip".format(datetime.datetime.now())
-        if type(zip_dir) is str:
+        if isinstance(zip_dir,str):
             if not os.path.exists(zip_dir):
                 return ["", "{} missing!".format(zip_dir), 1]
         zip_args = [self.zip, "-r", file_name]
-        if not type(zip_dir) is list:
+        if not isinstance(zip_dir,list):
             # Make it a list
             zip_dir = [zip_dir]
         # Glob if needed
@@ -497,7 +501,7 @@ class KextBuilder:
                     a = glob.glob(a)
                 except:
                     pass
-            if type(a) is list:
+            if isinstance(a,list):
                 zip_args.extend(a)
             else:
                 zip_args.append(a)
