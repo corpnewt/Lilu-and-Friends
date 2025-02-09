@@ -1,6 +1,6 @@
 {
-  "Version": "0.0.135",
-  "Changes": "Migrate RadeonSensor to SMCRadeonSensors, allow migration in cli args.",
+  "Version": "0.0.136",
+  "Changes": "Update for RealtekRTL111 and AtherosE2200Ethernet MacKernelSDK usage.  Add IntelLucy.",
   "Plugins": [
     {
       "Build Opts": [
@@ -295,6 +295,7 @@
         "-configuration",
         "Release"
       ],
+      "MacKernelSDK": true,
       "Name": "AtherosE2200Ethernet",
       "Desc": "for Killer and Atheros LAN",
       "github": {
@@ -673,6 +674,15 @@
       }
     },
     {
+      "URL": "git clone --depth 1 https://github.com/Mieze/IntelLucy",
+      "Name": "IntelLucy",
+      "Desc": "for Intel X500 family of 10GBit Ethernet controllers",
+      "github": {
+        "URL": "https://github.com/Mieze/IntelLucy/releases",
+        "regex": "(?i)IntelLucy[^\\/].*\\.zip"
+      }
+    },
+    {
       "Info": "IntelMausi.kext/Contents/Info.plist",
       "Build Opts": [
         "-sdk",
@@ -816,21 +826,6 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/SMCRadeonSensors",
-      "Name": "SMCRadeonSensors (ChefKissInc)",
-      "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
-      "Folder": "SMCRadeonSensors",
-      "Desc": "AMD GPU temperature monitoring on macOS",
-      "Zip": [
-        "*.kext"
-      ],
-      "github": {
-        "URL": "https://github.com/ChefKissInc/SMCRadeonSensors/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Lilu": true,
       "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReader",
       "Name": "RealtekCardReader",
@@ -861,6 +856,29 @@
       "URL": "git clone --depth 1 https://github.com/Mieze/RTL8111_driver_for_OS_X",
       "Folder": "RTL8111_driver_for_OS_X",
       "Name": "RealtekRTL8111",
+      "Build Opts": [
+        "-arch",
+        "x86_64"
+      ],
+      "MacKernelSDK": true,
+      "Pre-Build": [
+        {
+          "path": "/bin/mkdir",
+          "args": [
+            "-p",
+            "./build/Release"
+          ],
+          "name": "Creating ./build/Release directory"
+        },
+        {
+          "path": "/bin/cp",
+          "args": [
+            "../MacKernelSDK/Library/x86_64/libkmod.a",
+            "./build/Release/"
+          ],
+          "name": "Copying libkmod.a to ./build/Release"
+        }
+      ],
       "Desc": "for RTL8111/8168 LAN",
       "github": {
         "URL": "https://github.com/Mieze/RTL8111_driver_for_OS_X/releases",
@@ -874,6 +892,21 @@
       "Desc": "Lilu plugin for blocking unwanted processes causing compatibility issues",
       "github": {
         "URL": "https://github.com/acidanthera/RestrictEvents/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/SMCRadeonSensors",
+      "Name": "SMCRadeonSensors (ChefKissInc)",
+      "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
+      "Folder": "SMCRadeonSensors",
+      "Desc": "AMD GPU temperature monitoring on macOS",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/ChefKissInc/SMCRadeonSensors/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
