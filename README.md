@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 70 Kexts:
+Currently Builds 71 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -62,6 +62,7 @@ Currently Builds 70 Kexts:
 * HibernationFixup
 * IntelBacklight
 * IntelBluetoothFirmware
+* IntelLucy
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
 * Itlwm
@@ -74,12 +75,12 @@ Currently Builds 70 Kexts:
 * NootedRed
 * NullCPUPowerManagement
 * RTCMemoryFixup
-* RadeonSensor (ChefKissInc)
 * RealtekCardReader
 * RealtekCardReaderFriend
 * RealtekRTL8100
 * RealtekRTL8111
 * RestrictEvents
+* SMCRadeonSensors (ChefKissInc)
 * USBInjectAll
 * USBInjectAll (Sniki)
 * VirtualSMC
