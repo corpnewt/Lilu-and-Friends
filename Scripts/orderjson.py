@@ -13,7 +13,7 @@ j_data = json.load(open(j, "r"))
 # Reorganize it
 j_data["Plugins"] = sorted(j_data["Plugins"], key=lambda x:(x["Name"]))
 # Dump the contents back
-json.dump(j_data, open(j, "w"), indent=2)
+json.dump(j_data, open(j, "w"), indent=2, sort_keys=True)
 # Done!
 print("Done!")
 exit(0)
