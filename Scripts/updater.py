@@ -1418,14 +1418,24 @@ class Updater:
                     try:
                         # Get the repo name from the last component of the original URL
                         repo_name = kext["URL"].split("/")[-1].split(" ")[0]
+                        url_prefix = next((x for x in kext["URL"].split() if "/" in x and x.split("/")[-1] == repo_name),None)
                         # Attempt to get a list of versions provided in the Dortania json
                         versions = dortania.get(repo_name,{}).get("versions",[])
                         if versions and isinstance(versions[0],dict):
-                            # Try to get our download link - and if found, save it in build_steps
-                            url = versions[0].get("links",{}).get("debug" if self.kext_debug else "release")
-                            if url:
-                                build_steps = {"URL":url}
-                                rel = versions[0].get("version")
+                            # If we have a url_prefix, make sure we only get entries whose commit->tree_url
+                            # also have that prefix
+                            try:
+                                # Use try/except in case the elements aren't
+                                # dicts as expected
+                                tree_url = versions[0]["commit"]["tree_url"].lower()
+                            except:
+                                tree_url = None
+                            if url_prefix is None or (tree_url is not None and tree_url.startswith(url_prefix.lower())):
+                                # Try to get our download link - and if found, save it in build_steps
+                                url = versions[0].get("links",{}).get("debug" if self.kext_debug else "release")
+                                if url:
+                                    build_steps = {"URL":url}
+                                    rel = versions[0].get("version")
                     except: pass
                 if not build_steps: # Now we fall back on any other options
                     for b in self.build_modes:
