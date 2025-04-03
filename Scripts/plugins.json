@@ -1,6 +1,5 @@
 {
-  "Version": "0.0.137",
-  "Changes": "Fix RealtekRTL8111 Debug builds.",
+  "Changes": "Check repo URL with Dortania tree_url when downloading, add RestrictEvents stopgap for 15.4+.",
   "Plugins": [
     {
       "Build Opts": [
@@ -8,10 +7,10 @@
         "macosx",
         "-alltargets"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Backlight",
+      "Desc": "uses ACPI methods to control laptop backlight - pre-10.12.4",
       "Folder": "OS-X-ACPI-Backlight",
       "Name": "ACPIBacklight",
-      "Desc": "uses ACPI methods to control laptop backlight - pre-10.12.4",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Backlight",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-acpi-backlight/downloads/"
       }
@@ -22,25 +21,25 @@
         "macosx",
         "-alltargets"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Battery-Driver",
+      "Desc": "implements an ACPI based battery manager kext",
       "Folder": "OS-X-ACPI-Battery-Driver",
       "Name": "ACPIBatteryManager",
-      "Desc": "implements an ACPI based battery manager kext",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-ACPI-Battery-Driver",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/"
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Dolnor/OSX-ALXEthernet",
+      "Desc": "Atheros OSX driver originally coded by Shailua",
       "Folder": "OSX-ALXEthernet",
       "Name": "ALXEthernet",
-      "Desc": "Atheros OSX driver originally coded by Shailua"
+      "URL": "git clone --depth 1 https://github.com/Dolnor/OSX-ALXEthernet"
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/AirportBrcmFixup",
-      "Name": "AirportBrcmFixup",
       "Desc": "for non-native Airport Broadcom Wi-Fi cards",
+      "Lilu": true,
+      "Name": "AirportBrcmFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/AirportBrcmFixup",
       "github": {
         "URL": "https://github.com/acidanthera/AirportBrcmFixup/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -48,19 +47,19 @@
       }
     },
     {
-      "Info": "High Sierra/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-High Sierra"
       ],
+      "Desc": "native Intel Wi-Fi kext for 10.13.x",
+      "Folder": "itlwm",
+      "Info": "High Sierra/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (10.13 High Sierra)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "High Sierra/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.13.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(high_?sierra.*debug|debug.*high_?sierra)",
@@ -68,19 +67,19 @@
       }
     },
     {
-      "Info": "Mojave/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Mojave"
       ],
+      "Desc": "native Intel Wi-Fi kext for 10.14.x",
+      "Folder": "itlwm",
+      "Info": "Mojave/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (10.14 Mojave)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Mojave/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.14.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(mojave.*debug|debug.*mojave)",
@@ -88,19 +87,19 @@
       }
     },
     {
-      "Info": "Catalina/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Catalina"
       ],
+      "Desc": "native Intel Wi-Fi kext for 10.15.x",
+      "Folder": "itlwm",
+      "Info": "Catalina/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (10.15 Catalina)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Catalina/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 10.15.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(catalina.*debug|debug.*catalina)",
@@ -108,19 +107,19 @@
       }
     },
     {
-      "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Big Sur"
       ],
+      "Desc": "native Intel Wi-Fi kext for 11.x",
+      "Folder": "itlwm",
+      "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (11 Big Sur)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Big Sur/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 11.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(big_?sur.*debug|debug.*big_?sur)",
@@ -128,19 +127,19 @@
       }
     },
     {
-      "Info": "Monterey/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Monterey"
       ],
+      "Desc": "native Intel Wi-Fi kext for 12.x",
+      "Folder": "itlwm",
+      "Info": "Monterey/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (12 Monterey)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Monterey/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 12.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(monterey.*debug|debug.*monterey)",
@@ -148,19 +147,19 @@
       }
     },
     {
-      "Info": "Ventura/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Ventura"
       ],
+      "Desc": "native Intel Wi-Fi kext for 13.x",
+      "Folder": "itlwm",
+      "Info": "Ventura/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (13 Ventura)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Ventura/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 13.x",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(ventura.*debug|debug.*ventura)",
@@ -168,19 +167,19 @@
       }
     },
     {
-      "Info": "Sonoma14.0/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Sonoma14.0"
       ],
+      "Desc": "native Intel Wi-Fi kext for 14.0 through 14.3",
+      "Folder": "itlwm",
+      "Info": "Sonoma14.0/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (14.0 Sonoma)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Sonoma14.0/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 14.0 through 14.3",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(sonoma14.0.*debug|debug.*sonoma14.0)",
@@ -188,19 +187,19 @@
       }
     },
     {
-      "Info": "Sonoma14.4/Airportitlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "AirportItlwm-Sonoma14.4"
       ],
+      "Desc": "native Intel Wi-Fi kext for 14.4+",
+      "Folder": "itlwm",
+      "Info": "Sonoma14.4/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (14.4 Sonoma)",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
       "Zip": [
         "Sonoma14.4/*"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext for 14.4+",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)(sonoma14.4.*debug|debug.*sonoma14.4)",
@@ -208,19 +207,19 @@
       }
     },
     {
+      "Desc": "native Intel Wi-Fi kext",
+      "Folder": "itlwm",
       "Info": "Big Sur/Airportitlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "Airportitlwm (all versions)",
-      "Zip": [
-        "*"
-      ],
       "Skip Targets": [
         "itlwm",
         "fw_gen"
       ],
       "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
-      "Folder": "itlwm",
-      "Desc": "native Intel Wi-Fi kext",
+      "Zip": [
+        "*"
+      ],
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)debug",
@@ -228,14 +227,14 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID",
       "Build Opts": [
         "-arch",
         "x86_64"
       ],
+      "Desc": "VoodooI2C satellite for Alps touchpad and trackpoint",
       "MacKernelSDK": true,
       "Name": "AlpsHID",
-      "Desc": "VoodooI2C satellite for Alps touchpad and trackpoint",
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID",
       "github": {
         "URL": "https://github.com/blankmac/AlpsHID/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -247,14 +246,13 @@
         "-arch",
         "x86_64"
       ],
+      "Desc": "AlpsHID with the QuietTimeAfterTyping lowered from 500ms to 150ms",
+      "Folder": "AlpsHID150ms",
       "Info": "AlpsHID.kext/Contents/Info.plist",
-      "Name": "AlpsHID (150ms delay)",
-      "Zip": "./AlpsHID.kext",
-      "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID AlpsHID150ms",
       "MacKernelSDK": true,
+      "Name": "AlpsHID (150ms delay)",
       "Post-Build": [
         {
-          "path": "/usr/bin/sed",
           "args": [
             "-i",
             "",
@@ -262,11 +260,12 @@
             "s|<integer>500</integer>|<integer>150</integer>|",
             "./build/Release/AlpsHID.kext/Contents/Info.plist"
           ],
-          "name": "QuietTimeAfterTyping 500ms -> 150ms"
+          "name": "QuietTimeAfterTyping 500ms -> 150ms",
+          "path": "/usr/bin/sed"
         }
       ],
-      "Folder": "AlpsHID150ms",
-      "Desc": "AlpsHID with the QuietTimeAfterTyping lowered from 500ms to 150ms",
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/blankmac/AlpsHID AlpsHID150ms",
+      "Zip": "./AlpsHID.kext",
       "github": {
         "URL": "https://github.com/blankmac/AlpsHID/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -274,13 +273,13 @@
       }
     },
     {
+      "Desc": "dynamic audio patching",
       "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/AppleALC",
       "Name": "AppleALC",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/AppleALC",
       "Zip": [
         "*.kext"
       ],
-      "Desc": "dynamic audio patching",
       "github": {
         "URL": "https://github.com/acidanthera/AppleALC/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -288,16 +287,16 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/AtherosE2200Ethernet",
       "Build Opts": [
         "-scheme",
         "AtherosE2200EthernetV2",
         "-configuration",
         "Release"
       ],
+      "Desc": "for Killer and Atheros LAN",
       "MacKernelSDK": true,
       "Name": "AtherosE2200Ethernet",
-      "Desc": "for Killer and Atheros LAN",
+      "URL": "git clone --depth 1 https://github.com/Mieze/AtherosE2200Ethernet",
       "github": {
         "URL": "https://github.com/Mieze/AtherosE2200Ethernet/releases",
         "regex": "(?i)AtherosE2200Ethernet[^\\/].*\\.zip"
@@ -310,40 +309,40 @@
         "-arch",
         "x86_64"
       ],
-      "URL": "git clone --depth 1 https://github.com/adlan/BCM5722D",
+      "Desc": "for Broadcom's BCM5722 NetXtreme and NetLink family LAN",
       "Name": "BCM5722D",
-      "Desc": "for Broadcom's BCM5722 NetXtreme and NetLink family LAN"
+      "URL": "git clone --depth 1 https://github.com/adlan/BCM5722D"
     },
     {
-      "Info": "BrcmPatchRam2.kext/Contents/Info.plist",
       "Build Opts": [
         "-sdk",
         "macosx"
       ],
-      "Name": "BrcmPatchRAM (Acidanthera)",
-      "Zip": [
-        "*.kext"
-      ],
-      "Skip Targets": [
-        "BrcmPatchRAM",
-        "BrcmNonPatchRAM"
-      ],
-      "URL": "git clone --depth 1 https://github.com/acidanthera/BrcmPatchRAM",
-      "Lilu": true,
+      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices",
       "Folder": "BrcmPatchRAM",
+      "Info": "BrcmPatchRam2.kext/Contents/Info.plist",
+      "Lilu": true,
+      "Name": "BrcmPatchRAM (Acidanthera)",
       "Pre-Build": [
         {
-          "path": "xcodebuild",
           "args": [
             "-sdk",
             "macosx",
             "-target",
             "Prebuild"
           ],
-          "name": "Compile Prebuild Prerequisite"
+          "name": "Compile Prebuild Prerequisite",
+          "path": "xcodebuild"
         }
       ],
-      "Desc": "applies PatchRAM updates for Broadcom RAMUSB based devices",
+      "Skip Targets": [
+        "BrcmPatchRAM",
+        "BrcmNonPatchRAM"
+      ],
+      "URL": "git clone --depth 1 https://github.com/acidanthera/BrcmPatchRAM",
+      "Zip": [
+        "*.kext"
+      ],
       "github": {
         "URL": "https://github.com/acidanthera/BrcmPatchRAM/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -351,10 +350,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/BrightnessKeys",
-      "Name": "BrightnessKeys",
       "Desc": "Automatic handling of brightness keys based on ACPI Specification",
+      "Lilu": true,
+      "Name": "BrightnessKeys",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/BrightnessKeys",
       "github": {
         "URL": "https://github.com/acidanthera/BrightnessKeys/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -362,10 +361,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/PMheart/CPUFriend",
-      "Name": "CPUFriend",
       "Desc": "for dynamic power management data injection",
+      "Lilu": true,
+      "Name": "CPUFriend",
+      "URL": "git clone --depth 1 https://github.com/PMheart/CPUFriend",
       "github": {
         "URL": "https://github.com/PMheart/CPUFriend/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -378,38 +377,22 @@
         "macosx",
         "-alltargets"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/EAPD-Codec-Commander",
+      "Desc": "aids in non-functioning audio after sleep",
       "Folder": "EAPD-Codec-Commander",
       "Name": "CodecCommander",
-      "Desc": "aids in non-functioning audio after sleep",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/EAPD-Codec-Commander",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-eapd-codec-commander/downloads/"
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/CpuTscSync",
-      "Name": "CpuTscSync",
-      "Zip": [
-        "*.kext"
-      ],
       "Desc": "syncs TSC and disables xcpm_urgency",
-      "github": {
-        "URL": "https://github.com/acidanthera/CpuTscSync/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Lilu": true,
-      "Info": "CpuTscSync.kext/Contents/Info.plist",
-      "Folder": "CpuTscSyncAMD",
-      "URL": "git clone --depth 1 https://github.com/Seey6/CpuTscSync CpuTscSyncAMD",
-      "Name": "CpuTscSync (AMD)",
+      "Name": "CpuTscSync",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/CpuTscSync",
       "Zip": [
         "*.kext"
       ],
-      "Desc": "AMD compatible build of CpuTscSync from Seey6",
       "github": {
         "URL": "https://github.com/acidanthera/CpuTscSync/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -417,10 +400,26 @@
       }
     },
     {
+      "Desc": "AMD compatible build of CpuTscSync from Seey6",
+      "Folder": "CpuTscSyncAMD",
+      "Info": "CpuTscSync.kext/Contents/Info.plist",
       "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/DebugEnhancer",
-      "Name": "DebugEnhancer",
+      "Name": "CpuTscSync (AMD)",
+      "URL": "git clone --depth 1 https://github.com/Seey6/CpuTscSync CpuTscSyncAMD",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/acidanthera/CpuTscSync/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
       "Desc": "A Lilu plugin intended to enable debug output in the macOS kernel",
+      "Lilu": true,
+      "Name": "DebugEnhancer",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/DebugEnhancer",
       "github": {
         "URL": "https://github.com/acidanthera/DebugEnhancer/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -428,10 +427,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/1Revenger1/ECEnabler",
-      "Name": "ECEnabler",
       "Desc": "allows reading EC fields > 1 byte, reducing battery status ACPI",
+      "Lilu": true,
+      "Name": "ECEnabler",
+      "URL": "git clone --depth 1 https://github.com/1Revenger1/ECEnabler",
       "github": {
         "URL": "https://github.com/1Revenger1/ECEnabler/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -444,19 +443,19 @@
         "macosx",
         "-alltargets"
       ],
+      "Desc": "spoofs IOPCIDevices to allow drivers to load",
+      "Folder": "OS-X-Fake-PCI-ID",
       "Name": "FakePCIID",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Fake-PCI-ID",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Fake-PCI-ID",
-      "Folder": "OS-X-Fake-PCI-ID",
-      "Desc": "spoofs IOPCIDevices to allow drivers to load",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-fake-pci-id/downloads/"
       }
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Build Dir": "./Binaries",
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -465,42 +464,41 @@
         "-scheme",
         "Build Kexts"
       ],
-      "Build Dir": "./Binaries",
-      "Name": "FakeSMC (Kozlek)",
-      "Zip": "./FakeSMC.kext",
-      "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
-      "Folder": "HWSensors",
       "Desc": "only Kozlek's FakeSMC",
+      "Folder": "HWSensors",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Name": "FakeSMC (Kozlek)",
+      "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
+      "Zip": "./FakeSMC.kext",
       "github": {
         "URL": "https://github.com/kozlek/HWSensors/releases",
         "regex": "(?i)HWSensors[^\\/].*\\.zip"
       }
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Build Dir": "./Binaries",
       "Build Opts": [
         "-project",
         "HWSensors.xcodeproj"
       ],
-      "Build Dir": "./Binaries",
-      "Name": "FakeSMC (Legacy)",
-      "Zip": "./FakeSMC.kext",
-      "URL": "git clone --depth 1 https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Desc": "only FakeSMC (Legacy)",
       "Folder": "hwsensors-code",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Name": "FakeSMC (Legacy)",
       "Pre-Build": [
         {
-          "path": "xcodebuild",
           "args": [
             "-project",
             "Versioning And Distribution.xcodeproj"
           ],
-          "name": "Compile Versioning And Distribution Prerequisite"
+          "name": "Compile Versioning And Distribution Prerequisite",
+          "path": "xcodebuild"
         }
       ],
-      "Desc": "only FakeSMC (Legacy)"
+      "URL": "git clone --depth 1 https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Zip": "./FakeSMC.kext"
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -509,20 +507,21 @@
         "-scheme",
         "Build Kexts"
       ],
-      "Name": "FakeSMC (RehabMan)",
-      "Zip": "./FakeSMC.kext",
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
-      "Folder": "OS-X-FakeSMC-kozlek",
       "Desc": "only RehabMan's FakeSMC",
+      "Folder": "OS-X-FakeSMC-kozlek",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Name": "FakeSMC (RehabMan)",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
+      "Zip": "./FakeSMC.kext",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/"
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/FeatureUnlock",
-      "Name": "FeatureUnlock",
       "Desc": "for enabling Sidecar, NightShift, AirPlay to Mac and Universal Control",
+      "Lilu": true,
+      "Name": "FeatureUnlock",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/FeatureUnlock",
       "github": {
         "URL": "https://github.com/acidanthera/FeatureUnlock/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -530,9 +529,9 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/ForgedInvariant",
-      "Name": "ForgedInvariant",
       "Desc": "Lilu plugin for syncing the TSC on AMD & Intel.",
+      "Name": "ForgedInvariant",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/ForgedInvariant",
       "github": {
         "URL": "https://github.com/ChefKissInc/ForgedInvariant/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -540,10 +539,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/0xFireWolf/GenericCardReaderFriend",
-      "Name": "GenericCardReaderFriend",
       "Desc": "Lilu plugin - makes System Info recognize your builtin USB card reader as native",
+      "Lilu": true,
+      "Name": "GenericCardReaderFriend",
+      "URL": "git clone --depth 1 https://github.com/0xFireWolf/GenericCardReaderFriend",
       "github": {
         "URL": "https://github.com/0xFireWolf/GenericCardReaderFriend/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -551,22 +550,22 @@
       }
     },
     {
+      "Build Dir": "./build/Universal",
       "Build Opts": [
         "-sdk",
         "macosx10.10",
         "-alltargets"
       ],
-      "Build Dir": "./build/Universal",
+      "Desc": "generic, non-Intel USB3 support",
+      "Folder": "OS-X-Generic-USB3",
       "Name": "GenericUSBXHCI",
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Generic-USB3",
-      "Folder": "OS-X-Generic-USB3",
-      "Desc": "generic, non-Intel USB3 support",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-generic-usb3/downloads/"
       }
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Build Dir": "./Binaries",
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -575,43 +574,42 @@
         "-scheme",
         "Build Kexts"
       ],
-      "Build Dir": "./Binaries",
-      "Name": "HWSensors (Kozlek)",
-      "Zip": "../Binaries",
-      "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
-      "Folder": "HWSensors",
       "Desc": "Kozlek's FakeSMC + Sensors",
+      "Folder": "HWSensors",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Name": "HWSensors (Kozlek)",
+      "URL": "git clone --depth 1 https://github.com/kozlek/HWSensors",
+      "Zip": "../Binaries",
       "github": {
         "URL": "https://github.com/kozlek/HWSensors/releases",
         "regex": "(?i)HWSensors[^\\/].*\\.zip"
       }
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Build Dir": "./Binaries",
       "Build Opts": [
         "-alltargets",
         "-project",
         "HWSensors.xcodeproj"
       ],
-      "Build Dir": "./Binaries",
-      "Name": "HWSensors (Legacy)",
-      "Zip": "../Binaries",
-      "URL": "git clone --depth 1 https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Desc": "contains legacy FakeSMC + HWSensors plugins",
       "Folder": "hwsensors-code",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
+      "Name": "HWSensors (Legacy)",
       "Pre-Build": [
         {
-          "path": "xcodebuild",
           "args": [
             "-project",
             "Versioning And Distribution.xcodeproj"
           ],
-          "name": "Compile Versioning And Distribution Prerequisite"
+          "name": "Compile Versioning And Distribution Prerequisite",
+          "path": "xcodebuild"
         }
       ],
-      "Desc": "contains legacy FakeSMC + HWSensors plugins"
+      "URL": "git clone --depth 1 https://git.code.sf.net/p/hwsensors/code hwsensors-code",
+      "Zip": "../Binaries"
     },
     {
-      "Info": "FakeSMC.kext/Contents/Info.plist",
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -620,22 +618,23 @@
         "-scheme",
         "Build Kexts"
       ],
+      "Desc": "RehabMan's FakeSMC + Sensors",
+      "Folder": "OS-X-FakeSMC-kozlek",
+      "Info": "FakeSMC.kext/Contents/Info.plist",
       "Name": "HWSensors (RehabMan)",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-FakeSMC-kozlek",
-      "Folder": "OS-X-FakeSMC-kozlek",
-      "Desc": "RehabMan's FakeSMC + Sensors",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads/"
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup HibernationFixup",
-      "Name": "HibernationFixup",
       "Desc": "saves IOHibernateRTCVariables in NVRAM",
+      "Lilu": true,
+      "Name": "HibernationFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup HibernationFixup",
       "github": {
         "URL": "https://github.com/acidanthera/HibernationFixup/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -648,10 +647,10 @@
         "macosx",
         "-alltargets"
       ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Intel-Backlight",
+      "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4",
       "Folder": "OS-X-Intel-Backlight",
       "Name": "IntelBacklight",
-      "Desc": "replaces AppleBacklight for intel graphics - pre-10.12.4",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Intel-Backlight",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-intel-backlight/downloads/"
       }
@@ -660,44 +659,44 @@
       "Build Opts": [
         "-alltargets"
       ],
-      "Name": "IntelBluetoothFirmware",
+      "Desc": "Intel Bluetooth kext",
       "Lilu": true,
+      "MacKernelSDK": true,
+      "Name": "IntelBluetoothFirmware",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/IntelBluetoothFirmware",
-      "MacKernelSDK": true,
-      "Desc": "Intel Bluetooth kext",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/IntelBluetoothFirmware/releases",
         "regex": "(?i)IntelBluetoothFirmware[^\\/].*\\.zip"
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/IntelLucy",
-      "Name": "IntelLucy",
       "Desc": "for Intel X500 family of 10GBit Ethernet controllers",
+      "Name": "IntelLucy",
+      "URL": "git clone --depth 1 https://github.com/Mieze/IntelLucy",
       "github": {
         "URL": "https://github.com/Mieze/IntelLucy/releases",
         "regex": "(?i)IntelLucy[^\\/].*\\.zip"
       }
     },
     {
-      "Info": "IntelMausi.kext/Contents/Info.plist",
       "Build Opts": [
         "-sdk",
         "macosx",
         "-configuration",
         "Release"
       ],
+      "Desc": "Acidanthera's IntelMausiEthernet",
+      "Folder": "IntelMausi",
+      "Info": "IntelMausi.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
       "Name": "IntelMausi (Acidanthera)",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/IntelMausi",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 https://github.com/acidanthera/IntelMausi",
-      "MacKernelSDK": true,
-      "Folder": "IntelMausi",
-      "Desc": "Acidanthera's IntelMausiEthernet",
       "github": {
         "URL": "https://github.com/acidanthera/IntelMausi/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -705,21 +704,21 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/IntelMausiEthernet",
+      "Desc": "for most Intel LAN",
       "Name": "IntelMausiEthernet",
-      "Desc": "for most Intel LAN"
+      "URL": "git clone --depth 1 https://github.com/Mieze/IntelMausiEthernet"
     },
     {
-      "Info": "itlwm.kext/Contents/Info.plist",
       "Build Opts": [
         "-target",
         "itlwm"
       ],
-      "Name": "Itlwm",
-      "Zip": "./itlwm.kext",
-      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
-      "MacKernelSDK": true,
       "Desc": "Intel Wi-Fi kext",
+      "Info": "itlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
+      "Name": "Itlwm",
+      "URL": "git clone --depth 1 https://github.com/OpenIntelWireless/itlwm",
+      "Zip": "./itlwm.kext",
       "github": {
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)\\/itlwm[^\\/].*debug",
@@ -727,10 +726,10 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/acidanthera/Lilu",
+      "Desc": "for arbitrary kext, library, and program patching",
       "MacKernelSDK": true,
       "Name": "Lilu",
-      "Desc": "for arbitrary kext, library, and program patching",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/Lilu",
       "github": {
         "URL": "https://github.com/acidanthera/Lilu/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -738,23 +737,23 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/LucyRTL8125Ethernet",
       "Build Opts": [
         "-arch",
         "x86_64"
       ],
-      "Name": "LucyRTL8125Ethernet",
       "Desc": "for Realtek RTL8125 2.5GBit Ethernet Controllers",
+      "Name": "LucyRTL8125Ethernet",
+      "URL": "git clone --depth 1 https://github.com/Mieze/LucyRTL8125Ethernet",
       "github": {
         "URL": "https://github.com/Mieze/LucyRTL8125Ethernet/releases",
         "regex": "(?i)LucyRTL8125Ethernet[^\\/].*\\.zip"
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix",
-      "Name": "NVMeFix",
       "Desc": "provides patches for NVME Power management support - APST",
+      "Lilu": true,
+      "Name": "NVMeFix",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix",
       "github": {
         "URL": "https://github.com/acidanthera/NVMeFix/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -762,10 +761,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/cdf/NightShiftEnabler",
-      "Name": "NightShiftEnabler",
       "Desc": "enables night shift on unsupported SMBIOS",
+      "Lilu": true,
+      "Name": "NightShiftEnabler",
+      "URL": "git clone --depth 1 https://github.com/cdf/NightShiftEnabler",
       "github": {
         "URL": "https://github.com/cdf/NightShiftEnabler/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -773,10 +772,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/al3xtjames/NoTouchID",
-      "Name": "NoTouchID",
       "Desc": "Lilu plugin for disabling Touch ID checks",
+      "Lilu": true,
+      "Name": "NoTouchID",
+      "URL": "git clone --depth 1 https://github.com/al3xtjames/NoTouchID",
       "github": {
         "URL": "https://github.com/al3xtjames/NoTouchID/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -784,9 +783,9 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootRX",
-      "Name": "NootRX",
       "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs",
+      "Name": "NootRX",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootRX",
       "github": {
         "URL": "https://github.com/ChefKissInc/NootRX/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -794,9 +793,9 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootedRed",
-      "Name": "NootedRed",
       "Desc": "Lilu plugin for AMD Vega iGPUs",
+      "Name": "NootedRed",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootedRed",
       "github": {
         "URL": "https://github.com/ChefKissInc/NootedRed/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -804,21 +803,21 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement",
       "Build Opts": [
         "-sdk",
         "macosx",
         "-arch",
         "x86_64"
       ],
+      "Desc": "disables power management on unsupported CPUs",
       "Name": "NullCPUPowerManagement",
-      "Desc": "disables power management on unsupported CPUs"
+      "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement"
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/RTCMemoryFixup",
-      "Name": "RTCMemoryFixup",
       "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
+      "Lilu": true,
+      "Name": "RTCMemoryFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/RTCMemoryFixup",
       "github": {
         "URL": "https://github.com/acidanthera/RTCMemoryFixup/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -826,10 +825,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReader",
-      "Name": "RealtekCardReader",
       "Desc": "unleash the full potential of your SDXC UHS-I cards",
+      "Lilu": true,
+      "Name": "RealtekCardReader",
+      "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReader",
       "github": {
         "URL": "https://github.com/0xFireWolf/RealtekCardReader/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -837,10 +836,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReaderFriend",
-      "Name": "RealtekCardReaderFriend",
       "Desc": "Lilu plugin - makes System Info recognize your Realtek card reader as native",
+      "Lilu": true,
+      "Name": "RealtekCardReaderFriend",
+      "URL": "git clone --depth 1 https://github.com/0xFireWolf/RealtekCardReaderFriend",
       "github": {
         "URL": "https://github.com/0xFireWolf/RealtekCardReaderFriend/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -848,50 +847,50 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/RealtekRTL8100",
+      "Desc": "for RTL810X LAN",
       "Name": "RealtekRTL8100",
-      "Desc": "for RTL810X LAN"
+      "URL": "git clone --depth 1 https://github.com/Mieze/RealtekRTL8100"
     },
     {
-      "URL": "git clone --depth 1 https://github.com/Mieze/RTL8111_driver_for_OS_X",
-      "Folder": "RTL8111_driver_for_OS_X",
-      "Name": "RealtekRTL8111",
       "Build Opts": [
         "-arch",
         "x86_64"
       ],
+      "Desc": "for RTL8111/8168 LAN",
+      "Folder": "RTL8111_driver_for_OS_X",
       "MacKernelSDK": true,
+      "Name": "RealtekRTL8111",
       "Pre-Build": [
         {
-          "path": "/bin/mkdir",
           "args": [
             "-p",
             "./build/Release"
           ],
           "name": "Creating ./build/Release directory",
-          "no_debug_replace": true
+          "no_debug_replace": true,
+          "path": "/bin/mkdir"
         },
         {
-          "path": "/bin/cp",
           "args": [
             "../MacKernelSDK/Library/x86_64/libkmod.a",
             "./build/Release/"
           ],
           "name": "Copying libkmod.a to ./build/Release",
-          "no_debug_replace": true
+          "no_debug_replace": true,
+          "path": "/bin/cp"
         }
       ],
-      "Desc": "for RTL8111/8168 LAN",
+      "URL": "git clone --depth 1 https://github.com/Mieze/RTL8111_driver_for_OS_X",
       "github": {
         "URL": "https://github.com/Mieze/RTL8111_driver_for_OS_X/releases",
         "regex": "(?i)RealtekRTL8111[^\\/].*\\.zip"
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/RestrictEvents",
-      "Name": "RestrictEvents",
       "Desc": "Lilu plugin for blocking unwanted processes causing compatibility issues",
+      "Lilu": true,
+      "Name": "RestrictEvents",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/RestrictEvents",
       "github": {
         "URL": "https://github.com/acidanthera/RestrictEvents/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -899,11 +898,27 @@
       }
     },
     {
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/SMCRadeonSensors",
-      "Name": "SMCRadeonSensors (ChefKissInc)",
-      "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
-      "Folder": "SMCRadeonSensors",
+      "Desc": "Fork of RestrictEvents with revblock=perfps support on macOS 15.4+",
+      "Folder": "RestrictEvents-15.4-StopGap",
+      "Info": "RestrictEvents.kext/Contents/Info.plist",
+      "Lilu": true,
+      "Name": "RestrictEvents 15.4+ StopGap",
+      "URL": "git clone --depth 1 https://github.com/corpnewt/RestrictEvents RestrictEvents-15.4-StopGap",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/corpnewt/RestrictEvents/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
       "Desc": "AMD GPU temperature monitoring on macOS",
+      "Folder": "SMCRadeonSensors",
+      "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
+      "Name": "SMCRadeonSensors (ChefKissInc)",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/SMCRadeonSensors",
       "Zip": [
         "*.kext"
       ],
@@ -919,23 +934,23 @@
         "macosx",
         "-alltargets"
       ],
+      "Desc": "injects all USB ports",
+      "Folder": "OS-X-USB-Inject-All",
       "Name": "USBInjectAll",
-      "Zip": [
-        "*.kext"
-      ],
-      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-USB-Inject-All",
       "Post-Build": [
         {
-          "path": "mv",
           "args": [
             "*.kext",
             "Build/Release/"
           ],
-          "name": "Move Injector Kexts to Release Folder"
+          "name": "Move Injector Kexts to Release Folder",
+          "path": "mv"
         }
       ],
-      "Folder": "OS-X-USB-Inject-All",
-      "Desc": "injects all USB ports",
+      "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-USB-Inject-All",
+      "Zip": [
+        "*.kext"
+      ],
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/"
       }
@@ -946,24 +961,24 @@
         "macosx",
         "-alltargets"
       ],
+      "Desc": "injects all USB ports",
+      "Folder": "Sniki-UIA",
       "Info": "USBInjectAll.kext/Contents/Info.plist",
       "Name": "USBInjectAll (Sniki)",
-      "Zip": [
-        "*.kext"
-      ],
-      "URL": "git clone --depth 1 https://github.com/Sniki/OS-X-USB-Inject-All",
       "Post-Build": [
         {
-          "path": "mv",
           "args": [
             "*.kext",
             "./Build/Products/Release/"
           ],
-          "name": "Move Injector Kexts to Release Folder"
+          "name": "Move Injector Kexts to Release Folder",
+          "path": "mv"
         }
       ],
-      "Folder": "OS-X-USB-Inject-All",
-      "Desc": "injects all USB ports",
+      "URL": "git clone --depth 1 https://github.com/Sniki/OS-X-USB-Inject-All Sniki-UIA",
+      "Zip": [
+        "*.kext"
+      ],
       "github": {
         "URL": "https://github.com/Sniki/OS-X-USB-Inject-All/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -971,10 +986,10 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/VirtualSMC",
-      "Name": "VirtualSMC",
       "Desc": "advanced Apple SMC emulator in the kernel. (Just VirtualSMC.kext)",
+      "Lilu": true,
+      "Name": "VirtualSMC",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/VirtualSMC",
       "github": {
         "URL": "https://github.com/acidanthera/VirtualSMC/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -986,47 +1001,47 @@
         "-target",
         "Package"
       ],
+      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)",
+      "Folder": "VirtualSMC",
       "Info": "VirtualSMC.kext/Contents/Info.plist",
+      "Lilu": true,
       "Name": "VirtualSMC (All Tools)",
-      "Zip": "VirtualSMC",
-      "URL": "git clone --depth 1 https://github.com/acidanthera/VirtualSMC",
       "Post-Build": [
         {
-          "path": "mkdir",
           "args": [
             "-p",
             "./build/Release/VirtualSMC/Kexts"
           ],
-          "name": "Create Kexts Folder"
+          "name": "Create Kexts Folder",
+          "path": "mkdir"
         },
         {
-          "path": "mkdir",
           "args": [
             "-p",
             "./build/Release/VirtualSMC/Tools"
           ],
-          "name": "Create Tools Folder"
+          "name": "Create Tools Folder",
+          "path": "mkdir"
         },
         {
-          "path": "mv",
           "args": [
             "./build/Release/package/Kexts/*",
             "./build/Release/VirtualSMC/Kexts/"
           ],
-          "name": "Move Kexts"
+          "name": "Move Kexts",
+          "path": "mv"
         },
         {
-          "path": "mv",
           "args": [
             "./build/Release/package/Tools/*",
             "./build/Release/VirtualSMC/Tools/"
           ],
-          "name": "Move Tools"
+          "name": "Move Tools",
+          "path": "mv"
         }
       ],
-      "Lilu": true,
-      "Folder": "VirtualSMC",
-      "Desc": "advanced Apple SMC emulator in the kernel. (All tools)",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/VirtualSMC",
+      "Zip": "VirtualSMC",
       "github": {
         "URL": "https://github.com/acidanthera/VirtualSMC/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1043,6 +1058,36 @@
         "macosx",
         "DEBUG_INFORMATION_FORMAT=none"
       ],
+      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X",
+      "Ignore Errors": true,
+      "MacKernelSDK": true,
+      "Name": "VoodooI2C",
+      "Pre-Build": [
+        {
+          "args": [
+            "https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh",
+            "-o",
+            "bootstrap.sh"
+          ],
+          "name": "Gather VoodooInput bootstrap.sh",
+          "path": "/usr/bin/curl"
+        },
+        {
+          "args": [
+            "bootstrap.sh"
+          ],
+          "name": "Execute VoodooInput bootstrap.sh",
+          "path": "/bin/bash"
+        },
+        {
+          "args": [
+            "VoodooInput",
+            "Dependencies"
+          ],
+          "name": "Moving VoodooInput to Dependencies",
+          "path": "/bin/mv"
+        }
+      ],
       "Remove Phases": [
         {
           "path": "VoodooI2C/VoodooI2C.xcodeproj/project.pbxproj",
@@ -1058,51 +1103,21 @@
           ]
         }
       ],
-      "Name": "VoodooI2C",
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/alexandred/VoodooI2C",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 --recursive -j8 https://github.com/alexandred/VoodooI2C",
-      "MacKernelSDK": true,
-      "Pre-Build": [
-        {
-          "path": "/usr/bin/curl",
-          "args": [
-            "https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh",
-            "-o",
-            "bootstrap.sh"
-          ],
-          "name": "Gather VoodooInput bootstrap.sh"
-        },
-        {
-          "path": "/bin/bash",
-          "args": [
-            "bootstrap.sh"
-          ],
-          "name": "Execute VoodooInput bootstrap.sh"
-        },
-        {
-          "path": "/bin/mv",
-          "args": [
-            "VoodooInput",
-            "Dependencies"
-          ],
-          "name": "Moving VoodooInput to Dependencies"
-        }
-      ],
-      "Ignore Errors": true,
-      "Desc": "Intel Lynxpoint I2C controller and device driver for OS X",
       "github": {
         "URL": "https://github.com/alexandred/VoodooI2C/releases",
-        "release_regex": "(?i)(?!.*debug.*)VoodooI2C[^\\/].*\\.zip",
-        "debug_regex": "(?i)debug.*\\.zip"
+        "debug_regex": "(?i)debug.*\\.zip",
+        "release_regex": "(?i)(?!.*debug.*)VoodooI2C[^\\/].*\\.zip"
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooInput",
+      "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation",
       "MacKernelSDK": true,
       "Name": "VoodooInput",
-      "Desc": "Trackpad aggregator kext providing Magic Trackpad 2 software emulation",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooInput",
       "github": {
         "URL": "https://github.com/acidanthera/VoodooInput/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1110,17 +1125,17 @@
       }
     },
     {
-      "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
       "Build Opts": [
         "-arch",
         "x86_64"
       ],
+      "Desc": "VoodooPS2 made for ALPS touchpads",
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
       "Name": "VoodooPS2-ALPS",
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/1Revenger1/VoodooPS2-Alps",
       "Zip": [
         "*.kext"
       ],
-      "URL": "git clone --depth 1 --recursive -j8 https://github.com/1Revenger1/VoodooPS2-Alps",
-      "Desc": "VoodooPS2 made for ALPS touchpads",
       "github": {
         "URL": "https://github.com/1Revenger1/VoodooPS2-Alps/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1128,32 +1143,32 @@
       }
     },
     {
+      "Desc": "VoodooPS2 leveraging VoodooInput made for ALPS v7-8 touchpads",
       "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
-      "Name": "VoodooPS2-ALPS (VoodooInput)",
-      "Zip": [
-        "*.kext"
-      ],
-      "URL": "git clone --depth 1 --recursive -j8 https://github.com/SkyrilHD/VoodooPS2-ALPS",
       "MacKernelSDK": true,
+      "Name": "VoodooPS2-ALPS (VoodooInput)",
       "Pre-Build": [
         {
-          "path": "/usr/bin/curl",
           "args": [
             "https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh",
             "-o",
             "bootstrap.sh"
           ],
-          "name": "Gather VoodooInput bootstrap.sh"
+          "name": "Gather VoodooInput bootstrap.sh",
+          "path": "/usr/bin/curl"
         },
         {
-          "path": "/bin/bash",
           "args": [
             "bootstrap.sh"
           ],
-          "name": "Execute VoodooInput bootstrap.sh"
+          "name": "Execute VoodooInput bootstrap.sh",
+          "path": "/bin/bash"
         }
       ],
-      "Desc": "VoodooPS2 leveraging VoodooInput made for ALPS v7-8 touchpads",
+      "URL": "git clone --depth 1 --recursive -j8 https://github.com/SkyrilHD/VoodooPS2-ALPS",
+      "Zip": [
+        "*.kext"
+      ],
       "github": {
         "URL": "https://github.com/SkyrilHD/VoodooPS2-ALPS/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1165,11 +1180,73 @@
         "-sdk",
         "macosx"
       ],
+      "Desc": "PS2 driver for desktops/laptops",
       "FixXib": true,
+      "Folder": "OS-X-Voodoo-PS2-Controller",
       "Name": "VoodooPS2Controller",
-      "Zip": [
-        "*.kext",
-        "SSDT"
+      "Post-Build": [
+        {
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Source"
+          ],
+          "name": "Create Source Folder",
+          "path": "mkdir"
+        },
+        {
+          "args": [
+            "-p",
+            "Build/Release/SSDT/Compiled"
+          ],
+          "name": "Create Compiled Folder",
+          "path": "mkdir"
+        },
+        {
+          "args": [
+            "-sc",
+            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.",
+            "-cx",
+            "./Build/Release/SSDT/Info.txt"
+          ],
+          "name": "Create Info.txt",
+          "path": "ex"
+        },
+        {
+          "args": [
+            "*.aml",
+            "Build/Release/SSDT/Compiled"
+          ],
+          "bail": false,
+          "name": "Move .aml Files to Compiled Folder",
+          "no_print": true,
+          "path": "mv"
+        },
+        {
+          "args": [
+            "*.dsl",
+            "Build/Release/SSDT/Source"
+          ],
+          "bail": false,
+          "name": "Move .dsl Files to Source Folder",
+          "no_print": true,
+          "path": "mv"
+        }
+      ],
+      "Pre-Build": [
+        {
+          "args": [
+            "*.dsl"
+          ],
+          "bail": false,
+          "name": "Compile SSDTs",
+          "no_print": true,
+          "path": [
+            "[[scripts]]/iasl",
+            "[[scripts]]/iasl-stable",
+            "[[scripts]]/iasl-dev",
+            "[[scripts]]/iasl-legacy"
+          ]
+        }
       ],
       "Skip Targets": [
         "VoodooPS2Daemon",
@@ -1177,72 +1254,10 @@
         "synapticsconfigload"
       ],
       "URL": "git clone --depth 1 https://github.com/RehabMan/OS-X-Voodoo-PS2-Controller",
-      "Post-Build": [
-        {
-          "path": "mkdir",
-          "args": [
-            "-p",
-            "Build/Release/SSDT/Source"
-          ],
-          "name": "Create Source Folder"
-        },
-        {
-          "path": "mkdir",
-          "args": [
-            "-p",
-            "Build/Release/SSDT/Compiled"
-          ],
-          "name": "Create Compiled Folder"
-        },
-        {
-          "path": "ex",
-          "args": [
-            "-sc",
-            "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.",
-            "-cx",
-            "./Build/Release/SSDT/Info.txt"
-          ],
-          "name": "Create Info.txt"
-        },
-        {
-          "path": "mv",
-          "args": [
-            "*.aml",
-            "Build/Release/SSDT/Compiled"
-          ],
-          "name": "Move .aml Files to Compiled Folder",
-          "bail": false,
-          "no_print": true
-        },
-        {
-          "path": "mv",
-          "args": [
-            "*.dsl",
-            "Build/Release/SSDT/Source"
-          ],
-          "name": "Move .dsl Files to Source Folder",
-          "bail": false,
-          "no_print": true
-        }
+      "Zip": [
+        "*.kext",
+        "SSDT"
       ],
-      "Folder": "OS-X-Voodoo-PS2-Controller",
-      "Pre-Build": [
-        {
-          "path": [
-            "[[scripts]]/iasl",
-            "[[scripts]]/iasl-stable",
-            "[[scripts]]/iasl-dev",
-            "[[scripts]]/iasl-legacy"
-          ],
-          "args": [
-            "*.dsl"
-          ],
-          "name": "Compile SSDTs",
-          "bail": false,
-          "no_print": true
-        }
-      ],
-      "Desc": "PS2 driver for desktops/laptops",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-voodoo-ps2-controller/downloads/"
       }
@@ -1252,94 +1267,94 @@
         "-sdk",
         "macosx"
       ],
-      "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
+      "Desc": "PS2 driver for desktops/laptops",
       "FixXib": true,
-      "Name": "VoodooPS2Controller (Acidanthera)",
-      "Zip": [
-        "*.kext",
-        "SSDT"
-      ],
-      "Skip Targets": [
-        "VoodooPS2Daemon",
-        "VoodooPS2synapticsPane",
-        "synapticsconfigload"
-      ],
+      "Folder": "VoodooPS2",
+      "Info": "VoodooPS2Controller.kext/Contents/Info.plist",
       "MacKernelSDK": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooPS2 --recursive",
+      "Name": "VoodooPS2Controller (Acidanthera)",
       "Post-Build": [
         {
-          "path": "mkdir",
           "args": [
             "-p",
             "Build/Release/SSDT/Source"
           ],
-          "name": "Create Source Folder"
+          "name": "Create Source Folder",
+          "path": "mkdir"
         },
         {
-          "path": "mkdir",
           "args": [
             "-p",
             "Build/Release/SSDT/Compiled"
           ],
-          "name": "Create Compiled Folder"
+          "name": "Create Compiled Folder",
+          "path": "mkdir"
         },
         {
-          "path": "ex",
           "args": [
             "-sc",
             "a|Your setup may not need any of the SSDTs; if it does, note that some need to be edited before compiling and using.",
             "-cx",
             "./Build/Release/SSDT/Info.txt"
           ],
-          "name": "Create Info.txt"
+          "name": "Create Info.txt",
+          "path": "ex"
         },
         {
-          "path": "mv",
           "args": [
             "*.aml",
             "Build/Release/SSDT/Compiled"
           ],
-          "name": "Move .aml Files to Compiled Folder",
           "bail": false,
-          "no_print": true
+          "name": "Move .aml Files to Compiled Folder",
+          "no_print": true,
+          "path": "mv"
         },
         {
-          "path": "mv",
           "args": [
             "*.dsl",
             "Build/Release/SSDT/Source"
           ],
-          "name": "Move .dsl Files to Source Folder",
           "bail": false,
-          "no_print": true
+          "name": "Move .dsl Files to Source Folder",
+          "no_print": true,
+          "path": "mv"
         }
       ],
-      "Folder": "VoodooPS2",
       "Pre-Build": [
         {
-          "path": "mv",
           "args": [
             "./Docs/ACPI/*",
             "./"
           ],
-          "name": "Relocate ACPI files"
+          "name": "Relocate ACPI files",
+          "path": "mv"
         },
         {
+          "args": [
+            "*.dsl"
+          ],
+          "bail": false,
+          "name": "Compile SSDTs",
+          "no_print": true,
           "path": [
             "[[scripts]]/iasl",
             "[[scripts]]/iasl-stable",
             "[[scripts]]/iasl-dev",
             "[[scripts]]/iasl-legacy"
-          ],
-          "args": [
-            "*.dsl"
-          ],
-          "name": "Compile SSDTs",
-          "bail": false,
-          "no_print": true
+          ]
         }
       ],
-      "Desc": "PS2 driver for desktops/laptops",
+      "Skip Targets": [
+        "VoodooPS2Daemon",
+        "VoodooPS2synapticsPane",
+        "synapticsconfigload"
+      ],
+      "URL": "git clone --depth 1 https://github.com/acidanthera/VoodooPS2 --recursive",
+      "Zip": [
+        "*.kext",
+        "SSDT"
+      ],
       "github": {
         "URL": "https://github.com/acidanthera/VoodooPS2/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1347,10 +1362,10 @@
       }
     },
     {
-      "URL": "git clone --depth 1 https://github.com/VoodooSMBus/VoodooRMI --recurse-submodules",
+      "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux",
       "MacKernelSDK": true,
       "Name": "VoodooRMI",
-      "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux",
+      "URL": "git clone --depth 1 https://github.com/VoodooSMBus/VoodooRMI --recurse-submodules",
       "github": {
         "URL": "https://github.com/VoodooSMBus/VoodooRMI/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1358,15 +1373,16 @@
       }
     },
     {
-      "Lilu": true,
-      "URL": "git clone --depth 1 https://github.com/acidanthera/WhateverGreen",
-      "Name": "WhateverGreen",
       "Desc": "provides patches for AMD/Nvidia/Intel GPUs",
+      "Lilu": true,
+      "Name": "WhateverGreen",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/WhateverGreen",
       "github": {
         "URL": "https://github.com/acidanthera/WhateverGreen/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
     }
-  ]
+  ],
+  "Version": "0.0.138"
 }
