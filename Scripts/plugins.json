@@ -1,5 +1,5 @@
 {
-  "Changes": "Check repo URL with Dortania tree_url when downloading, add RestrictEvents stopgap for 15.4+.",
+  "Changes": "Remove RestrictEvents stopgap for 15.4+ as the source issue was fixed in VirtualSMC.",
   "Plugins": [
     {
       "Build Opts": [
@@ -898,22 +898,6 @@
       }
     },
     {
-      "Desc": "Fork of RestrictEvents with revblock=perfps support on macOS 15.4+",
-      "Folder": "RestrictEvents-15.4-StopGap",
-      "Info": "RestrictEvents.kext/Contents/Info.plist",
-      "Lilu": true,
-      "Name": "RestrictEvents 15.4+ StopGap",
-      "URL": "git clone --depth 1 https://github.com/corpnewt/RestrictEvents RestrictEvents-15.4-StopGap",
-      "Zip": [
-        "*.kext"
-      ],
-      "github": {
-        "URL": "https://github.com/corpnewt/RestrictEvents/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Desc": "AMD GPU temperature monitoring on macOS",
       "Folder": "SMCRadeonSensors",
       "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
@@ -1384,5 +1368,5 @@
       }
     }
   ],
-  "Version": "0.0.138"
+  "Version": "0.0.139"
 }
