@@ -1,5 +1,5 @@
 {
-  "Changes": "Remove RestrictEvents stopgap for 15.4+ as the source issue was fixed in VirtualSMC.",
+  "Changes": "Add IntelMKLFixup.",
   "Plugins": [
     {
       "Build Opts": [
@@ -679,6 +679,20 @@
       "github": {
         "URL": "https://github.com/Mieze/IntelLucy/releases",
         "regex": "(?i)IntelLucy[^\\/].*\\.zip"
+      }
+    },
+    {
+      "Desc": "MKL (Math Kernel Library) patcher for macOS",
+      "Lilu": true,
+      "Name": "IntelMKLFixup",
+      "URL": "git clone --depth 1 https://github.com/Carnations-Botanica/IntelMKLFixup",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/Carnations-Botanica/IntelMKLFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
       }
     },
     {
@@ -1368,5 +1382,5 @@
       }
     }
   ],
-  "Version": "0.0.139"
+  "Version": "0.0.140"
 }
