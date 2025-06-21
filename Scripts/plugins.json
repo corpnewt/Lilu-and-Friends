@@ -1,5 +1,5 @@
 {
-  "Changes": "Add IntelMKLFixup.",
+  "Changes": "Add Phantom.",
   "Plugins": [
     {
       "Build Opts": [
@@ -828,6 +828,23 @@
       "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement"
     },
     {
+      "Build Opts": [
+        "-configuration",
+        "Release"
+      ],
+      "Desc": "Lilu plug-in that hides information indicating the current machine is a Hackintosh",
+      "Name": "Phantom",
+      "URL": "git clone --depth 1 --recursive https://github.com/Carnations-Botanica/Phantom",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/Carnations-Botanica/Phantom/releases",
+        "debug_regex": "(?i)phantom.*debug\\.zip",
+        "release_regex": "(?i)phantom.*release\\.zip"
+      }
+    },
+    {
       "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
       "Lilu": true,
       "Name": "RTCMemoryFixup",
@@ -1382,5 +1399,5 @@
       }
     }
   ],
-  "Version": "0.0.140"
+  "Version": "0.0.141"
 }
