@@ -20,7 +20,7 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 72 Kexts:
+Currently Builds 73 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
@@ -75,6 +75,7 @@ Currently Builds 72 Kexts:
 * NootRX
 * NootedRed
 * NullCPUPowerManagement
+* Phantom
 * RTCMemoryFixup
 * RealtekCardReader
 * RealtekCardReaderFriend
