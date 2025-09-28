@@ -20,11 +20,10 @@ Then run with either `./Run.command` or by double-clicking *Run.command*
 
 ***
 
-Currently Builds 73 Kexts:
+Currently Builds 74 Kexts:
 
 * ACPIBacklight
 * ACPIBatteryManager
-* ALXEthernet
 * AirportBrcmFixup
 * Airportitlwm (10.13 High Sierra)
 * Airportitlwm (10.14 Mojave)
@@ -37,13 +36,14 @@ Currently Builds 73 Kexts:
 * Airportitlwm (all versions)
 * AlpsHID
 * AlpsHID (150ms delay)
+* ALXEthernet
 * AppleALC
 * AtherosE2200Ethernet
 * BCM5722D
 * BrcmPatchRAM (Acidanthera)
 * BrightnessKeys
-* CPUFriend
 * CodecCommander
+* CPUFriend
 * CpuTscSync
 * CpuTscSync (AMD)
 * DebugEnhancer
@@ -56,32 +56,33 @@ Currently Builds 73 Kexts:
 * ForgedInvariant
 * GenericCardReaderFriend
 * GenericUSBXHCI
+* HibernationFixup
 * HWSensors (Kozlek)
 * HWSensors (Legacy)
 * HWSensors (RehabMan)
-* HibernationFixup
+* iBridged
 * IntelBacklight
 * IntelBluetoothFirmware
 * IntelLucy
-* IntelMKLFixup
 * IntelMausi (Acidanthera)
 * IntelMausiEthernet
+* IntelMKLFixup
 * Itlwm
 * Lilu
 * LucyRTL8125Ethernet
-* NVMeFix
 * NightShiftEnabler
-* NoTouchID
-* NootRX
 * NootedRed
+* NootRX
+* NoTouchID
 * NullCPUPowerManagement
+* NVMeFix
 * Phantom
-* RTCMemoryFixup
 * RealtekCardReader
 * RealtekCardReaderFriend
 * RealtekRTL8100
 * RealtekRTL8111
 * RestrictEvents
+* RTCMemoryFixup
 * SMCRadeonSensors (ChefKissInc)
 * USBInjectAll
 * USBInjectAll (Sniki)

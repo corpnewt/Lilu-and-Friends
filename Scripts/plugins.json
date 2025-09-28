@@ -1,5 +1,5 @@
 {
-  "Changes": "Add Phantom.",
+  "Changes": "Add iBriged.",
   "Plugins": [
     {
       "Build Opts": [
@@ -28,12 +28,6 @@
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-acpi-battery-driver/downloads/"
       }
-    },
-    {
-      "Desc": "Atheros OSX driver originally coded by Shailua",
-      "Folder": "OSX-ALXEthernet",
-      "Name": "ALXEthernet",
-      "URL": "git clone --depth 1 https://github.com/Dolnor/OSX-ALXEthernet"
     },
     {
       "Desc": "for non-native Airport Broadcom Wi-Fi cards",
@@ -273,6 +267,12 @@
       }
     },
     {
+      "Desc": "Atheros OSX driver originally coded by Shailua",
+      "Folder": "OSX-ALXEthernet",
+      "Name": "ALXEthernet",
+      "URL": "git clone --depth 1 https://github.com/Dolnor/OSX-ALXEthernet"
+    },
+    {
       "Desc": "dynamic audio patching",
       "Lilu": true,
       "Name": "AppleALC",
@@ -361,17 +361,6 @@
       }
     },
     {
-      "Desc": "for dynamic power management data injection",
-      "Lilu": true,
-      "Name": "CPUFriend",
-      "URL": "git clone --depth 1 https://github.com/PMheart/CPUFriend",
-      "github": {
-        "URL": "https://github.com/PMheart/CPUFriend/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -383,6 +372,17 @@
       "URL": "git clone --depth 1 https://github.com/RehabMan/EAPD-Codec-Commander",
       "bitbucket": {
         "URL": "https://bitbucket.org/RehabMan/os-x-eapd-codec-commander/downloads/"
+      }
+    },
+    {
+      "Desc": "for dynamic power management data injection",
+      "Lilu": true,
+      "Name": "CPUFriend",
+      "URL": "git clone --depth 1 https://github.com/PMheart/CPUFriend",
+      "github": {
+        "URL": "https://github.com/PMheart/CPUFriend/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
       }
     },
     {
@@ -565,6 +565,17 @@
       }
     },
     {
+      "Desc": "saves IOHibernateRTCVariables in NVRAM",
+      "Lilu": true,
+      "Name": "HibernationFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup HibernationFixup",
+      "github": {
+        "URL": "https://github.com/acidanthera/HibernationFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
       "Build Dir": "./Binaries",
       "Build Opts": [
         "-sdk",
@@ -631,12 +642,18 @@
       }
     },
     {
-      "Desc": "saves IOHibernateRTCVariables in NVRAM",
-      "Lilu": true,
-      "Name": "HibernationFixup",
-      "URL": "git clone --depth 1 https://github.com/acidanthera/HibernationFixup HibernationFixup",
+      "Build Opts": [
+        "-configuration",
+        "Release"
+      ],
+      "Desc": "Lilu plug-in to fix macOS' OTA process",
+      "Name": "iBridged",
+      "URL": "git clone --depth 1 --recursive https://github.com/Carnations-Botanica/iBridged",
+      "Zip": [
+        "*.kext"
+      ],
       "github": {
-        "URL": "https://github.com/acidanthera/HibernationFixup/releases",
+        "URL": "https://github.com/Carnations-Botanica/iBridged/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
@@ -682,20 +699,6 @@
       }
     },
     {
-      "Desc": "MKL (Math Kernel Library) patcher for macOS",
-      "Lilu": true,
-      "Name": "IntelMKLFixup",
-      "URL": "git clone --depth 1 https://github.com/Carnations-Botanica/IntelMKLFixup",
-      "Zip": [
-        "*.kext"
-      ],
-      "github": {
-        "URL": "https://github.com/Carnations-Botanica/IntelMKLFixup/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -721,6 +724,20 @@
       "Desc": "for most Intel LAN",
       "Name": "IntelMausiEthernet",
       "URL": "git clone --depth 1 https://github.com/Mieze/IntelMausiEthernet"
+    },
+    {
+      "Desc": "MKL (Math Kernel Library) patcher for macOS",
+      "Lilu": true,
+      "Name": "IntelMKLFixup",
+      "URL": "git clone --depth 1 https://github.com/Carnations-Botanica/IntelMKLFixup",
+      "Zip": [
+        "*.kext"
+      ],
+      "github": {
+        "URL": "https://github.com/Carnations-Botanica/IntelMKLFixup/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -764,23 +781,32 @@
       }
     },
     {
-      "Desc": "provides patches for NVME Power management support - APST",
-      "Lilu": true,
-      "Name": "NVMeFix",
-      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix",
-      "github": {
-        "URL": "https://github.com/acidanthera/NVMeFix/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Desc": "enables night shift on unsupported SMBIOS",
       "Lilu": true,
       "Name": "NightShiftEnabler",
       "URL": "git clone --depth 1 https://github.com/cdf/NightShiftEnabler",
       "github": {
         "URL": "https://github.com/cdf/NightShiftEnabler/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Desc": "Lilu plugin for AMD Vega iGPUs",
+      "Name": "NootedRed",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootedRed",
+      "github": {
+        "URL": "https://github.com/ChefKissInc/NootedRed/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs",
+      "Name": "NootRX",
+      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootRX",
+      "github": {
+        "URL": "https://github.com/ChefKissInc/NootRX/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
@@ -797,26 +823,6 @@
       }
     },
     {
-      "Desc": "Lilu plug-in for unsupported RDNA 2 desktop dGPUs",
-      "Name": "NootRX",
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootRX",
-      "github": {
-        "URL": "https://github.com/ChefKissInc/NootRX/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
-      "Desc": "Lilu plugin for AMD Vega iGPUs",
-      "Name": "NootedRed",
-      "URL": "git clone --depth 1 --recursive https://github.com/ChefKissInc/NootedRed",
-      "github": {
-        "URL": "https://github.com/ChefKissInc/NootedRed/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
-      }
-    },
-    {
       "Build Opts": [
         "-sdk",
         "macosx",
@@ -826,6 +832,17 @@
       "Desc": "disables power management on unsupported CPUs",
       "Name": "NullCPUPowerManagement",
       "URL": "git clone --depth 1 https://github.com/corpnewt/NullCPUPowerManagement"
+    },
+    {
+      "Desc": "provides patches for NVME Power management support - APST",
+      "Lilu": true,
+      "Name": "NVMeFix",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/NVMeFix",
+      "github": {
+        "URL": "https://github.com/acidanthera/NVMeFix/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
     },
     {
       "Build Opts": [
@@ -842,17 +859,6 @@
         "URL": "https://github.com/Carnations-Botanica/Phantom/releases",
         "debug_regex": "(?i)phantom.*debug\\.zip",
         "release_regex": "(?i)phantom.*release\\.zip"
-      }
-    },
-    {
-      "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
-      "Lilu": true,
-      "Name": "RTCMemoryFixup",
-      "URL": "git clone --depth 1 https://github.com/acidanthera/RTCMemoryFixup",
-      "github": {
-        "URL": "https://github.com/acidanthera/RTCMemoryFixup/releases",
-        "debug_regex": "(?i)debug\\.zip",
-        "release_regex": "(?i)release\\.zip"
       }
     },
     {
@@ -924,6 +930,17 @@
       "URL": "git clone --depth 1 https://github.com/acidanthera/RestrictEvents",
       "github": {
         "URL": "https://github.com/acidanthera/RestrictEvents/releases",
+        "debug_regex": "(?i)debug\\.zip",
+        "release_regex": "(?i)release\\.zip"
+      }
+    },
+    {
+      "Desc": "provides a way to emulate some offsets in CMOS (RTC) memory",
+      "Lilu": true,
+      "Name": "RTCMemoryFixup",
+      "URL": "git clone --depth 1 https://github.com/acidanthera/RTCMemoryFixup",
+      "github": {
+        "URL": "https://github.com/acidanthera/RTCMemoryFixup/releases",
         "debug_regex": "(?i)debug\\.zip",
         "release_regex": "(?i)release\\.zip"
       }
@@ -1380,7 +1397,7 @@
       "Desc": "port for macOS of Synaptic's RMI Trackpad driver from Linux",
       "MacKernelSDK": true,
       "Name": "VoodooRMI",
-      "URL": "git clone --depth 1 https://github.com/VoodooSMBus/VoodooRMI --recurse-submodules",
+      "URL": "git clone --depth 1 --recurse https://github.com/VoodooSMBus/VoodooRMI",
       "github": {
         "URL": "https://github.com/VoodooSMBus/VoodooRMI/releases",
         "debug_regex": "(?i)debug\\.zip",
@@ -1399,5 +1416,5 @@
       }
     }
   ],
-  "Version": "0.0.141"
+  "Version": "0.0.142"
 }
