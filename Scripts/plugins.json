@@ -1,5 +1,5 @@
 {
-  "Changes": "Add iBriged.",
+  "Changes": "Add LaoBamac AirportItlwm for Sequoia and Tahoe.",
   "Plugins": [
     {
       "Build Opts": [
@@ -218,6 +218,70 @@
         "URL": "https://github.com/OpenIntelWireless/itlwm/releases",
         "debug_regex": "(?i)debug",
         "release_regex": "(?i)stable"
+      }
+    },
+    {
+      "Build Opts": [
+        "-scheme",
+        "AirportItlwm-Sequoia",
+        "ARCHS=x86_64",
+        "CODE_SIGNING_ALLOWED=NO"
+      ],
+      "Desc": "native Intel Wi-Fi kext for macOS 15.2+ (LaoBamac fork)",
+      "Folder": "itlwm-Laobamac",
+      "Info": "Sequoia/AirportItlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
+      "Name": "Airportitlwm (15 Sequoia, LaoBamac)",
+      "Pre-Build": [
+        {
+          "args": [
+            "-C",
+            "MacKernelSDK",
+            "checkout",
+            "3f750085caa17ec3a7880f11c11bf4f48cd6a164"
+          ],
+          "name": "Use required MacKernelSDK revision",
+          "path": "git"
+        }
+      ],
+      "URL": "git clone --depth 1 https://github.com/laobamac/itlwm itlwm-Laobamac",
+      "Zip": "Sequoia/AirportItlwm.kext",
+      "github": {
+        "URL": "https://github.com/laobamac/itlwm/releases",
+        "debug_regex": "(?i)sequoia.*debug",
+        "release_regex": "(?i)sequoia.*release"
+      }
+    },
+    {
+      "Build Opts": [
+        "-scheme",
+        "AirportItlwm-Tahoe",
+        "ARCHS=x86_64",
+        "CODE_SIGNING_ALLOWED=NO"
+      ],
+      "Desc": "native Intel Wi-Fi kext for macOS 26 Tahoe (LaoBamac fork)",
+      "Folder": "itlwm-Laobamac",
+      "Info": "Tahoe/AirportItlwm.kext/Contents/Info.plist",
+      "MacKernelSDK": true,
+      "Name": "Airportitlwm (26 Tahoe, LaoBamac)",
+      "Pre-Build": [
+        {
+          "args": [
+            "-C",
+            "MacKernelSDK",
+            "checkout",
+            "3f750085caa17ec3a7880f11c11bf4f48cd6a164"
+          ],
+          "name": "Use required MacKernelSDK revision",
+          "path": "git"
+        }
+      ],
+      "URL": "git clone --depth 1 https://github.com/laobamac/itlwm itlwm-Laobamac",
+      "Zip": "Tahoe/AirportItlwm.kext",
+      "github": {
+        "URL": "https://github.com/laobamac/itlwm/releases",
+        "debug_regex": "(?i)tahoe.*debug",
+        "release_regex": "(?i)tahoe.*release"
       }
     },
     {
@@ -723,7 +787,11 @@
     {
       "Desc": "for most Intel LAN",
       "Name": "IntelMausiEthernet",
-      "URL": "git clone --depth 1 https://github.com/Mieze/IntelMausiEthernet"
+      "URL": "git clone --depth 1 https://github.com/mieze/IntelMausiEthernet",
+      "github": {
+        "URL": "https://github.com/Mieze/IntelMausiEthernet/releases",
+        "release_regex": "(?i)IntelMausiEthernet[^\\/].*\\.zip"
+      }
     },
     {
       "Desc": "MKL (Math Kernel Library) patcher for macOS",
@@ -1416,5 +1484,5 @@
       }
     }
   ],
-  "Version": "0.0.142"
+  "Version": "0.0.143"
 }
