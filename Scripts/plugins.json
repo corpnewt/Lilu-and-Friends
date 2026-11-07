@@ -946,6 +946,36 @@
       }
     },
     {
+      "Build Dir": "./build/Release",
+      "Build Opts": [
+        "-project",
+        "SimpleBCM.xcodeproj",
+        "-scheme",
+        "SimpleBCM",
+        "-configuration",
+        "Release",
+        "-destination",
+        "generic/platform=macOS"
+      ],
+      "Desc": "Broadcom Wi-Fi on Sonoma, Sequoia and Tahoe without root patches",
+      "Name": "SimpleBCM",
+      "Pre-Build": [
+        {
+          "args": [
+            "Tools/bootstrap.py"
+          ],
+          "name": "Fetch pinned MacKernelSDK and OCLP Wi-Fi payloads",
+          "path": "python3"
+        }
+      ],
+      "URL": "git clone --depth 1 https://github.com/laobamac/SimpleBCM",
+      "github": {
+        "URL": "https://github.com/laobamac/SimpleBCM/releases",
+        "debug_regex": "(?i)SimpleBCM-v[0-9.]+-DEBUG[^/]*\\.zip$",
+        "release_regex": "(?i)SimpleBCM-v[0-9.]+-RELEASE[^/]*\\.zip$"
+      }
+    },
+    {
       "Desc": "AMD GPU temperature monitoring on macOS",
       "Folder": "SMCRadeonSensors",
       "Info": "SMCRadeonSensors.kext/Contents/Info.plist",
